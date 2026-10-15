@@ -2,7 +2,8 @@ import React from 'react';
 import { 
   Attempt, 
   ExamRule, 
-  PlanType 
+  PlanType,
+  ExamId 
 } from '../../types';
 import { 
   FileCheck2, 
@@ -17,6 +18,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { ScoreCriteriaBadge } from '../common/ScoreCriteriaBadge';
+import { AccessControlService } from '../../services/accessControlService';
 
 interface SimuladosHomeProps {
   attempts: Attempt[];
@@ -24,7 +26,7 @@ interface SimuladosHomeProps {
   plan: PlanType;
   onStartSimulation: () => void;
   onOpenAttemptResult: (attempt: Attempt) => void;
-  onOpenUpgradeModal: (feature: string) => void;
+  onOpenUpgradeModal: (feature: string, examId?: ExamId) => void;
 }
 
 export const SimuladosHome: React.FC<SimuladosHomeProps> = ({
@@ -35,13 +37,15 @@ export const SimuladosHome: React.FC<SimuladosHomeProps> = ({
   onOpenAttemptResult,
   onOpenUpgradeModal
 }) => {
-  const fullSimulations = attempts.filter(a => a.mode === 'FULL_EXAM');
-  const isFreePlan = plan === 'Free';
-  const hasReachedFreeLimit = isFreePlan && fullSimulations.length >= examRule.maxFreeSimulations;
+  const fullSimulations = attempts.filter(a => a.mode === 'FULL_EXAM' && a.examId === examRule.examId);
+  const isPro = AccessControlService.isPro(examRule.examId);
+  const isFreePlan = !isPro;
+  const accessCheck = AccessControlService.canStartSimulation(examRule.examId);
+  const hasReachedFreeLimit = !accessCheck.allowed;
 
   const handleStart = () => {
     if (hasReachedFreeLimit) {
-      onOpenUpgradeModal('Simulados Completos Ilimitados');
+      onOpenUpgradeModal('Simulados Completos Ilimitados', examRule.examId);
     } else {
       onStartSimulation();
     }
@@ -55,6 +59,12 @@ export const SimuladosHome: React.FC<SimuladosHomeProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
               {examRule.shortName}
+            </span>
+            <span className="text-xs text-zinc-400">·</span>
+            <span className={`text-xs font-bold px-2 py-0.5 rounded ${
+              isPro ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-200 text-zinc-700'
+            }`}>
+              {isPro ? 'Plano Pro' : 'Plano Free'}
             </span>
             <span className="text-xs text-zinc-400">·</span>
             <span className="text-xs text-zinc-500 font-medium">{examRule.totalQuestions} questões · {examRule.durationMinutes} minutos</span>
@@ -72,7 +82,7 @@ export const SimuladosHome: React.FC<SimuladosHomeProps> = ({
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer flex-shrink-0"
         >
           {hasReachedFreeLimit ? <Lock className="w-4 h-4" /> : <FileCheck2 className="w-4 h-4" />}
-          <span>{hasReachedFreeLimit ? 'Liberar Simulados (Plano Pro)' : 'Iniciar Novo Simulado'}</span>
+          <span>{hasReachedFreeLimit ? `Liberar Simulados (${examRule.shortName} Pro)` : 'Iniciar Novo Simulado'}</span>
         </button>
       </div>
 
@@ -82,11 +92,11 @@ export const SimuladosHome: React.FC<SimuladosHomeProps> = ({
           <div className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-amber-700 flex-shrink-0" />
             <span>
-              Você está utilizando o <strong>Plano Free</strong> ({fullSimulations.length}/{examRule.maxFreeSimulations} simulado gratuito utilizado). Faça upgrade para realizar simulados ilimitados.
+              Você está utilizando o <strong>Plano Free</strong> do exame {examRule.shortName} ({fullSimulations.length}/{examRule.maxFreeSimulations} simulado gratuito utilizado). Faça upgrade para realizar simulados ilimitados.
             </span>
           </div>
           <button
-            onClick={() => onOpenUpgradeModal('Simulados Ilimitados')}
+            onClick={() => onOpenUpgradeModal(`Simulados Ilimitados (${examRule.shortName})`, examRule.examId)}
             className="font-bold text-amber-800 hover:underline flex-shrink-0 cursor-pointer"
           >
             Fazer Upgrade Pro →

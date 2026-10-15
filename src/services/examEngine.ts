@@ -10,6 +10,7 @@ import {
   ExamId 
 } from '../types';
 import { StorageService } from './storageService';
+import { AccessControlService } from './accessControlService';
 
 export interface DisciplineQuota {
   subjectId: string;
@@ -111,6 +112,12 @@ export class ExamEngine {
     let durationMinutes = examRule.durationMinutes;
 
     if (mode === 'FULL_EXAM') {
+      // 3. Commercial access validation per exam
+      const accessCheck = AccessControlService.canStartSimulation(examId);
+      if (!accessCheck.allowed) {
+        throw new Error(accessCheck.reason || `Limite de simulados atingido para o exame ${examRule.shortName}. Assine o Plano Pro para simulados ilimitados.`);
+      }
+
       if (!Number.isInteger(examRule.totalQuestions) || examRule.totalQuestions <= 0) {
         throw new Error('Configuração inválida: quantidade total de questões do exame deve ser um número inteiro positivo.');
       }
@@ -157,6 +164,12 @@ export class ExamEngine {
       durationMinutes = examRule.durationMinutes;
 
     } else if (mode === 'TARGETED_TRAINING') {
+      // Commercial access check
+      const accessCheck = AccessControlService.canAccessFeature(examId, 'TARGETED_TRAINING');
+      if (!accessCheck.allowed) {
+        throw new Error(accessCheck.reason || `Treinos direcionados são exclusivos para assinantes do Plano Pro do exame ${examRule.shortName}.`);
+      }
+
       const trainingSettings = examRule.trainingSettings?.targetedTraining;
       if (!trainingSettings || !trainingSettings.enabled) {
         throw new Error(`A modalidade de Treino Direcionado não está habilitada para o exame "${examRule.name}".`);
@@ -214,6 +227,12 @@ export class ExamEngine {
       durationMinutes = trainingDuration;
 
     } else if (mode === 'ERROR_REVIEW') {
+      // Commercial access check
+      const accessCheck = AccessControlService.canAccessFeature(examId, 'ERROR_REVIEW');
+      if (!accessCheck.allowed) {
+        throw new Error(accessCheck.reason || `A Revisão de Erros é exclusiva para assinantes do Plano Pro do exame ${examRule.shortName}.`);
+      }
+
       const reviewSettings = examRule.trainingSettings?.errorReview;
       if (!reviewSettings || !reviewSettings.enabled) {
         throw new Error(`A modalidade de Revisão de Erros não está habilitada para o exame "${examRule.name}".`);

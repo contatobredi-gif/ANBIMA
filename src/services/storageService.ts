@@ -1,5 +1,5 @@
-import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem, Question } from '../types';
-import { INITIAL_APP_STATE, INITIAL_EXAM_RULES } from '../data/initialData';
+import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem, Question, ExamId, ExamPlan, ExamSubscription } from '../types';
+import { INITIAL_APP_STATE, INITIAL_EXAM_RULES, INITIAL_EXAM_PLANS, INITIAL_SUBSCRIPTIONS } from '../data/initialData';
 import { INITIAL_QUESTIONS } from '../data/questionsData';
 
 const STORAGE_KEY = 'simulados_anbima_engine_v1';
@@ -124,6 +124,35 @@ export class StorageService {
             }
           }
 
+          // 6. Ensure examPlans catalog exists
+          if (!parsed.examPlans || !Array.isArray(parsed.examPlans) || parsed.examPlans.length === 0) {
+            parsed.examPlans = JSON.parse(JSON.stringify(INITIAL_EXAM_PLANS));
+          } else {
+            INITIAL_EXAM_PLANS.forEach(ip => {
+              if (!parsed.examPlans.find(p => p.id === ip.id)) {
+                parsed.examPlans.push(JSON.parse(JSON.stringify(ip)));
+              }
+            });
+          }
+
+          // 7. Ensure subscriptions map exists and is populated
+          if (!parsed.subscriptions || typeof parsed.subscriptions !== 'object') {
+            parsed.subscriptions = {};
+            if (parsed.user.plan === 'Pro') {
+              parsed.subscriptions['cpa'] = JSON.parse(JSON.stringify(INITIAL_SUBSCRIPTIONS['cpa']));
+            }
+          }
+
+          // 8. Ensure selectedExamId exists
+          if (!parsed.user.selectedExamId) {
+            parsed.user.selectedExamId = 'cpa';
+          }
+
+          // 9. Sync user.plan with the current status of selectedExamId
+          const activeSub = parsed.subscriptions[parsed.user.selectedExamId];
+          const isSelectedExamPro = activeSub && (activeSub.status === 'active' || activeSub.status === 'trialing') && (!activeSub.expiresAt || new Date(activeSub.expiresAt).getTime() > Date.now());
+          parsed.user.plan = isSelectedExamPro ? 'Pro' : 'Free';
+
           this.cachedState = parsed;
           return parsed;
         }
@@ -150,18 +179,87 @@ export class StorageService {
     }
   }
 
-  // Plan toggling
-  public static togglePlan(): PlanType {
+  // Plan toggling per exam
+  public static togglePlan(targetExamId?: ExamId): PlanType {
     const state = this.getState();
-    const newPlan: PlanType = state.user.plan === 'Pro' ? 'Free' : 'Pro';
-    state.user.plan = newPlan;
+    const examId = targetExamId || state.user.selectedExamId || 'cpa';
+    if (!state.subscriptions) state.subscriptions = {};
+
+    const existing = state.subscriptions[examId];
+    const isCurrentlyPro = existing && (existing.status === 'active' || existing.status === 'trialing');
+
+    if (isCurrentlyPro) {
+      existing.status = 'canceled';
+      existing.canceledAt = new Date().toISOString();
+      existing.autoRenew = false;
+    } else {
+      const now = new Date();
+      const expires = new Date();
+      expires.setMonth(expires.getMonth() + 1);
+      state.subscriptions[examId] = {
+        id: `sub-${state.user.id}-${examId}-${Date.now()}`,
+        userId: state.user.id,
+        examId,
+        planId: `plan-${examId}-pro`,
+        status: 'active',
+        startedAt: now.toISOString(),
+        expiresAt: expires.toISOString(),
+        canceledAt: null,
+        autoRenew: true,
+        isDemo: true
+      };
+    }
+
+    if (state.user.selectedExamId === examId) {
+      state.user.plan = isCurrentlyPro ? 'Free' : 'Pro';
+    }
+
     this.saveState(state);
-    return newPlan;
+    return isCurrentlyPro ? 'Free' : 'Pro';
   }
 
-  public static setPlan(plan: PlanType): void {
+  public static setPlan(plan: PlanType, targetExamId?: ExamId): void {
     const state = this.getState();
-    state.user.plan = plan;
+    const examId = targetExamId || state.user.selectedExamId || 'cpa';
+    if (!state.subscriptions) state.subscriptions = {};
+
+    if (plan === 'Pro') {
+      const now = new Date();
+      const expires = new Date();
+      expires.setMonth(expires.getMonth() + 1);
+      state.subscriptions[examId] = {
+        id: `sub-${state.user.id}-${examId}-${Date.now()}`,
+        userId: state.user.id,
+        examId,
+        planId: `plan-${examId}-pro`,
+        status: 'active',
+        startedAt: now.toISOString(),
+        expiresAt: expires.toISOString(),
+        canceledAt: null,
+        autoRenew: true,
+        isDemo: true
+      };
+    } else {
+      if (state.subscriptions[examId]) {
+        state.subscriptions[examId].status = 'canceled';
+        state.subscriptions[examId].canceledAt = new Date().toISOString();
+        state.subscriptions[examId].autoRenew = false;
+      }
+    }
+
+    if (state.user.selectedExamId === examId) {
+      state.user.plan = plan;
+    }
+
+    this.saveState(state);
+  }
+
+  public static setSelectedExam(examId: ExamId): void {
+    const state = this.getState();
+    state.user.selectedExamId = examId;
+    const sub = state.subscriptions?.[examId];
+    const isPro = sub && (sub.status === 'active' || sub.status === 'trialing');
+    state.user.plan = isPro ? 'Pro' : 'Free';
     this.saveState(state);
   }
 

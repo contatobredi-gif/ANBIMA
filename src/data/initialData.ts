@@ -1,5 +1,85 @@
-import { AppStateData, ExamRule, RankingParticipant, Achievement, NotificationItem, TestimonialFeedback, Article, Attempt } from '../types';
+import { AppStateData, ExamRule, RankingParticipant, Achievement, NotificationItem, TestimonialFeedback, Article, Attempt, ExamPlan, ExamSubscription } from '../types';
 import { INITIAL_QUESTIONS, INITIAL_SUBJECTS } from './questionsData';
+
+export const INITIAL_EXAM_PLANS: ExamPlan[] = [
+  {
+    id: 'plan-cpa-free',
+    examId: 'cpa',
+    name: 'CPA Free',
+    type: 'Free',
+    priceCents: 0,
+    currency: 'BRL',
+    billingCycle: null,
+    isActive: true,
+    features: [
+      '1 simulado oficial completo gratuito',
+      'Diagnóstico geral de desempenho',
+      'Acesso ao desafio diário e ranking público'
+    ]
+  },
+  {
+    id: 'plan-cpa-pro',
+    examId: 'cpa',
+    name: 'CPA Pro',
+    type: 'Pro',
+    priceCents: 4990, // R$ 49,90
+    currency: 'BRL',
+    billingCycle: 'monthly',
+    isActive: true,
+    features: [
+      'Simulados completos ilimitados com cronômetro oficial',
+      'Treinos direcionados por disciplina (Mat. Financeira, Fundos, etc.)',
+      'Modo inteligente de Revisão de Erros',
+      'Analytics de evolução histórica e comparador de tentativas',
+      'Cards compartilháveis de aprovação'
+    ]
+  },
+  {
+    id: 'plan-oab-free',
+    examId: 'oab',
+    name: 'OAB Free',
+    type: 'Free',
+    priceCents: 0,
+    currency: 'BRL',
+    billingCycle: null,
+    isActive: true,
+    features: [
+      '1 simulado oficial demonstrativo',
+      'Diagnóstico preliminar por disciplina jurídica'
+    ]
+  },
+  {
+    id: 'plan-oab-pro',
+    examId: 'oab',
+    name: 'OAB Pro',
+    type: 'Pro',
+    priceCents: 5990, // R$ 59,90
+    currency: 'BRL',
+    billingCycle: 'monthly',
+    isActive: true,
+    features: [
+      'Simulados ilimitados da 1ª Fase OAB (80 questões)',
+      'Treinos por ramos do Direito (Ética, Constitucional, Civil)',
+      'Revisão automatizada de falhas e jurisprudência',
+      'Relatórios analíticos de consistência'
+    ]
+  }
+];
+
+export const INITIAL_SUBSCRIPTIONS: Record<string, ExamSubscription> = {
+  cpa: {
+    id: 'sub-rafael-cpa',
+    userId: 'user-rafael-01',
+    examId: 'cpa',
+    planId: 'plan-cpa-pro',
+    status: 'active',
+    startedAt: '2026-09-01T00:00:00Z',
+    expiresAt: '2026-11-01T00:00:00Z',
+    canceledAt: null,
+    autoRenew: true,
+    isDemo: true
+  }
+};
 
 export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
   cpa: {
@@ -694,6 +774,8 @@ export const INITIAL_APP_STATE: AppStateData = {
     avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80'
   },
   examRules: INITIAL_EXAM_RULES,
+  examPlans: INITIAL_EXAM_PLANS,
+  subscriptions: INITIAL_SUBSCRIPTIONS,
   subjects: INITIAL_SUBJECTS,
   questions: INITIAL_QUESTIONS,
   attempts: SEED_ATTEMPTS,

@@ -2,6 +2,38 @@ export type PlanType = 'Free' | 'Pro';
 
 export type ExamId = 'cpa' | 'oab';
 
+export type SubscriptionStatus =
+  | 'active'
+  | 'trialing'
+  | 'past_due'
+  | 'canceled'
+  | 'expired';
+
+export interface ExamPlan {
+  id: string;
+  examId: ExamId;
+  name: string;
+  type: PlanType;
+  priceCents: number;
+  currency: 'BRL';
+  billingCycle: 'monthly' | null;
+  isActive: boolean;
+  features?: string[];
+}
+
+export interface ExamSubscription {
+  id: string;
+  userId: string;
+  examId: ExamId;
+  planId: string;
+  status: SubscriptionStatus;
+  startedAt: string;
+  expiresAt: string | null;
+  canceledAt?: string | null;
+  autoRenew: boolean;
+  isDemo: boolean;
+}
+
 export interface TargetedTrainingSettings {
   enabled: boolean;
   questionCount: number;
@@ -245,6 +277,8 @@ export interface AppStateData {
   version: number;
   user: UserProfile;
   examRules: Record<string, ExamRule>;
+  examPlans: ExamPlan[];
+  subscriptions: Record<string, ExamSubscription>;
   subjects: Subject[];
   questions: Question[];
   attempts: Attempt[];

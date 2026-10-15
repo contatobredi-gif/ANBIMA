@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserProfile as UserProfileType, PlanType } from '../../types';
+import { UserProfile as UserProfileType, PlanType, ExamId } from '../../types';
 import { 
   User, 
   Mail, 
@@ -9,16 +9,19 @@ import {
   Shield, 
   Flame, 
   Zap, 
-  MessageSquareText,
-  Calendar,
-  Lock,
-  ArrowRight
+  MessageSquareText, 
+  CreditCard,
+  Check,
+  XCircle,
+  AlertCircle,
+  RefreshCw
 } from 'lucide-react';
 import { StorageService } from '../../services/storageService';
+import { AccessControlService } from '../../services/accessControlService';
 
 interface UserProfileProps {
   user: UserProfileType;
-  onPlanToggle: () => void;
+  onPlanToggle: (examId?: ExamId) => void;
   onResetData: () => void;
   onRestoreData: () => void;
   onOpenAdmin: () => void;
@@ -37,7 +40,31 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
 
   const triggerSuccess = (msg: string) => {
     setSuccessMsg(msg);
-    setTimeout(() => setSuccessMsg(null), 3000);
+    setTimeout(() => setSuccessMsg(null), 3500);
+  };
+
+  const state = StorageService.getState();
+  const cpaSubscription = AccessControlService.getSubscription('cpa');
+  const oabSubscription = AccessControlService.getSubscription('oab');
+  const isCpaPro = AccessControlService.isPro('cpa');
+  const isOabPro = AccessControlService.isPro('oab');
+
+  const handleToggleExam = (examId: ExamId) => {
+    const newPlan = AccessControlService.toggleExamPlan(examId);
+    triggerSuccess(`Assinatura de ${examId.toUpperCase()} alterada para ${newPlan}.`);
+    onPlanToggle(examId);
+  };
+
+  const handleCancelSub = (examId: ExamId) => {
+    AccessControlService.cancelSubscription(examId);
+    triggerSuccess(`Assinatura de ${examId.toUpperCase()} cancelada. O acesso Pro permanece desabilitado para este exame.`);
+    onPlanToggle(examId);
+  };
+
+  const handleReactivateSub = (examId: ExamId) => {
+    AccessControlService.reactivateSubscription(examId);
+    triggerSuccess(`Assinatura de ${examId.toUpperCase()} reativada com sucesso por mais 30 dias.`);
+    onPlanToggle(examId);
   };
 
   return (
@@ -52,16 +79,16 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
           <span className="text-xs text-zinc-500 font-medium">Conta Demonstrativa</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 mt-1">
-          Meu Perfil & Configurações
+          Meu Perfil & Assinaturas por Exame
         </h1>
         <p className="text-xs sm:text-sm text-zinc-500 mt-1">
-          Gerenciamento do ambiente de teste, plano ativo e persistência de dados.
+          Gerenciamento comercial descentralizado: controle planos, vigências e direitos de acesso independentes para cada exame.
         </p>
       </div>
 
       {successMsg && (
         <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
           <span>{successMsg}</span>
         </div>
       )}
@@ -77,12 +104,8 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-bold text-zinc-900">{user.name}</h2>
-              <span className={`text-xs font-bold px-2.5 py-0.5 rounded ${
-                user.plan === 'Pro' 
-                  ? 'bg-emerald-100 text-emerald-800' 
-                  : 'bg-zinc-100 text-zinc-700'
-              }`}>
-                Plano {user.plan}
+              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
+                Conta Única
               </span>
             </div>
             <p className="text-xs text-zinc-500 flex items-center gap-1.5 mt-0.5">
@@ -112,50 +135,175 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
         </button>
       </div>
 
-      {/* Plan Management Card */}
-      <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs">
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-100 mb-4">
+      {/* Per-Exam Subscription Architecture Section */}
+      <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-zinc-100">
           <div>
-            <h3 className="text-base font-bold text-zinc-900">Gerenciamento de Assinatura</h3>
-            <p className="text-xs text-zinc-500">Alterne instantaneamente para testar o comportamento dos planos</p>
+            <div className="flex items-center gap-2">
+              <CreditCard className="w-4 h-4 text-emerald-700" />
+              <h3 className="text-base font-bold text-zinc-900">Assinaturas Individuais por Exame</h3>
+            </div>
+            <p className="text-xs text-zinc-500 mt-0.5">
+              Cada exame possui contratação, precificação e ciclo de vigência 100% independentes.
+            </p>
           </div>
-          <button
-            onClick={() => {
-              onPlanToggle();
-              triggerSuccess(`Plano alternado com sucesso para ${user.plan === 'Pro' ? 'Free' : 'Pro'}.`);
-            }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer"
-          >
-            <Sparkles className="w-4 h-4" />
-            <span>Alternar para {user.plan === 'Pro' ? 'Plano Free' : 'Plano Pro'}</span>
-          </button>
+          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 self-start sm:self-auto">
+            Motor Universal de Cobrança v5.0
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          <div className={`p-4 rounded-xl border ${user.plan === 'Free' ? 'border-emerald-500 bg-emerald-50/20 ring-1 ring-emerald-500' : 'border-zinc-200 bg-zinc-50/50'}`}>
-            <span className="font-bold text-zinc-900 block mb-1">Plano Free</span>
-            <ul className="space-y-1 text-zinc-600 list-disc list-inside">
-              <li>1 simulado completo gratuito</li>
-              <li>Visualização do resultado e diagnósticos básicos</li>
-              <li>Acesso ao desafio diário e ranking</li>
-              <li className="text-zinc-400">Treinos direcionados bloqueados</li>
-              <li className="text-zinc-400">Revisão de erros bloqueada</li>
-            </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Exam 1: CPA Card */}
+          <div className={`p-5 rounded-xl border transition-all ${
+            isCpaPro 
+              ? 'border-emerald-300 bg-emerald-50/20 ring-1 ring-emerald-400' 
+              : 'border-zinc-200 bg-zinc-50/50'
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <span className="text-[11px] uppercase font-bold text-emerald-800 tracking-wider">
+                  Certificação ANBIMA
+                </span>
+                <h4 className="text-base font-extrabold text-zinc-900">CPA</h4>
+              </div>
+              <span className={`text-xs font-bold px-2.5 py-0.5 rounded ${
+                isCpaPro ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-200 text-zinc-700'
+              }`}>
+                {isCpaPro ? 'Plano Pro Ativo' : (cpaSubscription?.status === 'canceled' ? 'Pro Cancelado' : 'Plano Free')}
+              </span>
+            </div>
+
+            <div className="space-y-2 text-xs text-zinc-600 mb-4 pb-4 border-b border-zinc-200/60">
+              <div className="flex items-center justify-between">
+                <span>Valor:</span>
+                <span className="font-semibold text-zinc-900">R$ 49,90 / mês</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Status da Assinatura:</span>
+                <span className="font-semibold capitalize text-zinc-900">
+                  {cpaSubscription?.status || 'Padrão Free'}
+                </span>
+              </div>
+              {cpaSubscription?.expiresAt && (
+                <div className="flex items-center justify-between">
+                  <span>Vigência até:</span>
+                  <span className="font-semibold text-zinc-900">
+                    {new Date(cpaSubscription.expiresAt).toLocaleDateString('pt-BR')}
+                  </span>
+                </div>
+              )}
+              <div className="flex items-center justify-between">
+                <span>Renovação Automática:</span>
+                <span className="font-semibold text-zinc-900">
+                  {cpaSubscription?.autoRenew ? 'Habilitada (Mensal)' : 'Desabilitada'}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {isCpaPro ? (
+                <>
+                  <button
+                    onClick={() => handleCancelSub('cpa')}
+                    className="flex-1 py-2 px-3 border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Cancelar Assinatura
+                  </button>
+                  <button
+                    onClick={() => handleToggleExam('cpa')}
+                    className="py-2 px-3 border border-zinc-300 hover:bg-zinc-100 text-zinc-700 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                    title="Alternar rapidamente para Free"
+                  >
+                    Simular Free
+                  </button>
+                </>
+              ) : cpaSubscription?.status === 'canceled' ? (
+                <button
+                  onClick={() => handleReactivateSub('cpa')}
+                  className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Reativar Plano Pro (CPA)</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleToggleExam('cpa')}
+                  className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Assinar Pro CPA (R$ 49,90/mês)</span>
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className={`p-4 rounded-xl border ${user.plan === 'Pro' ? 'border-emerald-500 bg-emerald-50/20 ring-1 ring-emerald-500' : 'border-zinc-200 bg-zinc-50/50'}`}>
-            <div className="flex items-center justify-between mb-1">
-              <span className="font-bold text-zinc-900">Plano Pro</span>
-              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Ativo</span>
+          {/* Exam 2: OAB Card */}
+          <div className={`p-5 rounded-xl border transition-all ${
+            isOabPro 
+              ? 'border-emerald-300 bg-emerald-50/20 ring-1 ring-emerald-400' 
+              : 'border-zinc-200 bg-zinc-50/50'
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <span className="text-[11px] uppercase font-bold text-zinc-500 tracking-wider">
+                  Carreira Jurídica Demonstrativa
+                </span>
+                <h4 className="text-base font-extrabold text-zinc-900">OAB 1ª Fase</h4>
+              </div>
+              <span className={`text-xs font-bold px-2.5 py-0.5 rounded ${
+                isOabPro ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-200 text-zinc-700'
+              }`}>
+                {isOabPro ? 'Plano Pro Ativo' : 'Plano Free'}
+              </span>
             </div>
-            <ul className="space-y-1 text-zinc-600 list-disc list-inside">
-              <li>Simulados completos ilimitados</li>
-              <li>Treinos direcionados por disciplina</li>
-              <li>Modo inteligente de revisão de erros</li>
-              <li>Comparador de tentativas e analytics total</li>
-              <li>Cards de conquista compartilháveis</li>
-            </ul>
+
+            <div className="space-y-2 text-xs text-zinc-600 mb-4 pb-4 border-b border-zinc-200/60">
+              <div className="flex items-center justify-between">
+                <span>Valor Pro:</span>
+                <span className="font-semibold text-zinc-900">R$ 59,90 / mês</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Status da Assinatura:</span>
+                <span className="font-semibold capitalize text-zinc-900">
+                  {oabSubscription?.status || 'Padrão Free (Sem custos)'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Limite no Free:</span>
+                <span className="font-semibold text-zinc-900">1 Simulado Demonstrativo</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Independência:</span>
+                <span className="font-semibold text-emerald-700">Isolado da CPA</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {isOabPro ? (
+                <button
+                  onClick={() => handleCancelSub('oab')}
+                  className="w-full py-2 px-3 border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                >
+                  Cancelar Assinatura OAB
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleToggleExam('oab')}
+                  className="w-full py-2 px-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Assinar Pro OAB (R$ 59,90/mês)</span>
+                </button>
+              )}
+            </div>
           </div>
+        </div>
+
+        <div className="p-3.5 rounded-xl bg-zinc-100/70 border border-zinc-200 text-xs text-zinc-600 flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 text-zinc-500 flex-shrink-0 mt-0.5" />
+          <p>
+            <strong>Regra de Isolamento Comercial:</strong> Ter o Plano Pro ativo na CPA <strong>não</strong> concede direitos Pro na OAB ou em outros exames futuros. As tentativas, dados de desempenho e histórico de provas permanecem intactos mesmo em caso de cancelamento.
+          </p>
         </div>
       </div>
 

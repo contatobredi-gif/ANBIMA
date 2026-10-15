@@ -1,18 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Shield, RotateCcw, Sparkles, User, LogOut, ExternalLink, Menu, Check, ChevronDown, CheckCircle2 } from 'lucide-react';
-import { UserProfile, NotificationItem, PlanType } from '../../types';
+import { Bell, Shield, RotateCcw, Sparkles, User, LogOut, ExternalLink, Menu, Check, ChevronDown, CheckCircle2, ChevronRight, Layers } from 'lucide-react';
+import { UserProfile, NotificationItem, PlanType, ExamId } from '../../types';
 import { StorageService } from '../../services/storageService';
+import { AccessControlService } from '../../services/accessControlService';
 
 interface NavbarProps {
   user: UserProfile;
   notifications: NotificationItem[];
   onNavigate: (view: string) => void;
   onOpenMobileMenu: () => void;
-  onPlanToggle: () => void;
+  onPlanToggle: (examId?: ExamId) => void;
   onResetData: () => void;
   onRestoreData: () => void;
   isPublicMode: boolean;
   onTogglePublicMode: () => void;
+  onSelectExam?: (examId: ExamId) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -24,13 +26,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   onResetData,
   onRestoreData,
   isPublicMode,
-  onTogglePublicMode
+  onTogglePublicMode,
+  onSelectExam
 }) => {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
+  const [examDropdownOpen, setExamDropdownOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
+  const examRef = useRef<HTMLDivElement>(null);
 
+  const selectedExamId: ExamId = user.selectedExamId || 'cpa';
+  const currentPlanType = AccessControlService.getPlanType(selectedExamId);
   const unreadCount = notifications.filter(n => !n.read).length;
 
   useEffect(() => {
@@ -41,15 +48,24 @@ export const Navbar: React.FC<NavbarProps> = ({
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setNotifDropdownOpen(false);
       }
+      if (examRef.current && !examRef.current.contains(e.target as Node)) {
+        setExamDropdownOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleSwitchExam = (examId: ExamId) => {
+    StorageService.setSelectedExam(examId);
+    if (onSelectExam) onSelectExam(examId);
+    setExamDropdownOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-4 lg:px-8 py-2.5">
       <div className="flex items-center justify-between">
-        {/* Left side: Mobile menu toggle + Brand for mobile / Exam tag for desktop */}
+        {/* Left side: Mobile menu toggle + Interactive Exam Switcher */}
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenMobileMenu}
@@ -59,17 +75,62 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Menu className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
-              Exame: CPA
-            </span>
-            <span className="hidden sm:inline-block text-[11px] text-zinc-400 font-normal">
-              Ambiente Demonstrativo Independente
-            </span>
+          {/* Exam Selector Dropdown */}
+          <div className="relative" ref={examRef}>
+            <button
+              onClick={() => setExamDropdownOpen(!examDropdownOpen)}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200/80 text-zinc-800 border border-zinc-200 transition-colors cursor-pointer"
+              title="Trocar exame ativo"
+            >
+              <Layers className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Exame: {selectedExamId.toUpperCase()}</span>
+              <ChevronDown className="w-3 h-3 text-zinc-500" />
+            </button>
+
+            {examDropdownOpen && (
+              <div className="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-zinc-200 py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-100">
+                  Selecionar Exame Ativo
+                </div>
+                <button
+                  onClick={() => handleSwitchExam('cpa')}
+                  className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-zinc-50 ${
+                    selectedExamId === 'cpa' ? 'font-bold text-emerald-800 bg-emerald-50/50' : 'text-zinc-700'
+                  }`}
+                >
+                  <div>
+                    <span className="block">CPA (ANBIMA)</span>
+                    <span className="text-[10px] text-zinc-400 font-normal">
+                      Plano: {AccessControlService.getPlanType('cpa')}
+                    </span>
+                  </div>
+                  {selectedExamId === 'cpa' && <Check className="w-4 h-4 text-emerald-600" />}
+                </button>
+
+                <button
+                  onClick={() => handleSwitchExam('oab')}
+                  className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-zinc-50 ${
+                    selectedExamId === 'oab' ? 'font-bold text-emerald-800 bg-emerald-50/50' : 'text-zinc-700'
+                  }`}
+                >
+                  <div>
+                    <span className="block">OAB 1ª Fase (Demonstrativo)</span>
+                    <span className="text-[10px] text-zinc-400 font-normal">
+                      Plano: {AccessControlService.getPlanType('oab')}
+                    </span>
+                  </div>
+                  {selectedExamId === 'oab' && <Check className="w-4 h-4 text-emerald-600" />}
+                </button>
+              </div>
+            )}
           </div>
+
+          <span className="hidden sm:inline-block text-[11px] text-zinc-400 font-normal">
+            Ambiente Demonstrativo Independente
+          </span>
         </div>
 
-        {/* Right side: Public Toggle + Plan Badge + Notifications + User Menu */}
+        {/* Right side: Public Toggle + Plan Badge for Selected Exam + Notifications + User Menu */}
         <div className="flex items-center gap-2.5 sm:gap-4">
           {/* Public / Student Area Switcher Button */}
           <button
@@ -80,19 +141,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>{isPublicMode ? 'Entrar na Área do Aluno' : 'Ver Landing Page'}</span>
           </button>
 
-          {/* Quick Plan Switcher Badge */}
+          {/* Quick Plan Switcher Badge for the currently selected exam */}
           <div className="flex items-center">
             <button
-              onClick={onPlanToggle}
-              title="Clique para alternar entre Plano Free e Pro"
+              onClick={() => onPlanToggle(selectedExamId)}
+              title={`Clique para alternar entre Free e Pro no exame ${selectedExamId.toUpperCase()}`}
               className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                user.plan === 'Pro'
+                currentPlanType === 'Pro'
                   ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200'
                   : 'bg-zinc-100 text-zinc-700 border border-zinc-300 hover:bg-zinc-200'
               }`}
             >
               <Sparkles className="w-3 h-3 text-emerald-600" />
-              <span>Plano {user.plan}</span>
+              <span>{selectedExamId.toUpperCase()}: Plano {currentPlanType}</span>
               <span className="text-[10px] text-zinc-500 font-normal">(Alternar)</span>
             </button>
           </div>
