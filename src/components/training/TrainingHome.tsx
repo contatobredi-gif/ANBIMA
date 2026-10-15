@@ -25,6 +25,7 @@ interface TrainingHomeProps {
   attempts: Attempt[];
   plan: PlanType;
   questions: Question[];
+  selectedExamId: string;
   onStartTraining: (subjectId: string) => void;
   onStartErrorReview: () => void;
   onOpenAttemptResult: (attempt: Attempt) => void;
@@ -36,23 +37,28 @@ export const TrainingHome: React.FC<TrainingHomeProps> = ({
   attempts,
   plan,
   questions,
+  selectedExamId,
   onStartTraining,
   onStartErrorReview,
   onOpenAttemptResult,
   onOpenUpgradeModal
 }) => {
   const isFreePlan = plan === 'Free';
-  const trainingAttempts = attempts.filter(a => a.mode === 'TARGETED_TRAINING' || a.mode === 'ERROR_REVIEW');
+  const trainingAttempts = attempts.filter(
+    a => (a.mode === 'TARGETED_TRAINING' || a.mode === 'ERROR_REVIEW') && a.examId === selectedExamId
+  );
 
-  // Count failed questions across attempts
+  // Count failed questions across attempts strictly belonging to this exam
   const failedQuestionIds = new Set<string>();
-  attempts.forEach(att => {
-    att.answers.forEach(ans => {
-      if (!ans.isCorrect && ans.selectedOptionIndex !== null) {
-        failedQuestionIds.add(ans.questionId);
-      }
+  attempts
+    .filter(a => a.examId === selectedExamId)
+    .forEach(att => {
+      att.answers.forEach(ans => {
+        if (!ans.isCorrect && ans.selectedOptionIndex !== null && ans.selectedOptionIndex !== undefined) {
+          failedQuestionIds.add(ans.questionId);
+        }
+      });
     });
-  });
   const totalFailedCount = failedQuestionIds.size;
 
   const handleStartDisciplineTraining = (subjectId: string, subjectName: string) => {

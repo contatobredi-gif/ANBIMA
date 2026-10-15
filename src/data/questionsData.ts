@@ -6,7 +6,7 @@ export const INITIAL_SUBJECTS: Subject[] = [
     name: 'Matemática Financeira',
     shortName: 'Mat. Financeira',
     weightPercentage: 15,
-    topics: ['Juros Simples e Compostos', 'Taxa Nominal e Taxa Efetiva', 'Desconto Racional e Comercial', 'Valor Presente Líquido (VPL) e TIR', 'Duration e Convexidade'],
+    topics: ['Juros Simples e Compostos', 'Taxa Nominal e Taxa Efetiva', 'Desconto Racional e Comercial', 'Valor Presente Líquido (VPL) e TIR', 'Duration e Convexidade', 'Equivalência de Taxas e Inflação'],
     recommendedQuestionCount: 8,
   },
   {
@@ -60,7 +60,9 @@ export const INITIAL_SUBJECTS: Subject[] = [
 ];
 
 export const INITIAL_QUESTIONS: Question[] = [
-  // --- MATEMÁTICA FINANCEIRA (12 questões) ---
+  // =========================================================================
+  // MATEMÁTICA FINANCEIRA (Total: 42 questões aprovadas demonstrativas)
+  // =========================================================================
   {
     id: 'mf-01',
     examId: 'cpa',
@@ -68,6 +70,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Juros Simples e Compostos',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Um investidor aplicou R$ 10.000,00 a uma taxa de juros compostos de 10% ao ano pelo período de 2 anos. Qual o montante final resgatado ao término da operação?',
     options: [
       'R$ 12.000,00',
@@ -85,6 +92,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Taxa Nominal e Taxa Efetiva',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Uma instituição financeira divulga uma taxa de empréstimo de 12% ao ano com capitalização mensal. Como essa taxa divulgada e a taxa calculada no período anual devem ser classificadas?',
     options: [
       'A taxa de 12% a.a. é a taxa efetiva e a taxa anual resultante é a taxa nominal.',
@@ -102,6 +114,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Valor Presente Líquido (VPL) e TIR',
     difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Ao avaliar dois projetos de investimento mutuamente excludentes com mesma taxa mínima de atratividade (TMA), o analista observou que o Projeto Alfa tem VPL maior, enquanto o Projeto Beta tem maior Taxa Interna de Retorno (TIR). Qual critério deve prevalecer para maximizar a riqueza do investidor?',
     options: [
       'O critério da TIR deve sempre prevalecer por representar a taxa percentual de retorno.',
@@ -119,6 +136,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Duration e Convexidade',
     difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'A Duration de Macaulay de um título de renda fixa mede:',
     options: [
       'O prazo total legal até a data de vencimento final do título.',
@@ -136,6 +158,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Juros Simples e Compostos',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Em um regime de capitalização simples, o juro produzido em cada período sucessivo sobre o mesmo capital inicial é:',
     options: [
       'Crescente de forma exponencial.',
@@ -153,6 +180,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Taxa Nominal e Taxa Efetiva',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Duas taxas de juros são ditas equivalentes sob o regime de juros compostos quando:',
     options: [
       'Apresentam a mesma taxa percentual com o mesmo prazo de referência.',
@@ -170,6 +202,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Desconto Racional e Comercial',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Qual a principal distinção técnica entre o Desconto Racional (por dentro) e o Desconto Comercial (por fora)?',
     options: [
       'O desconto racional incide sobre o valor nominal do título, enquanto o comercial incide sobre o valor presente.',
@@ -187,6 +224,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Duration e Convexidade',
     difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Considerando dois títulos públicos com mesmo vencimento de 5 anos: o Título A é zero cupom (LTN) e o Título B paga cupons semestrais de juros (NTN-F). Em relação à duration desses títulos:',
     options: [
       'A duration do Título A é menor que a duration do Título B.',
@@ -204,6 +246,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Valor Presente Líquido (VPL) e TIR',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Se a Taxa Interna de Retorno (TIR) de um projeto é exatamente igual à Taxa Mínima de Atratividade (TMA), qual é o Valor Presente Líquido (VPL)?',
     options: [
       'O VPL é estritamente positivo.',
@@ -221,6 +268,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Taxa Nominal e Taxa Efetiva',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Se um investimento rende 1% ao mês no regime de juros compostos durante 12 meses, a taxa anual acumulada será:',
     options: [
       'Exatamente 12,00% ao ano.',
@@ -238,6 +290,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Juros Simples e Compostos',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Qual é o montante acumulado de um capital de R$ 5.000,00 aplicado a juros simples de 2% ao mês durante 5 meses?',
     options: [
       'R$ 5.500,00',
@@ -255,6 +312,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Duration e Convexidade',
     difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Quando as taxas de juros de mercado sobem bruscamente, o que acontece com o preço de mercado (PU) de um título prefixado de longo prazo?',
     options: [
       'O preço unitário (PU) sobe na mesma proporção.',
@@ -265,615 +327,6 @@ export const INITIAL_QUESTIONS: Question[] = [
     correctOptionIndex: 1,
     explanation: 'Existe uma relação inversa entre taxa de juros e preço de títulos prefixados. A duration quantifica essa sensibilidade: quanto mais longa a duration, mais sensível é o preço às oscilações da taxa.'
   },
-
-  // --- FUNDOS DE INVESTIMENTO (12 questões) ---
-  {
-    id: 'fi-01',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Come-cotas e Tributação',
-    difficulty: 'Fácil',
-    stem: 'O mecanismo de antecipação semestral de recolhimento de Imposto de Renda em fundos de investimento, conhecido como "come-cotas", incide nos últimos dias úteis dos meses de:',
-    options: [
-      'Janeiro e Julho.',
-      'Maio e Novembro.',
-      'Março e Setembro.',
-      'Abril e Outubro.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'O come-cotas ocorre semestralmente no último dia útil dos meses de maio e novembro, aplicando a alíquota mínima do tipo de fundo (15% para longo prazo e 20% para curto prazo).'
-  },
-  {
-    id: 'fi-02',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Classificação CVM',
-    difficulty: 'Médio',
-    stem: 'De acordo com as regras da CVM, um fundo classificado como "Fundo de Renda Fixa Simples" deve manter, no mínimo, que percentual de seu patrimônio líquido alocado em títulos públicos federais ou ativos com risco de crédito equivalente?',
-    options: [
-      '67%',
-      '80%',
-      '95%',
-      '100%'
-    ],
-    correctOptionIndex: 2,
-    explanation: 'Os Fundos de Renda Fixa Simples devem manter no mínimo 95% do patrimônio investido em títulos da dívida pública federal ou títulos de emissão privada de baixo risco de crédito semelhante.'
-  },
-  {
-    id: 'fi-03',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Marcação a Mercado (MaM)',
-    difficulty: 'Médio',
-    stem: 'A Marcação a Mercado (MaM) nos fundos de investimento tem como principal objetivo:',
-    options: [
-      'Garantir rentabilidade positiva e constante para todos os cotistas.',
-      'Evitar a transferência de riqueza entre cotistas que entram, permanecem ou saem do fundo.',
-      'Isentar os cotistas do pagamento de taxa de administração e custódia.',
-      'Eliminar completamente o risco de crédito dos emissores privados.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A Marcação a Mercado registra os ativos pelo preço que seriam liquidados no mercado no dia, impedindo que cotistas que resgatam suas cotas transfiram lucros ou prejuízos não realizados para os que permanecem no fundo.'
-  },
-  {
-    id: 'fi-04',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Políticas de Resgate e Cotização',
-    difficulty: 'Médio',
-    stem: 'Em um fundo aberto com prazo de cotização de resgate D+1 e prazo de liquidação financeira de D+2 úteis após a cotização, o cotista que solicitar resgate em uma segunda-feira receberá os recursos em sua conta corrente:',
-    options: [
-      'Na terça-feira da mesma semana.',
-      'Na quarta-feira da mesma semana.',
-      'Na quinta-feira da mesma semana.',
-      'Na sexta-feira da mesma semana.'
-    ],
-    correctOptionIndex: 2,
-    explanation: 'Segunda (D+0, pedido) -> Terça (D+1, cotização do valor da cota) -> Quinta (+2 dias úteis após cotização: quarta D+1, quinta D+2) para o crédito financeiro na conta.'
-  },
-  {
-    id: 'fi-05',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Taxas de Administração e Performance',
-    difficulty: 'Fácil',
-    stem: 'A cobrança da taxa de administração em um fundo de investimento impacta a cota do fundo da seguinte forma:',
-    options: [
-      'É debitada diretamente da conta corrente do cotista no final de cada mês.',
-      'É apropriada e deduzida diariamente no cálculo do valor da cota, divulgando-se rentabilidade líquida dessa taxa.',
-      'Incide apenas quando o fundo supera o seu benchmark de referência.',
-      'É retida na fonte no momento em que o cotista faz o resgate do principal.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A taxa de administração é calculada e provisionada diariamente sobre o patrimônio líquido do fundo, de modo que o valor divulgado da cota já é líquido de taxa de administração.'
-  },
-  {
-    id: 'fi-06',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Classificação CVM',
-    difficulty: 'Médio',
-    stem: 'Para ser classificado como Fundo de Ações de acordo com a regulamentação, o fundo deve manter, no mínimo, que percentual de sua carteira aplicado em ações, bônus de subscrição ou recibos de subscrição?',
-    options: [
-      '50%',
-      '67%',
-      '80%',
-      '95%'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'Os Fundos de Ações exigem que no mínimo 67% (dois terços) de seu patrimônio líquido esteja alocado em ações admitidas à negociação em mercado organizado ou certificados representativos.'
-  },
-  {
-    id: 'fi-07',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Come-cotas e Tributação',
-    difficulty: 'Médio',
-    stem: 'Qual dos seguintes tipos de fundos NÃO sofre a incidência semestral do come-cotas?',
-    options: [
-      'Fundo de Renda Fixa Curto Prazo.',
-      'Fundo Multimercado Longo Prazo.',
-      'Fundo de Ações.',
-      'Fundo de Renda Fixa Referenciado DI.'
-    ],
-    correctOptionIndex: 2,
-    explanation: 'Os Fundos de Ações não estão sujeitos ao come-cotas. A tributação de IR (alíquota única de 15%) ocorre exclusivamente no momento do resgate das cotas.'
-  },
-  {
-    id: 'fi-08',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Taxas de Administração e Performance',
-    difficulty: 'Médio',
-    stem: 'A Linha d’Água (high water mark) em fundos de investimento é uma regra que determina que a taxa de performance:',
-    options: [
-      'Só poderá ser cobrada se o valor da cota superar o seu maior valor histórico anterior no momento da apuração.',
-      'Pode ser cobrada a qualquer momento, independente de o fundo estar abaixo do seu topo histórico.',
-      'Deve ser repassada integralmente aos cotistas em forma de amortização.',
-      'Limita o percentual de performance em até 5% da taxa Selic.'
-    ],
-    correctOptionIndex: 0,
-    explanation: 'O princípio da linha d’água estabelece que a taxa de performance só pode ser cobrada se a cota do fundo estiver acima do valor mais alto registrado na última cobrança de performance realizada.'
-  },
-  {
-    id: 'fi-09',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Políticas de Resgate e Cotização',
-    difficulty: 'Fácil',
-    stem: 'Em um fundo de condomínio fechado, o cotista que desejar desinvestir antes do encerramento do prazo do fundo deve:',
-    options: [
-      'Exigir o resgate imediato junto ao administrador do fundo.',
-      'Negociar suas cotas no mercado secundário (caso admitido em bolsa ou balcão).',
-      'Acionar o Fundo Garantidor de Créditos (FGC).',
-      'Aguardar o próximo come-cotas semestral para solicitar a amortização.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'Nos fundos fechados não é permitido o resgate de cotas a qualquer tempo. O cotista pode sair alienando suas cotas a terceiros no mercado secundário ou aguardando amortização/liquidação do fundo.'
-  },
-  {
-    id: 'fi-10',
-    examId: 'cpa',
-    subjectId: 'fundos_inv',
-    subjectName: 'Fundos de Investimento',
-    topic: 'Classificação CVM',
-    difficulty: 'Fácil',
-    stem: 'Qual dos seguintes participantes é o responsável legal perante os cotistas e os órgãos reguladores pela constituição, fiscalização dos prestadores de serviço e funcionamento de um fundo?',
-    options: [
-      'O Administrador fiduciário.',
-      'O Agente Autônomo de Investimentos.',
-      'O Custodiante independente.',
-      'O Auditor contábil terceirizado.'
-    ],
-    correctOptionIndex: 0,
-    explanation: 'O Administrador fiduciário é a instituição autorizada responsável legal pela estrutura e conformidade do fundo de investimento perante os cotistas e os órgãos fiscalizadores.'
-  },
-
-  // --- INSTRUMENTOS DE RENDA FIXA E VARIÁVEL (12 questões) ---
-  {
-    id: 'rf-01',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'Tesouro Direto e Títulos Públicos',
-    difficulty: 'Fácil',
-    stem: 'O Tesouro Selic (LFT) é um título público federal caracterizado por ser:',
-    options: [
-      'Prefixado com pagamentos semestrais de juros.',
-      'Pós-fixado indexado à variação diária da taxa Selic Over.',
-      'Indexado à inflação medida pelo IPCA com cupom real.',
-      'Prefixado sem pagamento de juros periódicos.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A LFT (Tesouro Selic) é um título público pós-fixado cujo rendimento acompanha a variação acumulada da taxa Selic Over diária.'
-  },
-  {
-    id: 'rf-02',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'CDB, LCI, LCA e Debêntures',
-    difficulty: 'Fácil',
-    stem: 'Para pessoas físicas residentes no Brasil, os rendimentos auferidos na aplicação em Letras de Crédito Imobiliário (LCI) e Letras de Crédito do Agronegócio (LCA) são:',
-    options: [
-      'Tributados pela tabela regressiva de 22,5% a 15% de IR.',
-      'Isentos de Imposto de Renda e contam com garantia do FGC até os limites regulamentares.',
-      'Tributados na fonte à alíquota exclusiva de 15%, sem garantia de crédito.',
-      'Isentos de IR, porém sujeitos a IOF após 30 dias de aplicação.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'LCI e LCA emitidas por instituições financeiras contam com isenção de IR para pessoas físicas e possuem a garantia ordinária do Fundo Garantidor de Créditos (FGC).'
-  },
-  {
-    id: 'rf-03',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'Ações, Dividendos e JCP',
-    difficulty: 'Médio',
-    stem: 'No mercado acionário brasileiro, qual a principal diferença tributária para o acionista entre proventos recebidos na forma de Dividendos e Juros sobre Capital Próprio (JCP)?',
-    options: [
-      'Dividendos sofrem retenção de 15% de IR na fonte; JCP é totalmente isento para pessoa física.',
-      'Dividendos são isentos de IR para a pessoa física receptora; JCP sofre retenção de 15% de IR na fonte.',
-      'Ambos são tributados à alíquota regressiva de renda fixa.',
-      'Dividendos reduzem a base do lucro real da empresa emissora; JCP não é dedutível.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'Para a pessoa física, os dividendos são isentos de IR (já tributados na pessoa jurídica), enquanto o JCP é tributado na fonte à alíquota de 15% no momento do crédito ao acionista.'
-  },
-  {
-    id: 'rf-04',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'CDB, LCI, LCA e Debêntures',
-    difficulty: 'Médio',
-    stem: 'As debêntures incentivadas (instituídas pela Lei 12.431) destinam-se ao financiamento de projetos prioritários de infraestrutura e concedem aos investidores pessoas físicas:',
-    options: [
-      'Isenção de Imposto de Renda sobre os rendimentos auferidos.',
-      'Cobertura e garantia integral do FGC sem limite de valor.',
-      'Garantia do Tesouro Nacional contra qualquer tipo de inadimplência.',
-      'Prioridade absoluta no recebimento em relação a salários e tributos.'
-    ],
-    correctOptionIndex: 0,
-    explanation: 'Debêntures incentivadas de infraestrutura possuem isenção de IR sobre rendimentos para pessoas físicas, mas não contam com garantia do FGC nem do Tesouro.'
-  },
-  {
-    id: 'rf-05',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'Tesouro Direto e Títulos Públicos',
-    difficulty: 'Médio',
-    stem: 'O Tesouro IPCA+ com juros semestrais (NTN-B) é indicado para investidores que desejam:',
-    options: [
-      'Apenas valorização nominal pura, sem fluxo intermediário de renda.',
-      'Proteção contra a inflação combinada com recebimento periódico semestral de cupons de renda real.',
-      'Investimento de altíssima liquidez com volatilidade nula no mercado secundário.',
-      'Garantia cambial atrelada à cotação do dólar norte-americano.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A NTN-B paga cupom de juros semestral baseado em uma taxa real prefixada mais a correção do valor nominal pelo IPCA, provendo fluxo de caixa periódico.'
-  },
-  {
-    id: 'rf-06',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'Ações, Dividendos e JCP',
-    difficulty: 'Fácil',
-    stem: 'A data a partir da qual as ações são negociadas sem o direito de receber os proventos (dividendos ou juros sobre capital próprio) recém-anunciados é denominada:',
-    options: [
-      'Data COM.',
-      'Data EX.',
-      'Data de Liquidação Financeira.',
-      'Data de Custódia.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A data EX é o primeiro dia de negociação em que o adquirente da ação não terá direito ao provento anunciado pela companhia.'
-  },
-  {
-    id: 'rf-07',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'CDB, LCI, LCA e Debêntures',
-    difficulty: 'Fácil',
-    stem: 'O Certificado de Depósito Bancário (CDB) é um título representativo de captação emitido por:',
-    options: [
-      'Sociedades anônimas não financeiras de capital aberto.',
-      'Instituições financeiras bancárias (bancos comerciais, múltiplos ou de investimento).',
-      'Empresas públicas prestadoras de serviços de saneamento.',
-      'Fundos imobiliários com patrimônio de afetação.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'O CDB é emitido exclusivamente por bancos (comerciais, múltiplos, de desenvolvimento ou de investimento) para captação de recursos a prazo.'
-  },
-  {
-    id: 'rf-08',
-    examId: 'cpa',
-    subjectId: 'renda_fixa_var',
-    subjectName: 'Instrumentos de Renda Fixa e Variável',
-    topic: 'Derivativos Básicos e Hedge',
-    difficulty: 'Difícil',
-    stem: 'Um exportador brasileiro que receberá US$ 1.000.000 daqui a 6 meses deseja eliminar o risco de queda da cotação do dólar frente ao real. Qual operação com derivativos atende a esse objetivo de hedge?',
-    options: [
-      'Comprar contratos futuros de dólar na B3.',
-      'Vender contratos futuros de dólar na B3 ou comprar opção de venda (put) de dólar.',
-      'Comprar opção de compra (call) de dólar no mercado de balcão.',
-      'Aplicar seus recursos em títulos públicos pós-fixados LFT.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'Quem tem receita futura em moeda estrangeira teme a desvalorização do dólar. Para travar a taxa de câmbio, deve assumir posição vendida no mercado futuro ou comprar uma opção de venda (put).'
-  },
-
-  // --- SISTEMA FINANCEIRO NACIONAL E PARTICIPANTES (10 questões) ---
-  {
-    id: 'sfn-01',
-    examId: 'cpa',
-    subjectId: 'sfn_mercado',
-    subjectName: 'Sistema Financeiro Nacional e Participantes',
-    topic: 'Estrutura do CMN e BACEN',
-    difficulty: 'Fácil',
-    stem: 'No Sistema Financeiro Nacional, o Conselho Monetário Nacional (CMN) atua como órgão:',
-    options: [
-      'Fiscalizador e punitivo das sociedades corretoras de títulos.',
-      'Normativo máximo, responsável por formular as diretrizes gerais da política da moeda e do crédito.',
-      'Operador de custódia e liquidação de ativos privados.',
-      'Emissor de papel-moeda e gestor das reservas internacionais.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'O CMN é o órgão deliberativo máximo do SFN, fixando diretrizes da política monetária e de crédito, além da meta de inflação.'
-  },
-  {
-    id: 'sfn-02',
-    examId: 'cpa',
-    subjectId: 'sfn_mercado',
-    subjectName: 'Sistema Financeiro Nacional e Participantes',
-    topic: 'Atuação da CVM e ANBIMA',
-    difficulty: 'Fácil',
-    stem: 'Qual órgão tem como atribuição legal regular, fiscalizar e desenvolver o mercado de valores mobiliários no Brasil?',
-    options: [
-      'Banco Central do Brasil (BACEN).',
-      'Comissão de Valores Mobiliários (CVM).',
-      'Superintendência de Seguros Privados (SUSEP).',
-      'Tribunal de Contas da União (TCU).'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A CVM é a entidade autárquica vinculada ao Ministério da Fazenda responsável por normatizar, fiscalizar e desenvolver o mercado de capitais e valores mobiliários.'
-  },
-  {
-    id: 'sfn-03',
-    examId: 'cpa',
-    subjectId: 'sfn_mercado',
-    subjectName: 'Sistema Financeiro Nacional e Participantes',
-    topic: 'Bancos Múltiplos e Corretoras',
-    difficulty: 'Médio',
-    stem: 'Para ser configurado como Banco Múltiplo, uma instituição financeira deve possuir, no mínimo, duas carteiras de atuação, sendo obrigatoriamente uma delas:',
-    options: [
-      'De Crédito Imobiliário ou de Arrendamento Mercantil.',
-      'Comercial ou de Investimento.',
-      'De Câmbio ou de Distribuidora de Títulos.',
-      'De Desenvolvimento ou de Microfinanças.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'Um banco múltiplo precisa operar com ao menos duas carteiras, sendo uma delas obrigatoriamente comercial (para captar depósitos à vista) ou de investimento.'
-  },
-  {
-    id: 'sfn-04',
-    examId: 'cpa',
-    subjectId: 'sfn_mercado',
-    subjectName: 'Sistema Financeiro Nacional e Participantes',
-    topic: 'Atuação da CVM e ANBIMA',
-    difficulty: 'Fácil',
-    stem: 'A ANBIMA (Associação Brasileira das Entidades dos Mercados Financeiro e de Capitais) é uma instituição representativa privada que atua por meio de:',
-    options: [
-      'Poder de polícia estatal com competência para decretar liquidação extrajudicial de bancos.',
-      'Códigos voluntários de Autorregulação e certificação continuada de profissionais do mercado.',
-      'Fixação da taxa básica de juros Selic no Copom.',
-      'Julgamento definitivo de crimes contra o sistema financeiro nacional.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A ANBIMA é uma associação autorreguladora voluntária que estabelece regras de conduta, padrões de mercado e certifica profissionais financeiros.'
-  },
-  {
-    id: 'sfn-05',
-    examId: 'cpa',
-    subjectId: 'sfn_mercado',
-    subjectName: 'Sistema Financeiro Nacional e Participantes',
-    topic: 'Estrutura do CMN e BACEN',
-    difficulty: 'Médio',
-    stem: 'O Banco Central do Brasil (BACEN) é responsável por executar a política monetária. Entre seus instrumentos clássicos de controle da liquidez do sistema econômico NÃO se inclui:',
-    options: [
-      'Operações de mercado aberto (Open Market).',
-      'Depósito compulsório exigido sobre recursos captados pelos bancos.',
-      'Fixação unilateral de alíquotas do imposto sobre a renda das empresas.',
-      'Operações de redesconto bancário e empréstimos de liquidez.'
-    ],
-    correctOptionIndex: 2,
-    explanation: 'A fixação de alíquotas tributárias de impostos (como o Imposto de Renda) compete ao Poder Legislativo e à política fiscal do governo federal, e não ao BACEN.'
-  },
-
-  // --- PREVIDÊNCIA COMPLEMENTAR ABERTA (8 questões) ---
-  {
-    id: 'prev-01',
-    examId: 'cpa',
-    subjectId: 'previdencia',
-    subjectName: 'Previdência Complementar Aberta',
-    topic: 'Diferenças entre PGBL e VGBL',
-    difficulty: 'Fácil',
-    stem: 'O plano de previdência PGBL (Plano Gerador de Benefício Livre) é especialmente recomendado para clientes que:',
-    options: [
-      'Utilizam a declaração simplificada do Imposto de Renda e não contribuem para o INSS.',
-      'Fazem a declaração completa do Imposto de Renda e desejam deduzir aportes até o limite de 12% da sua renda bruta anual tributável.',
-      'Desejam que o Imposto de Renda incida apenas sobre os rendimentos auferidos no momento do resgate.',
-      'Buscam isenção total e permanente de Imposto de Renda no momento do resgate dos recursos.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'O PGBL permite abater os aportes realizados até o limite de 12% da renda bruta anual tributável para contribuintes do regime geral da previdência que entregam a declaração completa.'
-  },
-  {
-    id: 'prev-02',
-    examId: 'cpa',
-    subjectId: 'previdencia',
-    subjectName: 'Previdência Complementar Aberta',
-    topic: 'Diferenças entre PGBL e VGBL',
-    difficulty: 'Fácil',
-    stem: 'No momento do resgate em um plano de previdência complementar do tipo VGBL (Vida Gerador de Benefício Livre), a base de cálculo para a incidência do Imposto de Renda é:',
-    options: [
-      'O valor total acumulado resgatado (principal mais rendimentos).',
-      'Apenas o montante correspondente aos rendimentos auferidos.',
-      'O capital originalmente aportado, isentando os juros compostos.',
-      'O saldo total líquido após dedução da taxa de carregamento de saída.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'No VGBL, a tributação de IR recai unicamente sobre os rendimentos gerados pelo plano, pois os aportes foram feitos com recursos que já sofreram tributação prévia.'
-  },
-  {
-    id: 'prev-03',
-    examId: 'cpa',
-    subjectId: 'previdencia',
-    subjectName: 'Previdência Complementar Aberta',
-    topic: 'Regimes Tributários: Progressivo e Regressivo',
-    difficulty: 'Médio',
-    stem: 'Em relação à tabela regressiva definitiva de tributação da previdência complementar aberta, a menor alíquota de Imposto de Renda possível é:',
-    options: [
-      '5% após 8 anos de acumulação.',
-      '10% para recursos mantidos por prazo superior a 10 anos.',
-      '15% para recursos mantidos por mais de 5 anos.',
-      'Zero para planos com beneficiários em linha reta.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A tabela regressiva inicia com 35% (até 2 anos) e decresce 5 pontos percentuais a cada 2 anos adicionais, atingindo a alíquota mínima de 10% para recursos com mais de 10 anos.'
-  },
-  {
-    id: 'prev-04',
-    examId: 'cpa',
-    subjectId: 'previdencia',
-    subjectName: 'Previdência Complementar Aberta',
-    topic: 'Portabilidade e Resgates',
-    difficulty: 'Médio',
-    stem: 'Durante a fase de diferimento (acumulação) da previdência aberta, a transferência de recursos entre planos (portabilidade):',
-    options: [
-      'Obriga o recolhimento imediato de 15% de Imposto de Renda a título de antecipação.',
-      'Não acarreta incidência de Imposto de Renda nem cobrança de taxa de saída.',
-      'Permite a migração direta de saldo de um PGBL para um VGBL sem custos tributários.',
-      'Só pode ser realizada entre planos mantidos sob o mesmo CNPJ da seguradora de origem.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A portabilidade entre planos da mesma modalidade (PGBL para PGBL ou VGBL para VGBL) não gera incidência de Imposto de Renda nem cobrança de taxas de transferência.'
-  },
-
-  // --- GESTÃO DE RISCO, COMPLIANCE E PLD-FT (8 questões) ---
-  {
-    id: 'risco-01',
-    examId: 'cpa',
-    subjectId: 'risco_compliance',
-    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
-    topic: 'Prevenção à Lavagem de Dinheiro (Lei 9.613)',
-    difficulty: 'Fácil',
-    stem: 'O processo de Lavagem de Dinheiro é tradicionalmente estruturado em três fases sucessivas:',
-    options: [
-      'Investigação, Julgamento e Condenação.',
-      'Colocação (Placement), Ocultação (Layering) e Integração (Integration).',
-      'Arrecadação, Custódia e Liquidação.',
-      'Compliance, Due Diligence e Auditoria externa.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'As 3 etapas clássicas são: Colocação (introdução do dinheiro ilícito no sistema), Ocultação (camuflagem da origem com múltiplas transações) e Integração (retorno como recursos formalmente lícitos).'
-  },
-  {
-    id: 'risco-02',
-    examId: 'cpa',
-    subjectId: 'risco_compliance',
-    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
-    topic: 'Risco de Mercado, Crédito e Liquidez',
-    difficulty: 'Fácil',
-    stem: 'O risco de um emissor de um título de renda fixa privado não honrar o pagamento dos juros ou do principal no prazo acordado é denominado:',
-    options: [
-      'Risco de Mercado.',
-      'Risco de Crédito.',
-      'Risco de Liquidez.',
-      'Risco Operacional.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'Risco de crédito é a probabilidade de inadimplência (default) ou rebaixamento da classificação de risco (rating) da contraparte emissora.'
-  },
-  {
-    id: 'risco-03',
-    examId: 'cpa',
-    subjectId: 'risco_compliance',
-    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
-    topic: 'Chinese Wall e Conflito de Interesses',
-    difficulty: 'Médio',
-    stem: 'O conceito de "Chinese Wall" (Muralha da China) nas instituições financeiras consiste em:',
-    options: [
-      'Um sistema de criptografia para transações internacionais em moedas asiáticas.',
-      'A segregação física e administrativa entre áreas que possam apresentar conflito de interesses, como gestão de recursos próprios e gestão de recursos de terceiros.',
-      'A proibição de transferências patrimoniais para pessoas politicamente expostas.',
-      'A barreira alfandegária que limita aportes de investidores não residentes.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A política de segregação de atividades (Chinese Wall) visa impedir o fluxo indevido de informações privilegiadas e dirimir conflitos de interesse entre diferentes departamentos da mesma instituição.'
-  },
-  {
-    id: 'risco-04',
-    examId: 'cpa',
-    subjectId: 'risco_compliance',
-    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
-    topic: 'Princípio Conheça seu Cliente (KYC)',
-    difficulty: 'Fácil',
-    stem: 'O princípio Conheça Seu Cliente (Know Your Customer - KYC) tem por objetivo primordial:',
-    options: [
-      'Garantir a venda casada de produtos de maior margem para clientes de alta renda.',
-      'Identificar o perfil de risco, a capacidade financeira e a veracidade da origem dos recursos patrimoniais do investidor.',
-      'Assegurar isenção de impostos federais em operações no mercado à vista.',
-      'Substituir a necessidade de assinatura de termos de adesão a fundos de investimento.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'KYC permite verificar a identidade do cliente, sua atividade econômica, sua compatibilidade financeira e prevenir fraudes e lavagem de capitais.'
-  },
-
-  // --- CONCEITOS BÁSICOS DE ECONOMIA E FINANÇAS (8 questões) ---
-  {
-    id: 'eco-01',
-    examId: 'cpa',
-    subjectId: 'economia_fin',
-    subjectName: 'Conceitos de Economia e Finanças',
-    topic: 'Copom e Metas para Inflação',
-    difficulty: 'Fácil',
-    stem: 'No Brasil, a taxa de juros básica da economia (Meta da Taxa Selic) é definida e divulgada periodicamente por qual órgão?',
-    options: [
-      'Conselho Monetário Nacional (CMN).',
-      'Comitê de Política Monetária (Copom) do Banco Central.',
-      'Comissão de Valores Mobiliários (CVM).',
-      'Comitê Gestor da B3.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'O Copom (Comitê de Política Monetária do BACEN) reúne-se a cada 45 dias para deliberar e definir a Meta da Taxa Selic.'
-  },
-  {
-    id: 'eco-02',
-    examId: 'cpa',
-    subjectId: 'economia_fin',
-    subjectName: 'Conceitos de Economia e Finanças',
-    topic: 'Indicadores Econômicos: IPCA, IGP-M e PIB',
-    difficulty: 'Fácil',
-    stem: 'O índice oficial utilizado pelo governo brasileiro no regime de metas para a inflação é o:',
-    options: [
-      'IGP-M, calculado pelo Ibre/FGV.',
-      'IPCA, calculado pelo IBGE.',
-      'INPC, calculado pela Fipe.',
-      'IPA-DI, apurado pelo Banco Central.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'O IPCA (Índice Nacional de Preços ao Consumidor Amplo), medido pelo IBGE, é o balizador oficial do sistema de metas para a inflação no Brasil.'
-  },
-  {
-    id: 'eco-03',
-    examId: 'cpa',
-    subjectId: 'economia_fin',
-    subjectName: 'Conceitos de Economia e Finanças',
-    topic: 'Taxa Selic, CDI e Política Monetária',
-    difficulty: 'Médio',
-    stem: 'Quando o Banco Central decide elevar a taxa básica Selic para conter pressões inflacionárias, o efeito esperado na economia real no curto a médio prazo é:',
-    options: [
-      'Aumento imediato do consumo das famílias e forte expansão da concessão de crédito.',
-      'Encarecimento do crédito, desestímulo ao consumo e arrefecimento da demanda agregada.',
-      'Desvalorização imediata do Real frente a moedas fortes.',
-      'Redução da remuneração de títulos públicos federais pós-fixados.'
-    ],
-    correctOptionIndex: 1,
-    explanation: 'A alta de juros encarece o custo do dinheiro, desestimulando empréstimos, investimentos produtivos e consumo, o que desacelera a pressão sobre os preços.'
-  },
-  {
-    id: 'eco-04',
-    examId: 'cpa',
-    subjectId: 'economia_fin',
-    subjectName: 'Conceitos de Economia e Finanças',
-    topic: 'Indicadores Econômicos: IPCA, IGP-M e PIB',
-    difficulty: 'Médio',
-    stem: 'O Produto Interno Bruto (PIB) calculado pela ótica da despesa agrega:',
-    options: [
-      'Consumo das famílias + Investimentos (FBKF) + Gastos do governo + Exportações líquidas (Exportações - Importações).',
-      'Salários pagos + Lucros retidos + Impostos arrecadados sobre produtos exportados.',
-      'Receita cambial bruta somada à arrecadação do FGTS.',
-      'Total de depósitos à vista e a prazo do sistema bancário comercial.'
-    ],
-    correctOptionIndex: 0,
-    explanation: 'Pela ótica da demanda (despesa), PIB = C + I + G + (X - M).'
-  },
-
-  // --- QUESTÕES COMPLEMENTARES DE REFORÇO (10 questões adicionais para totalizar 66+) ---
   {
     id: 'mf-13',
     examId: 'cpa',
@@ -881,6 +334,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Juros Simples e Compostos',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Um empréstimo de R$ 20.000,00 foi contratado para pagamento após 3 meses à taxa de juros simples de 3% ao mês. Qual o valor total dos juros pagos?',
     options: [
       'R$ 600,00',
@@ -898,6 +356,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Matemática Financeira',
     topic: 'Desconto Racional e Comercial',
     difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Um título de R$ 10.000,00 com vencimento em 60 dias é descontado à taxa de 5% ao mês. Se for utilizado o desconto bancário (comercial simples), qual será o valor do desconto obtido pela instituição?',
     options: [
       'R$ 909,09',
@@ -908,6 +371,847 @@ export const INITIAL_QUESTIONS: Question[] = [
     correctOptionIndex: 1,
     explanation: 'No desconto comercial (por fora): D = N × d × t = 10.000 × 0,05 × 2 meses = R$ 1.000,00.'
   },
+  // --- NOVAS QUESTÕES DEMONSTRATIVAS DE MATEMÁTICA FINANCEIRA (mf-15 a mf-42) ---
+  {
+    id: 'mf-15',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Equivalência de Taxas e Inflação',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um investimento auferiu rentabilidade nominal de 15% em determinado ano. Sabendo que a inflação (IPCA) do mesmo período foi de 5%, a taxa de juro real obtida pelo investidor, segundo a Equação de Fisher, foi de aproximadamente:',
+    options: [
+      '10,00%',
+      '9,52%',
+      '10,50%',
+      '8,75%'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Pela Equação de Fisher: (1 + i) = (1 + r) × (1 + ipca). Assim, (1 + r) = 1,15 / 1,05 = 1,095238, o que equivale a aproximadamente 9,52% de rentabilidade real.'
+  },
+  {
+    id: 'mf-16',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Juros Simples e Compostos',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Para duplicar um capital inicial de R$ 10.000,00 aplicado a juros simples à taxa de 2,5% ao mês, serão necessários quantos meses?',
+    options: [
+      '24 meses',
+      '36 meses',
+      '40 meses',
+      '48 meses'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'Para duplicar o capital em juros simples, o valor dos juros deve igualar o capital (J = C). Logo, J = C × i × t => C = C × 0,025 × t => t = 1 / 0,025 = 40 meses.'
+  },
+  {
+    id: 'mf-17',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Taxa Nominal e Taxa Efetiva',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Uma taxa nominal de 24% ao ano com capitalização trimestral corresponde a uma taxa efetiva por trimestre de:',
+    options: [
+      '2,00%',
+      '4,00%',
+      '6,00%',
+      '8,00%'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'Um ano contém 4 trimestres. A taxa trimestral proporcional da taxa nominal anual de 24% é 24% / 4 = 6% ao trimestre.'
+  },
+  {
+    id: 'mf-18',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Desconto Racional e Comercial',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um título com valor nominal de R$ 12.000,00 foi resgatado 4 meses antes do vencimento sob a modalidade de Desconto Racional Simples à taxa de 5% ao mês. Qual foi o valor atual (líquido) recebido?',
+    options: [
+      'R$ 9.600,00',
+      'R$ 10.000,00',
+      'R$ 10.200,00',
+      'R$ 9.800,00'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'No Desconto Racional Simples (por dentro), N = A × (1 + i × t). Assim: 12.000 = A × (1 + 0,05 × 4) = A × 1,20 => A = 12.000 / 1,20 = R$ 10.000,00.'
+  },
+  {
+    id: 'mf-19',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Valor Presente Líquido (VPL) e TIR',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um ativo promete pagar um fluxo único de R$ 13.310,00 ao final de 3 anos. Se a taxa de desconto apropriada ao risco for de 10% ao ano no regime de juros compostos, qual o seu Valor Presente (VP)?',
+    options: [
+      'R$ 10.000,00',
+      'R$ 10.500,00',
+      'R$ 9.500,00',
+      'R$ 11.000,00'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'VP = VF / (1 + i)^n = 13.310 / (1 + 0,10)^3 = 13.310 / 1,331 = R$ 10.000,00.'
+  },
+  {
+    id: 'mf-20',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Duration e Convexidade',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A Duration Modificada de um título de renda fixa prefixado é de 4 anos. Se a taxa de juros exigida pelo mercado sofrer uma elevação imediata de 0,50% (50 pontos-base), a variação esperada no preço unitário (PU) do título será de aproximadamente:',
+    options: [
+      'Aumento de 2,00%',
+      'Queda de 2,00%',
+      'Queda de 0,50%',
+      'Aumento de 4,00%'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A relação aproximada é ΔP/P ≈ - (Duration Modificada) × Δy. Logo: ΔP/P ≈ - 4 × (+0,50%) = -2,00% (queda de 2%).'
+  },
+  {
+    id: 'mf-21',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Equivalência de Taxas e Inflação',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'No mercado financeiro brasileiro de renda fixa, a convenção padrão para a contagem de dias utilizada no cálculo de taxas compostas anualizadas para títulos públicos é:',
+    options: [
+      'Dias corridos base 360 (ano comercial)',
+      'Dias úteis base 252',
+      'Dias corridos base 365',
+      'Dias de calendário base 366'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Para a grande maioria das operações de renda fixa no Brasil (Selic, DI, títulos prefixados e indexados à inflação), adota-se a convenção de dias úteis com base de 252 dias no ano.'
+  },
+  {
+    id: 'mf-22',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Juros Simples e Compostos',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Se um investidor aplicar R$ 50.000,00 por um período de 6 meses a uma taxa de juros compostos de 2% ao mês, qual expressão representa o montante final?',
+    options: [
+      '50.000 × (1 + 0,02 × 6)',
+      '50.000 × (1,02)^6',
+      '50.000 × (1,12)',
+      '50.000 × (1 + 6)^0,02'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Pela regra fundamental da capitalização composta: M = C × (1 + i)^n = 50.000 × (1 + 0,02)^6 = 50.000 × (1,02)^6.'
+  },
+  {
+    id: 'mf-23',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Desconto Racional e Comercial',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Em uma operação de desconto comercial simples (por fora) de uma duplicata de R$ 8.000,00 com vencimento em 90 dias (3 meses), a uma taxa de desconto de 4% ao mês, o valor líquido creditado ao cliente será:',
+    options: [
+      'R$ 7.040,00',
+      'R$ 7.142,86',
+      'R$ 7.200,00',
+      'R$ 6.960,00'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Desconto D = N × d × t = 8.000 × 0,04 × 3 = R$ 960,00. Valor Líquido = N - D = 8.000 - 960 = R$ 7.040,00.'
+  },
+  {
+    id: 'mf-24',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Valor Presente Líquido (VPL) e TIR',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um projeto exige investimento inicial de R$ 100.000,00 e gerará fluxo de caixa único de R$ 121.000,00 após 2 anos. A Taxa Interna de Retorno (TIR) anual desse projeto é de:',
+    options: [
+      '10,00% ao ano',
+      '10,50% ao ano',
+      '21,00% ao ano',
+      '12,00% ao ano'
+    ],
+    correctOptionIndex: 0,
+    explanation: '100.000 = 121.000 / (1 + TIR)^2 => (1 + TIR)^2 = 1,21 => 1 + TIR = √1,21 = 1,10 => TIR = 10% ao ano.'
+  },
+  {
+    id: 'mf-25',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Taxa Nominal e Taxa Efetiva',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Qual a taxa semestral equivalente à taxa de 21% ao ano no regime de juros compostos?',
+    options: [
+      '10,50%',
+      '10,00%',
+      '9,80%',
+      '11,00%'
+    ],
+    correctOptionIndex: 1,
+    explanation: '(1 + i_semestre)^2 = 1 + i_ano = 1,21 => 1 + i_semestre = √1,21 = 1,10 => i_semestre = 10% ao semestre.'
+  },
+  {
+    id: 'mf-26',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Duration e Convexidade',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Entre dois títulos de mesma duration, o título que possui maior convexidade é preferido pelos investidores porque:',
+    options: [
+      'Apresenta maior desvalorização quando as taxas de juros sobem.',
+      'Sobe mais de preço quando as taxas caem e cai menos de preço quando as taxas sobem.',
+      'Está isento de risco de crédito e risco de reinvestimento.',
+      'Paga cupons semestrais mais baixos e previsíveis.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A convexidade mede a curvatura da relação entre preço e taxa de juros. Maior convexidade é benéfica: amplifica os ganhos em cenários de queda de juros e atenua as perdas em cenários de alta de juros.'
+  },
+  {
+    id: 'mf-27',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Juros Simples e Compostos',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um capital de R$ 1.000,00 rende juros compostos de 20% ao ano. Ao fim de 3 anos, o montante final será de:',
+    options: [
+      'R$ 1.600,00',
+      'R$ 1.728,00',
+      'R$ 1.680,00',
+      'R$ 1.750,00'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'M = 1.000 × (1,20)^3 = 1.000 × 1,728 = R$ 1.728,00.'
+  },
+  {
+    id: 'mf-28',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Equivalência de Taxas e Inflação',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Se a taxa de juros nominal e a taxa de inflação de um período forem exatamente iguais, a taxa de juro real do período será:',
+    options: [
+      'Estritamente positiva',
+      'Igual a zero',
+      'Negativa',
+      'Indeterminada'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Pela Equação de Fisher: (1 + r) = (1 + i) / (1 + ipca). Se i = ipca, então (1 + r) = 1 => r = 0%.'
+  },
+  {
+    id: 'mf-29',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Valor Presente Líquido (VPL) e TIR',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um investimento deve ser considerado aceito pelo critério do VPL se:',
+    options: [
+      'O VPL for igual a 1',
+      'O VPL for maior que zero',
+      'A TIR for menor que a TMA',
+      'O payback for superior a 10 anos'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O critério de aceitação de projetos de investimento determina que projetos com VPL > 0 agregam valor econômico ao patrimônio do investidor e devem ser aceitos.'
+  },
+  {
+    id: 'mf-30',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Desconto Racional e Comercial',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Para um mesmo prazo e mesma taxa de desconto simples, por que o Desconto Comercial (por fora) resulta em um valor de desconto maior que o Desconto Racional (por dentro)?',
+    options: [
+      'Porque a alíquota de IOF incide apenas no desconto comercial.',
+      'Porque a base de cálculo do desconto comercial é o valor nominal futuro, que é maior que o valor atual.',
+      'Porque o desconto comercial utiliza capitalização composta disfarçada.',
+      'Porque o desconto racional desconsidera a taxa básica Selic.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O Desconto Comercial incide sobre o valor nominal (N), enquanto o Desconto Racional incide sobre o valor presente líquido (A). Como N > A, o desconto calculado sobre N é estritamente maior.'
+  },
+  {
+    id: 'mf-31',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Taxa Nominal e Taxa Efetiva',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Se a taxa efetiva bimestral de uma aplicação é 4% ao bimestre, a taxa quadrimestral equivalente no regime de juros compostos é:',
+    options: [
+      '8,00%',
+      '8,16%',
+      '8,32%',
+      '7,84%'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Um quadrimestre equivale a 2 bimestres. Portanto: (1 + i_quad) = (1 + 0,04)^2 = 1,0816, o que corresponde a 8,16% ao quadrimestre.'
+  },
+  {
+    id: 'mf-32',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Juros Simples e Compostos',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um investidor aplicou R$ 15.000,00 pelo prazo de 8 meses à taxa de juros simples de 1,5% ao mês. Qual é o valor do juro apurado?',
+    options: [
+      'R$ 1.800,00',
+      'R$ 1.897,42',
+      'R$ 1.500,00',
+      'R$ 2.100,00'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'J = C × i × t = 15.000 × 0,015 × 8 = R$ 1.800,00.'
+  },
+  {
+    id: 'mf-33',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Duration e Convexidade',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Mantendo-se constante o prazo de vencimento de 10 anos e o nível de taxas de juros, o título que apresentará a MAIOR duration é:',
+    options: [
+      'Título que paga cupom anual de 10%',
+      'Título que paga cupom semestral de 8%',
+      'Título sem pagamento de cupons periódicos (zero-cupom)',
+      'Título com amortização mensal constante de principal'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'Em um título zero-cupom, 100% dos fluxos de caixa ocorrem na data de vencimento final. Portanto, sua duration é máxima e exatamente igual ao prazo total de vencimento (10 anos).'
+  },
+  {
+    id: 'mf-34',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Valor Presente Líquido (VPL) e TIR',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'O método do Payback Simples tem como limitação primordial:',
+    options: [
+      'Exigir o cálculo obrigatório da TIR incremental do projeto.',
+      'Desconsiderar o valor do dinheiro no tempo e ignorar os fluxos de caixa recebidos após o período de recuperação.',
+      'Superestimar os fluxos de caixa descontados em projetos de longa duração.',
+      'Aplicar-se exclusivamente a títulos públicos federais.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O payback simples não desconta os fluxos de caixa pelo custo de oportunidade (desconsidera o valor do dinheiro no tempo) e ignora qualquer receita gerada após o momento da recuperação do capital.'
+  },
+  {
+    id: 'mf-35',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Equivalência de Taxas e Inflação',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Se a inflação acumulada de um ano foi de 4% e o rendimento nominal de um CDB foi de 4%, pode-se afirmar que o poder de compra do capital investido:',
+    options: [
+      'Cresceu 4%',
+      'Permaneceu inalterado (ganho real nulo)',
+      'Sofreu desvalorização de 4%',
+      'Cresceu 1,04%'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Quando a remuneração nominal coincide rigorosamente com o índice de preços (inflação), a taxa real é zero e o poder aquisitivo do montante inicial é exatamente preservado.'
+  },
+  {
+    id: 'mf-36',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Taxa Nominal e Taxa Efetiva',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um banco cobra Custo Efetivo Total (CET) de 1,5% ao mês. A taxa nominal anual divulgada na proposta com capitalização mensal é:',
+    options: [
+      '18,00% ao ano',
+      '19,56% ao ano',
+      '15,00% ao ano',
+      '12,00% ao ano'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'A taxa nominal anual é obtida pela multiplicação linear da taxa periódica pelo número de períodos: 1,5% × 12 meses = 18,00% ao ano.'
+  },
+  {
+    id: 'mf-37',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Juros Simples e Compostos',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Em uma comparação entre os regimes de juros simples e compostos para uma mesma taxa periódica positiva: no primeiro período (t = 1) e em períodos posteriores (t > 1), os montantes acumulados comportam-se da seguinte forma:',
+    options: [
+      'Para t = 1 os montantes são iguais; para t > 1 o montante composto supera o simples.',
+      'O montante simples é sempre superior em qualquer intervalo de tempo.',
+      'Para t = 1 o montante composto já é estritamente maior devido à capitalização contínua.',
+      'Ambos são idênticos em todos os períodos inteiros.'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Para t = 1, (1 + i × 1) = (1 + i)^1, logo os montantes são idênticos. Para t > 1, devido ao efeito exponencial de juros sobre juros, o regime composto produz montantes progressivamente maiores.'
+  },
+  {
+    id: 'mf-38',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Desconto Racional e Comercial',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um título de valor de face R$ 50.000,00 foi descontado 30 dias antes do vencimento com taxa de desconto comercial de 3% ao mês. Qual foi o valor do desconto retido?',
+    options: [
+      'R$ 1.500,00',
+      'R$ 1.456,31',
+      'R$ 1.200,00',
+      'R$ 1.600,00'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'D = N × d × t = 50.000 × 0,03 × 1 mês = R$ 1.500,00.'
+  },
+  {
+    id: 'mf-39',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Valor Presente Líquido (VPL) e TIR',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Se a taxa de desconto (custo de capital) utilizada para descontar os fluxos de um projeto de investimento for aumentada, o que acontece com o VPL desse projeto?',
+    options: [
+      'O VPL aumenta de valor.',
+      'O VPL diminui de valor.',
+      'O VPL permanece inalterado, pois os fluxos nominais são fixos.',
+      'A TIR do projeto diminui automaticamente.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Existe uma relação inversa entre a taxa de desconto aplicada e o VPL. Quanto maior o custo de oportunidade (taxa de desconto), menor é o valor presente dos fluxos futuros, reduzindo o VPL.'
+  },
+  {
+    id: 'mf-40',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Duration e Convexidade',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um investidor conservador deseja minimizar o risco de oscilação de preço (volatilidade decorrente da marcação a mercado) em sua carteira de títulos públicos prefixados. Ele deve selecionar papéis com:',
+    options: [
+      'Duration o mais curta possível',
+      'Duration superior a 10 anos',
+      'Cupons semestrais crescentes',
+      'Vencimento mais distante no tempo'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'A duration mede a sensibilidade do preço de um título a variações nas taxas de juros de mercado. Quanto menor a duration, menor a volatilidade e o risco de oscilação do preço.'
+  },
+  {
+    id: 'mf-41',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Juros Simples e Compostos',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Se um cliente toma emprestado R$ 1.000,00 e após 1 mês devolve R$ 1.050,00, a taxa de juros praticada no período foi de:',
+    options: [
+      '0,50%',
+      '5,00%',
+      '5,25%',
+      '50,00%'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Juros = 1.050 - 1.000 = R$ 50. Taxa i = J / C = 50 / 1.000 = 0,05 = 5% ao mês.'
+  },
+  {
+    id: 'mf-42',
+    examId: 'cpa',
+    subjectId: 'mat_fin',
+    subjectName: 'Matemática Financeira',
+    topic: 'Equivalência de Taxas e Inflação',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Um título de renda fixa paga uma remuneração composta por IPCA + 6,00% ao ano. Se o IPCA do ano atingir 4,00%, o rendimento nominal anual total recebido pelo investidor será:',
+    options: [
+      '10,00%',
+      '10,24%',
+      '9,80%',
+      '10,50%'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A composição de taxa real com inflação é multiplicativa: (1 + i) = (1 + 0,06) × (1 + 0,04) = 1,06 × 1,04 = 1,1024, o que corresponde a 10,24% ao ano.'
+  },
+
+  // =========================================================================
+  // FUNDOS DE INVESTIMENTO (Total: 12 questões aprovadas demonstrativas)
+  // =========================================================================
+  {
+    id: 'fi-01',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Come-cotas e Tributação',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O mecanismo de antecipação semestral de recolhimento de Imposto de Renda em fundos de investimento, conhecido como "come-cotas", incide nos últimos dias úteis dos meses de:',
+    options: [
+      'Janeiro e Julho.',
+      'Maio e Novembro.',
+      'Março e Setembro.',
+      'Abril e Outubro.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O come-cotas ocorre semestralmente no último dia útil dos meses de maio e novembro, aplicando a alíquota mínima do tipo de fundo (15% para longo prazo e 20% para curto prazo).'
+  },
+  {
+    id: 'fi-02',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Classificação CVM',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'De acordo com as regras da CVM, um fundo classificado como "Fundo de Renda Fixa Simples" deve manter, no mínimo, que percentual de seu patrimônio líquido alocado em títulos públicos federais ou ativos com risco de crédito equivalente?',
+    options: [
+      '67%',
+      '80%',
+      '95%',
+      '100%'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'Os Fundos de Renda Fixa Simples devem manter no mínimo 95% do patrimônio investido em títulos da dívida pública federal ou títulos de emissão privada de baixo risco de crédito semelhante.'
+  },
+  {
+    id: 'fi-03',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Marcação a Mercado (MaM)',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'A Marcação a Mercado (MaM) nos fundos de investimento tem como principal objetivo:',
+    options: [
+      'Garantir rentabilidade positiva e constante para todos os cotistas.',
+      'Evitar a transferência de riqueza entre cotistas que entram, permanecem ou saem do fundo.',
+      'Isentar os cotistas do pagamento de taxa de administração e custódia.',
+      'Eliminar completamente o risco de crédito dos emissores privados.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A Marcação a Mercado registra os ativos pelo preço que seriam liquidados no mercado no dia, impedindo que cotistas que resgatam suas cotas transfiram lucros ou prejuízos não realizados para os que permanecem no fundo.'
+  },
+  {
+    id: 'fi-04',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Políticas de Resgate e Cotização',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Em um fundo aberto com prazo de cotização de resgate D+1 e prazo de liquidação financeira de D+2 úteis após a cotização, o cotista que solicitar resgate em uma segunda-feira receberá os recursos em sua conta corrente:',
+    options: [
+      'Na terça-feira da mesma semana.',
+      'Na quarta-feira da mesma semana.',
+      'Na quinta-feira da mesma semana.',
+      'Na sexta-feira da mesma semana.'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'Segunda (D+0, pedido) -> Terça (D+1, cotização do valor da cota) -> Quinta (+2 dias úteis após cotização: quarta D+1, quinta D+2) para o crédito financeiro na conta.'
+  },
+  {
+    id: 'fi-05',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Taxas de Administração e Performance',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'A cobrança da taxa de administração em um fundo de investimento impacta a cota do fundo da seguinte forma:',
+    options: [
+      'É debitada diretamente da conta corrente do cotista no final de cada mês.',
+      'É apropriada e deduzida diariamente no cálculo do valor da cota, divulgando-se rentabilidade líquida dessa taxa.',
+      'Incide apenas quando o fundo supera o seu benchmark de referência.',
+      'É retida na fonte no momento em que o cotista faz o resgate do principal.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A taxa de administração é calculada e provisionada diariamente sobre o patrimônio líquido do fundo, de modo que o valor divulgado da cota já é líquido de taxa de administração.'
+  },
+  {
+    id: 'fi-06',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Classificação CVM',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Para ser classificado como Fundo de Ações de acordo com a regulamentação, o fundo deve manter, no mínimo, que percentual de sua carteira aplicado em ações, bônus de subscrição ou recibos de subscrição?',
+    options: [
+      '50%',
+      '67%',
+      '80%',
+      '95%'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Os Fundos de Ações exigem que no mínimo 67% (dois terços) de seu patrimônio líquido esteja alocado em ações admitidas à negociação em mercado organizado ou certificados representativos.'
+  },
+  {
+    id: 'fi-07',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Come-cotas e Tributação',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Qual dos seguintes tipos de fundos NÃO sofre a incidência semestral do come-cotas?',
+    options: [
+      'Fundo de Renda Fixa Curto Prazo.',
+      'Fundo Multimercado Longo Prazo.',
+      'Fundo de Ações.',
+      'Fundo de Renda Fixa Referenciado DI.'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'Os Fundos de Ações não estão sujeitos ao come-cotas. A tributação de IR (alíquota única de 15%) ocorre exclusivamente no momento do resgate das cotas.'
+  },
+  {
+    id: 'fi-08',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Taxas de Administração e Performance',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'A Linha d’Água (high water mark) em fundos de investimento é uma regra que determina que a taxa de performance:',
+    options: [
+      'Só poderá ser cobrada se o valor da cota superar o seu maior valor histórico anterior no momento da apuração.',
+      'Pode ser cobrada a qualquer momento, independente de o fundo estar abaixo do seu topo histórico.',
+      'Deve ser repassada integralmente aos cotistas em forma de amortização.',
+      'Limita o percentual de performance em até 5% da taxa Selic.'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'O princípio da linha d’água estabelece que a taxa de performance só pode ser cobrada se a cota do fundo estiver acima do valor mais alto registrado na última cobrança de performance realizada.'
+  },
+  {
+    id: 'fi-09',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Políticas de Resgate e Cotização',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Em um fundo de condomínio fechado, o cotista que desejar desinvestir antes do encerramento do prazo do fundo deve:',
+    options: [
+      'Exigir o resgate imediato junto ao administrador do fundo.',
+      'Negociar suas cotas no mercado secundário (caso admitido em bolsa ou balcão).',
+      'Acionar o Fundo Garantidor de Créditos (FGC).',
+      'Aguardar o próximo come-cotas semestral para solicitar a amortização.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Nos fundos fechados não é permitido o resgate de cotas a qualquer tempo. O cotista pode sair alienando suas cotas a terceiros no mercado secundário ou aguardando amortização/liquidação do fundo.'
+  },
+  {
+    id: 'fi-10',
+    examId: 'cpa',
+    subjectId: 'fundos_inv',
+    subjectName: 'Fundos de Investimento',
+    topic: 'Classificação CVM',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Qual dos seguintes participantes é o responsável legal perante os cotistas e os órgãos reguladores pela constituição, fiscalização dos prestadores de serviço e funcionamento de um fundo?',
+    options: [
+      'O Administrador fiduciário.',
+      'O Agente Autônomo de Investimentos.',
+      'O Custodiante independente.',
+      'O Auditor contábil terceirizado.'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'O Administrador fiduciário é a instituição autorizada responsável legal pela estrutura e conformidade do fundo de investimento perante os cotistas e os órgãos fiscalizadores.'
+  },
   {
     id: 'fi-11',
     examId: 'cpa',
@@ -915,6 +1219,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Fundos de Investimento',
     topic: 'Classificação CVM',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Os Fundos de Renda Fixa de Curto Prazo, para fins tributários de Imposto de Renda, são aqueles cuja carteira de títulos mantém prazo médio ponderado de vencimento de:',
     options: [
       'Até 60 dias.',
@@ -932,6 +1241,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Fundos de Investimento',
     topic: 'Come-cotas e Tributação',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Um investidor aplicou em um Fundo de Renda Fixa Longo Prazo e resgatou a totalidade dos seus recursos após 740 dias de aplicação. Qual alíquota de Imposto de Renda incidirá sobre o ganho de capital obtido no resgate?',
     options: [
       '22,5%',
@@ -942,6 +1256,186 @@ export const INITIAL_QUESTIONS: Question[] = [
     correctOptionIndex: 3,
     explanation: 'Tabela regressiva de longo prazo: até 180 dias = 22,5%; 181 a 360 dias = 20%; 361 a 720 dias = 17,5%; acima de 720 dias = 15%.'
   },
+
+  // =========================================================================
+  // INSTRUMENTOS DE RENDA FIXA E VARIÁVEL (Total: 12 questões aprovadas demonstrativas)
+  // =========================================================================
+  {
+    id: 'rf-01',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'Tesouro Direto e Títulos Públicos',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O Tesouro Selic (LFT) é um título público federal caracterizado por ser:',
+    options: [
+      'Prefixado com pagamentos semestrais de juros.',
+      'Pós-fixado indexado à variação diária da taxa Selic Over.',
+      'Indexado à inflação medida pelo IPCA com cupom real.',
+      'Prefixado sem pagamento de juros periódicos.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A LFT (Tesouro Selic) é um título público pós-fixado cujo rendimento acompanha a variação acumulada da taxa Selic Over diária.'
+  },
+  {
+    id: 'rf-02',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'CDB, LCI, LCA e Debêntures',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Para pessoas físicas residentes no Brasil, os rendimentos auferidos na aplicação em Letras de Crédito Imobiliário (LCI) e Letras de Crédito do Agronegócio (LCA) são:',
+    options: [
+      'Tributados pela tabela regressiva de 22,5% a 15% de IR.',
+      'Isentos de Imposto de Renda e contam com garantia do FGC até os limites regulamentares.',
+      'Tributados na fonte à alíquota exclusiva de 15%, sem garantia de crédito.',
+      'Isentos de IR, porém sujeitos a IOF após 30 dias de aplicação.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'LCI e LCA emitidas por instituições financeiras contam com isenção de IR para pessoas físicas e possuem a garantia ordinária do Fundo Garantidor de Créditos (FGC).'
+  },
+  {
+    id: 'rf-03',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'Ações, Dividendos e JCP',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'No mercado acionário brasileiro, qual a principal diferença tributária para o acionista entre proventos recebidos na forma de Dividendos e Juros sobre Capital Próprio (JCP)?',
+    options: [
+      'Dividendos sofrem retenção de 15% de IR na fonte; JCP é totalmente isento para pessoa física.',
+      'Dividendos são isentos de IR para a pessoa física receptora; JCP sofre retenção de 15% de IR na fonte.',
+      'Ambos são tributados à alíquota regressiva de renda fixa.',
+      'Dividendos reduzem a base do lucro real da empresa emissora; JCP não é dedutível.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Para a pessoa física, os dividendos são isentos de IR (já tributados na pessoa jurídica), enquanto o JCP é tributado na fonte à alíquota de 15% no momento do crédito ao acionista.'
+  },
+  {
+    id: 'rf-04',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'CDB, LCI, LCA e Debêntures',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'As debêntures incentivadas (instituídas pela Lei 12.431) destinam-se ao financiamento de projetos prioritários de infraestrutura e concedem aos investidores pessoas físicas:',
+    options: [
+      'Isenção de Imposto de Renda sobre os rendimentos auferidos.',
+      'Cobertura e garantia integral do FGC sem limite de valor.',
+      'Garantia do Tesouro Nacional contra qualquer tipo de inadimplência.',
+      'Prioridade absoluta no recebimento em relação a salários e tributos.'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Debêntures incentivadas de infraestrutura possuem isenção de IR sobre rendimentos para pessoas físicas, mas não contam com garantia do FGC nem do Tesouro.'
+  },
+  {
+    id: 'rf-05',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'Tesouro Direto e Títulos Públicos',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O Tesouro IPCA+ com juros semestrais (NTN-B) é indicado para investidores que desejam:',
+    options: [
+      'Apenas valorização nominal pura, sem fluxo intermediário de renda.',
+      'Proteção contra a inflação combinada com recebimento periódico semestral de cupons de renda real.',
+      'Investimento de altíssima liquidez com volatilidade nula no mercado secundário.',
+      'Garantia cambial atrelada à cotação do dólar norte-americano.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A NTN-B paga cupom de juros semestral baseado em uma taxa real prefixada mais a correção do valor nominal pelo IPCA, provendo fluxo de caixa periódico.'
+  },
+  {
+    id: 'rf-06',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'Ações, Dividendos e JCP',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'A data a partir da qual as ações são negociadas sem o direito de receber os proventos (dividendos ou juros sobre capital próprio) recém-anunciados é denominada:',
+    options: [
+      'Data COM.',
+      'Data EX.',
+      'Data de Liquidação Financeira.',
+      'Data de Custódia.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A data EX é o primeiro dia de negociação em que o adquirente da ação não terá direito ao provento anunciado pela companhia.'
+  },
+  {
+    id: 'rf-07',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'CDB, LCI, LCA e Debêntures',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O Certificado de Depósito Bancário (CDB) é um título representativo de captação emitido por:',
+    options: [
+      'Sociedades anônimas não financeiras de capital aberto.',
+      'Instituições financeiras bancárias (bancos comerciais, múltiplos ou de investimento).',
+      'Empresas públicas prestadoras de serviços de saneamento.',
+      'Fundos imobiliários com patrimônio de afetação.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O CDB é emitido exclusivamente por bancos (comerciais, múltiplos, de desenvolvimento ou de investimento) para captação de recursos a prazo.'
+  },
+  {
+    id: 'rf-08',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'Derivativos Básicos e Hedge',
+    difficulty: 'Difícil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Um exportador brasileiro que receberá US$ 1.000.000 daqui a 6 meses deseja eliminar o risco de queda da cotação do dólar frente ao real. Qual operação com derivativos atende a esse objetivo de hedge?',
+    options: [
+      'Comprar contratos futuros de dólar na B3.',
+      'Vender contratos futuros de dólar na B3 ou comprar opção de venda (put) de dólar.',
+      'Comprar opção de compra (call) de dólar no mercado de balcão.',
+      'Aplicar seus recursos em títulos públicos pós-fixados LFT.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Quem tem receita futura em moeda estrangeira teme a desvalorização do dólar. Para travar a taxa de câmbio, deve assumir posição vendida no mercado futuro ou comprar uma opção de venda (put).'
+  },
   {
     id: 'rf-09',
     examId: 'cpa',
@@ -949,6 +1443,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Instrumentos de Renda Fixa e Variável',
     topic: 'CDB, LCI, LCA e Debêntures',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Qual dos títulos de renda fixa a seguir NÃO conta com a garantia ordinária do Fundo Garantidor de Créditos (FGC)?',
     options: [
       'Certificado de Depósito Bancário (CDB).',
@@ -966,6 +1465,11 @@ export const INITIAL_QUESTIONS: Question[] = [
     subjectName: 'Instrumentos de Renda Fixa e Variável',
     topic: 'Ações, Dividendos e JCP',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'As ações ordinárias (ON) proporcionam ao seu detentor:',
     options: [
       'Prioridade na distribuição de dividendos fixos sem direito a voto.',
@@ -977,12 +1481,175 @@ export const INITIAL_QUESTIONS: Question[] = [
     explanation: 'Ações ordinárias conferem direito de voto nas deliberações das assembleias de acionistas da companhia aberta.'
   },
   {
+    id: 'rf-11',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'Tesouro Direto e Títulos Públicos',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'O título Tesouro Prefixado (LTN) caracteriza-se por ter seu valor nominal no vencimento igual a:',
+    options: [
+      'R$ 1.000,00',
+      'R$ 100,00',
+      'R$ 5.000,00',
+      'R$ 10.000,00'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'O valor de face (valor nominal de resgate) de uma Letra do Tesouro Nacional (LTN) no vencimento é padronizado em R$ 1.000,00.'
+  },
+  {
+    id: 'rf-12',
+    examId: 'cpa',
+    subjectId: 'renda_fixa_var',
+    subjectName: 'Instrumentos de Renda Fixa e Variável',
+    topic: 'CDB, LCI, LCA e Debêntures',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'O limite de garantia ordinária do Fundo Garantidor de Créditos (FGC) por CPF/CNPJ contra uma mesma instituição financeira associada é de:',
+    options: [
+      'R$ 100.000,00',
+      'R$ 250.000,00',
+      'R$ 500.000,00',
+      'R$ 1.000.000,00'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A garantia ordinária do FGC cobre até R$ 250.000,00 por CPF ou CNPJ por instituição ou conglomerado financeiro associado, observado o teto global de R$ 1 milhão a cada período de 4 anos.'
+  },
+
+  // =========================================================================
+  // SISTEMA FINANCEIRO NACIONAL E PARTICIPANTES (Total: 12 questões aprovadas demonstrativas)
+  // =========================================================================
+  {
+    id: 'sfn-01',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Estrutura do CMN e BACEN',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'No Sistema Financeiro Nacional, o Conselho Monetário Nacional (CMN) atua como órgão:',
+    options: [
+      'Fiscalizador e punitivo das sociedades corretoras de títulos.',
+      'Normativo máximo, responsável por formular as diretrizes gerais da política da moeda e do crédito.',
+      'Operador de custódia e liquidação de ativos privados.',
+      'Emissor de papel-moeda e gestor das reservas internacionais.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O CMN é o órgão deliberativo máximo do SFN, fixando diretrizes da política monetária e de crédito, além da meta de inflação.'
+  },
+  {
+    id: 'sfn-02',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Atuação da CVM e ANBIMA',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Qual órgão tem como atribuição legal regular, fiscalizar e desenvolver o mercado de valores mobiliários no Brasil?',
+    options: [
+      'Banco Central do Brasil (BACEN).',
+      'Comissão de Valores Mobiliários (CVM).',
+      'Superintendência de Seguros Privados (SUSEP).',
+      'Tribunal de Contas da União (TCU).'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A CVM é a entidade autárquica vinculada ao Ministério da Fazenda responsável por normatizar, fiscalizar e desenvolver o mercado de capitais e valores mobiliários.'
+  },
+  {
+    id: 'sfn-03',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Bancos Múltiplos e Corretoras',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Para ser configurado como Banco Múltiplo, uma instituição financeira deve possuir, no mínimo, duas carteiras de atuação, sendo obrigatoriamente uma delas:',
+    options: [
+      'De Crédito Imobiliário ou de Arrendamento Mercantil.',
+      'Comercial ou de Investimento.',
+      'De Câmbio ou de Distribuidora de Títulos.',
+      'De Desenvolvimento ou de Microfinanças.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Um banco múltiplo precisa operar com ao menos duas carteiras, sendo uma delas obrigatoriamente comercial (para captar depósitos à vista) ou de investimento.'
+  },
+  {
+    id: 'sfn-04',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Atuação da CVM e ANBIMA',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'A ANBIMA (Associação Brasileira das Entidades dos Mercados Financeiro e de Capitais) é uma instituição representativa privada que atua por meio de:',
+    options: [
+      'Poder de polícia estatal com competência para decretar liquidação extrajudicial de bancos.',
+      'Códigos voluntários de Autorregulação e certificação continuada de profissionais do mercado.',
+      'Fixação da taxa básica de juros Selic no Copom.',
+      'Julgamento definitivo de crimes contra o sistema financeiro nacional.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A ANBIMA é uma associação autorreguladora voluntária que estabelece regras de conduta, padrões de mercado e certifica profissionais financeiros.'
+  },
+  {
+    id: 'sfn-05',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Estrutura do CMN e BACEN',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O Banco Central do Brasil (BACEN) é responsável por executar a política monetária. Entre seus instrumentos clássicos de controle da liquidez do sistema econômico NÃO se inclui:',
+    options: [
+      'Operações de mercado aberto (Open Market).',
+      'Depósito compulsório exigido sobre recursos captados pelos bancos.',
+      'Fixação unilateral de alíquotas do imposto sobre a renda das empresas.',
+      'Operações de redesconto bancário e empréstimos de liquidez.'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'A fixação de alíquotas tributárias de impostos (como o Imposto de Renda) compete ao Poder Legislativo e à política fiscal do governo federal, e não ao BACEN.'
+  },
+  {
     id: 'sfn-06',
     examId: 'cpa',
     subjectId: 'sfn_mercado',
     subjectName: 'Sistema Financeiro Nacional e Participantes',
     topic: 'Atuação da CVM e ANBIMA',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'A prática ilegal de utilizar informações confidenciais relevantes ainda não divulgadas ao público para obter vantagem indevida no mercado de valores mobiliários é tipificada como:',
     options: [
       'Front Running.',
@@ -994,12 +1661,241 @@ export const INITIAL_QUESTIONS: Question[] = [
     explanation: 'O uso de informação privilegiada não pública para auferir ganhos no mercado de ações caracteriza o ilícito de Insider Trading.'
   },
   {
+    id: 'sfn-07',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Bancos Múltiplos e Corretoras',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'As Sociedades Corretoras de Títulos e Valores Mobiliários (SCTVM) e Distribuidoras (SDTVM) têm como atividade típica:',
+    options: [
+      'Captação de depósitos em conta corrente com movimentação por cheque',
+      'Intermediação de operações de compra e venda de valores mobiliários em bolsas e mercados de balcão',
+      'Emissão privativa de papel-moeda e moeda metálica',
+      'Concessão de empréstimos hipotecários com recursos do FGTS'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Corretoras e distribuidoras intermediam a negociação de ativos e valores mobiliários nos mercados organizados da B3 e de balcão.'
+  },
+  {
+    id: 'sfn-08',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Estrutura do CMN e BACEN',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Qual dos seguintes órgãos é composto pelo Ministro da Fazenda, Ministro do Planejamento e Presidente do Banco Central do Brasil?',
+    options: [
+      'Comitê de Política Monetária (Copom)',
+      'Conselho Monetário Nacional (CMN)',
+      'Comissão de Valores Mobiliários (CVM)',
+      'Conselho de Controle de Atividades Financeiras (COAF)'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A composição do CMN é formada pelo Ministro de Estado da Fazenda (presidente do conselho), pela Ministra do Planejamento e Orçamento e pelo Presidente do Banco Central.'
+  },
+  {
+    id: 'sfn-09',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Atuação da CVM e ANBIMA',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A conduta de um operador que realiza uma ordem própria antes da ordem de um cliente, aproveitando-se do impacto esperado da ordem do cliente sobre os preços de mercado, denomina-se:',
+    options: [
+      'Front Running',
+      'Insider Trading',
+      'Churning',
+      'Wash Trade'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Front Running é a prática vedada em que o intermediário coloca sua ordem na frente da ordem de um cliente conhecendo de antemão o fluxo que moverá o mercado.'
+  },
+  {
+    id: 'sfn-10',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Bancos Múltiplos e Corretoras',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A carteira de um Banco Múltiplo especializada em operações de financiamento de capital de giro e capital fixo de médio e longo prazo para empresas é a carteira:',
+    options: [
+      'Comercial',
+      'De Investimento',
+      'De Crédito Imobiliário',
+      'De Arrendamento Mercantil'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A carteira de investimento de bancos múltiplos e os bancos de investimento especializam-se em empréstimos de médio/longo prazo, subscrição de ações e debêntures.'
+  },
+  {
+    id: 'sfn-11',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Estrutura do CMN e BACEN',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A gestão e guarda das reservas internacionais em moeda estrangeira do Brasil é competência legal exclusiva de qual entidade?',
+    options: [
+      'Tesouro Nacional',
+      'Banco Central do Brasil',
+      'Banco do Brasil',
+      'Caixa Econômica Federal'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O Banco Central do Brasil é o custodiante e gestor exclusivo das reservas cambiais do país.'
+  },
+  {
+    id: 'sfn-12',
+    examId: 'cpa',
+    subjectId: 'sfn_mercado',
+    subjectName: 'Sistema Financeiro Nacional e Participantes',
+    topic: 'Atuação da CVM e ANBIMA',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'No âmbito das normas da CVM, considera-se valor mobiliário sujeito à sua regulação e fiscalização:',
+    options: [
+      'Títulos da dívida pública federal (Tesouro Direto)',
+      'Ações, debêntures e quotas de fundos de investimento',
+      'Contratos de locação de imóveis residenciais',
+      'Depósitos a prazo fixo com garantia do FGC'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'De acordo com a Lei 6.385/76, ações, debêntures, cotas de fundos e derivativos são valores mobiliários regulados pela CVM. Títulos públicos federais são regulados e emitidos pelo Tesouro/BACEN.'
+  },
+
+  // =========================================================================
+  // PREVIDÊNCIA COMPLEMENTAR ABERTA (Total: 8 questões aprovadas demonstrativas)
+  // =========================================================================
+  {
+    id: 'prev-01',
+    examId: 'cpa',
+    subjectId: 'previdencia',
+    subjectName: 'Previdência Complementar Aberta',
+    topic: 'Diferenças entre PGBL e VGBL',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O plano de previdência PGBL (Plano Gerador de Benefício Livre) é especialmente recomendado para clientes que:',
+    options: [
+      'Utilizam a declaração simplificada do Imposto de Renda e não contribuem para o INSS.',
+      'Fazem a declaração completa do Imposto de Renda e desejam deduzir aportes até o limite de 12% da sua renda bruta anual tributável.',
+      'Desejam que o Imposto de Renda incida apenas sobre os rendimentos auferidos no momento do resgate.',
+      'Buscam isenção total e permanente de Imposto de Renda no momento do resgate dos recursos.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O PGBL permite abater os aportes realizados até o limite de 12% da renda bruta anual tributável para contribuintes do regime geral da previdência que entregam a declaração completa.'
+  },
+  {
+    id: 'prev-02',
+    examId: 'cpa',
+    subjectId: 'previdencia',
+    subjectName: 'Previdência Complementar Aberta',
+    topic: 'Diferenças entre PGBL e VGBL',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'No momento do resgate em um plano de previdência complementar do tipo VGBL (Vida Gerador de Benefício Livre), a base de cálculo para a incidência do Imposto de Renda é:',
+    options: [
+      'O valor total acumulado resgatado (principal mais rendimentos).',
+      'Apenas o montante correspondente aos rendimentos auferidos.',
+      'O capital originalmente aportado, isentando os juros compostos.',
+      'O saldo total líquido após dedução da taxa de carregamento de saída.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'No VGBL, a tributação de IR recai unicamente sobre os rendimentos gerados pelo plano, pois os aportes foram feitos com recursos que já sofreram tributação prévia.'
+  },
+  {
+    id: 'prev-03',
+    examId: 'cpa',
+    subjectId: 'previdencia',
+    subjectName: 'Previdência Complementar Aberta',
+    topic: 'Regimes Tributários: Progressivo e Regressivo',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Em relação à tabela regressiva definitiva de tributação da previdência complementar aberta, a menor alíquota de Imposto de Renda possível é:',
+    options: [
+      '5% após 8 anos de acumulação.',
+      '10% para recursos mantidos por prazo superior a 10 anos.',
+      '15% para recursos mantidos por mais de 5 anos.',
+      'Zero para planos com beneficiários em linha reta.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A tabela regressiva inicia com 35% (até 2 anos) e decresce 5 pontos percentuais a cada 2 anos adicionais, atingindo a alíquota mínima de 10% para recursos com mais de 10 anos.'
+  },
+  {
+    id: 'prev-04',
+    examId: 'cpa',
+    subjectId: 'previdencia',
+    subjectName: 'Previdência Complementar Aberta',
+    topic: 'Portabilidade e Resgates',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Durante a fase de diferimento (acumulação) da previdência aberta, a transferência de recursos entre planos (portabilidade):',
+    options: [
+      'Obriga o recolhimento imediato de 15% de Imposto de Renda a título de antecipação.',
+      'Não acarreta incidência de Imposto de Renda nem cobrança de taxa de saída.',
+      'Permite a migração direta de saldo de um PGBL para um VGBL sem custos tributários.',
+      'Só pode ser realizada entre planos mantidos sob o mesmo CNPJ da seguradora de origem.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A portabilidade entre planos da mesma modalidade (PGBL para PGBL ou VGBL para VGBL) não gera incidência de Imposto de Renda nem cobrança de taxas de transferência.'
+  },
+  {
     id: 'prev-05',
     examId: 'cpa',
     subjectId: 'previdencia',
     subjectName: 'Previdência Complementar Aberta',
     topic: 'Diferenças entre PGBL e VGBL',
     difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Em um plano de previdência complementar aberta, caso o titular venha a falecer durante o período de acumulação, os recursos destinados aos beneficiários indicados:',
     options: [
       'Entram compulsoriamente no processo de inventário judicial.',
@@ -1011,12 +1907,175 @@ export const INITIAL_QUESTIONS: Question[] = [
     explanation: 'Por sua natureza securitária, os planos de previdência aberta são transferidos diretamente aos beneficiários indicados, não integrando a massa do inventário tradicional.'
   },
   {
+    id: 'prev-06',
+    examId: 'cpa',
+    subjectId: 'previdencia',
+    subjectName: 'Previdência Complementar Aberta',
+    topic: 'Regimes Tributários: Progressivo e Regressivo',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Na tabela progressiva compensável de previdência complementar, no momento do resgate efetuado pelo participante, a alíquota de IR retida na fonte é de:',
+    options: [
+      '15% a título de antecipação do ajuste anual',
+      '27,5% definitiva e exclusiva',
+      '35% decrescente conforme o prazo',
+      'Zero com recolhimento posterior via carnê-leão'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'No regime da tabela progressiva, o resgate sofre desconto de 15% de IR retido na fonte pela instituição pagadora como antecipação do devido na Declaração de Ajuste Anual.'
+  },
+  {
+    id: 'prev-07',
+    examId: 'cpa',
+    subjectId: 'previdencia',
+    subjectName: 'Previdência Complementar Aberta',
+    topic: 'Portabilidade e Resgates',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'É permitido pela regulamentação vigente realizar portabilidade entre regimes tributários de previdência aberta na seguinte direção:',
+    options: [
+      'Do regime Regressivo para o regime Progressivo a qualquer momento',
+      'Do regime Progressivo para o regime Regressivo',
+      'Não é permitida nenhuma troca de regime após a assinatura do contrato',
+      'Apenas entre fundos com prazo superior a 15 anos'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A legislação autoriza a migração do regime progressivo para o regime regressivo, sendo vedada a migração no sentido inverso (do regressivo para o progressivo).'
+  },
+  {
+    id: 'prev-08',
+    examId: 'cpa',
+    subjectId: 'previdencia',
+    subjectName: 'Previdência Complementar Aberta',
+    topic: 'Diferenças entre PGBL e VGBL',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A taxa cobrada pela seguradora sobre o valor de cada aporte realizado pelo participante para custear despesas de corretagem e administração do plano é denominada:',
+    options: [
+      'Taxa de Performance',
+      'Taxa de Carregamento',
+      'Taxa de Custódia Fiduciária',
+      'Taxa de Auditoria Externa'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A taxa de carregamento é o percentual incidente sobre os aportes (ou resgates) destinado ao custeio administrativo e comercial do plano de previdência.'
+  },
+
+  // =========================================================================
+  // GESTÃO DE RISCO, COMPLIANCE E PLD-FT (Total: 8 questões aprovadas demonstrativas)
+  // =========================================================================
+  {
+    id: 'risco-01',
+    examId: 'cpa',
+    subjectId: 'risco_compliance',
+    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
+    topic: 'Prevenção à Lavagem de Dinheiro (Lei 9.613)',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O processo de Lavagem de Dinheiro é tradicionalmente estruturado em três fases sucessivas:',
+    options: [
+      'Investigação, Julgamento e Condenação.',
+      'Colocação (Placement), Ocultação (Layering) e Integração (Integration).',
+      'Arrecadação, Custódia e Liquidação.',
+      'Compliance, Due Diligence e Auditoria externa.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'As 3 etapas clássicas são: Colocação (introdução do dinheiro ilícito no sistema), Ocultação (camuflagem da origem com múltiplas transações) e Integração (retorno como recursos formalmente lícitos).'
+  },
+  {
+    id: 'risco-02',
+    examId: 'cpa',
+    subjectId: 'risco_compliance',
+    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
+    topic: 'Risco de Mercado, Crédito e Liquidez',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O risco de um emissor de um título de renda fixa privado não honrar o pagamento dos juros ou do principal no prazo acordado é denominado:',
+    options: [
+      'Risco de Mercado.',
+      'Risco de Crédito.',
+      'Risco de Liquidez.',
+      'Risco Operacional.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Risco de crédito é a probabilidade de inadimplência (default) ou rebaixamento da classificação de risco (rating) da contraparte emissora.'
+  },
+  {
+    id: 'risco-03',
+    examId: 'cpa',
+    subjectId: 'risco_compliance',
+    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
+    topic: 'Chinese Wall e Conflito de Interesses',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O conceito de "Chinese Wall" (Muralha da China) nas instituições financeiras consiste em:',
+    options: [
+      'Um sistema de criptografia para transações internacionais em moedas asiáticas.',
+      'A segregação física e administrativa entre áreas que possam apresentar conflito de interesses, como gestão de recursos próprios e gestão de recursos de terceiros.',
+      'A proibição de transferências patrimoniais para pessoas politicamente expostas.',
+      'A barreira alfandegária que limita aportes de investidores não residentes.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A política de segregação de atividades (Chinese Wall) visa impedir o fluxo indevido de informações privilegiadas e dirimir conflitos de interesse entre diferentes departamentos da mesma instituição.'
+  },
+  {
+    id: 'risco-04',
+    examId: 'cpa',
+    subjectId: 'risco_compliance',
+    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
+    topic: 'Princípio Conheça seu Cliente (KYC)',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O princípio Conheça Seu Cliente (Know Your Customer - KYC) tem por objetivo primordial:',
+    options: [
+      'Garantir a venda casada de produtos de maior margem para clientes de alta renda.',
+      'Identificar o perfil de risco, a capacidade financeira e a veracidade da origem dos recursos patrimoniais do investidor.',
+      'Assegurar isenção de impostos federais em operações no mercado à vista.',
+      'Substituir a necessidade de assinatura de termos de adesão a fundos de investimento.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'KYC permite verificar a identidade do cliente, sua atividade econômica, sua compatibilidade financeira e prevenir fraudes e lavagem de capitais.'
+  },
+  {
     id: 'risco-05',
     examId: 'cpa',
     subjectId: 'risco_compliance',
     subjectName: 'Gestão de Risco, Compliance e PLD-FT',
     topic: 'Prevenção à Lavagem de Dinheiro (Lei 9.613)',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'Operações financeiras que apresentem indícios de lavagem de capitais ou financiamento do terrorismo devem ser comunicadas confidencialmente pelas instituições financeiras ao:',
     options: [
       'Conselho de Controle de Atividades Financeiras (COAF).',
@@ -1028,12 +2087,175 @@ export const INITIAL_QUESTIONS: Question[] = [
     explanation: 'O COAF (unidade de inteligência financeira do Brasil) é o órgão responsável por receber, examinar e identificar ocorrências suspeitas de lavagem de dinheiro.'
   },
   {
+    id: 'risco-06',
+    examId: 'cpa',
+    subjectId: 'risco_compliance',
+    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
+    topic: 'Risco de Mercado, Crédito e Liquidez',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A dificuldade ou impossibilidade de converter um ativo em dinheiro rapidamente pelo seu preço justo de mercado sem deságio excessivo caracteriza o:',
+    options: [
+      'Risco de Liquidez',
+      'Risco de Crédito',
+      'Risco de Mercado',
+      'Risco Sistêmico Global'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Risco de liquidez é o risco de não encontrar contraparte compradora no momento desejado para negociar o ativo sem incorrer em perdas relevantes de valor.'
+  },
+  {
+    id: 'risco-07',
+    examId: 'cpa',
+    subjectId: 'risco_compliance',
+    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
+    topic: 'Princípio Conheça seu Cliente (KYC)',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'De acordo com a regulamentação de combate à lavagem de dinheiro, considera-se Pessoa Exposta Politicamente (PEP) quem desempenha ou tenha desempenhado cargos públicos relevantes nos últimos:',
+    options: [
+      '2 anos',
+      '5 anos',
+      '10 anos',
+      '1 ano'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A condição de PEP se estende pelo período de 5 anos após a data em que o indivíduo deixou de desempenhar o cargo, função ou emprego público relevante.'
+  },
+  {
+    id: 'risco-08',
+    examId: 'cpa',
+    subjectId: 'risco_compliance',
+    subjectName: 'Gestão de Risco, Compliance e PLD-FT',
+    topic: 'Risco de Mercado, Crédito e Liquidez',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A métrica de risco denominada Value at Risk (VaR) expressa:',
+    options: [
+      'A perda máxima absoluta garantida em caso de falência da instituição emissora',
+      'A perda máxima potencial esperada para uma carteira dentro de um horizonte de tempo específico, com determinado nível de confiança estatística',
+      'A rentabilidade acumulada de um ativo deduzida a inflação oficial',
+      'A taxa de juros necessária para zerar o VPL de uma carteira de renda fixa'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O VaR é uma medida estatística que quantifica a perda máxima esperada para um determinado nível de confiança (ex: 95% ou 99%) em um horizonte de tempo definido (ex: 1 dia ou 21 dias).'
+  },
+
+  // =========================================================================
+  // CONCEITOS BÁSICOS DE ECONOMIA E FINANÇAS (Total: 8 questões aprovadas demonstrativas)
+  // =========================================================================
+  {
+    id: 'eco-01',
+    examId: 'cpa',
+    subjectId: 'economia_fin',
+    subjectName: 'Conceitos de Economia e Finanças',
+    topic: 'Copom e Metas para Inflação',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'No Brasil, a taxa de juros básica da economia (Meta da Taxa Selic) é definida e divulgada periodicamente por qual órgão?',
+    options: [
+      'Conselho Monetário Nacional (CMN).',
+      'Comitê de Política Monetária (Copom) do Banco Central.',
+      'Comissão de Valores Mobiliários (CVM).',
+      'Comitê Gestor da B3.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O Copom (Comitê de Política Monetária do BACEN) reúne-se a cada 45 dias para deliberar e definir a Meta da Taxa Selic.'
+  },
+  {
+    id: 'eco-02',
+    examId: 'cpa',
+    subjectId: 'economia_fin',
+    subjectName: 'Conceitos de Economia e Finanças',
+    topic: 'Indicadores Econômicos: IPCA, IGP-M e PIB',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O índice oficial utilizado pelo governo brasileiro no regime de metas para a inflação é o:',
+    options: [
+      'IGP-M, calculado pelo Ibre/FGV.',
+      'IPCA, calculado pelo IBGE.',
+      'INPC, calculado pela Fipe.',
+      'IPA-DI, apurado pelo Banco Central.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O IPCA (Índice Nacional de Preços ao Consumidor Amplo), medido pelo IBGE, é o balizador oficial do sistema de metas para a inflação no Brasil.'
+  },
+  {
+    id: 'eco-03',
+    examId: 'cpa',
+    subjectId: 'economia_fin',
+    subjectName: 'Conceitos de Economia e Finanças',
+    topic: 'Taxa Selic, CDI e Política Monetária',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'Quando o Banco Central decide elevar a taxa básica Selic para conter pressões inflacionárias, o efeito esperado na economia real no curto a médio prazo é:',
+    options: [
+      'Aumento imediato do consumo das famílias e forte expansão da concessão de crédito.',
+      'Encarecimento do crédito, desestímulo ao consumo e arrefecimento da demanda agregada.',
+      'Desvalorização imediata do Real frente a moedas fortes.',
+      'Redução da remuneração de títulos públicos federais pós-fixados.'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A alta de juros encarece o custo do dinheiro, desestimulando empréstimos, investimentos produtivos e consumo, o que desacelera a pressão sobre os preços.'
+  },
+  {
+    id: 'eco-04',
+    examId: 'cpa',
+    subjectId: 'economia_fin',
+    subjectName: 'Conceitos de Economia e Finanças',
+    topic: 'Indicadores Econômicos: IPCA, IGP-M e PIB',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
+    stem: 'O Produto Interno Bruto (PIB) calculado pela ótica da despesa agrega:',
+    options: [
+      'Consumo das famílias + Investimentos (FBKF) + Gastos do governo + Exportações líquidas (Exportações - Importações).',
+      'Salários pagos + Lucros retidos + Impostos arrecadados sobre produtos exportados.',
+      'Receita cambial bruta somada à arrecadação do FGTS.',
+      'Total de depósitos à vista e a prazo do sistema bancário comercial.'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Pela ótica da demanda (despesa), PIB = C + I + G + (X - M).'
+  },
+  {
     id: 'eco-05',
     examId: 'cpa',
     subjectId: 'economia_fin',
     subjectName: 'Conceitos de Economia e Finanças',
     topic: 'Indicadores Econômicos: IPCA, IGP-M e PIB',
     difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-09-01T10:00:00Z',
     stem: 'O Índice Geral de Preços do Mercado (IGP-M) possui em sua composição a maior ponderação (60%) associada ao:',
     options: [
       'Índice de Preços ao Produtor Amplo (IPA).',
@@ -1043,5 +2265,71 @@ export const INITIAL_QUESTIONS: Question[] = [
     ],
     correctOptionIndex: 0,
     explanation: 'O IGP-M é composto por: 60% IPA (preços ao produtor), 30% IPC (preços ao consumidor) e 10% INCC (custo da construção).'
+  },
+  {
+    id: 'eco-06',
+    examId: 'cpa',
+    subjectId: 'economia_fin',
+    subjectName: 'Conceitos de Economia e Finanças',
+    topic: 'Taxa Selic, CDI e Política Monetária',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A Taxa Selic Over apurada no encerramento de cada dia útil representa:',
+    options: [
+      'A média ponderada das taxas das operações de empréstimos interbancários de 1 dia lastreadas em títulos públicos federais',
+      'A média dos juros cobrados no cheque especial pelas instituições comerciais',
+      'A cotação média de fechamento do dólar comercial PTAX',
+      'A taxa de rendimento das cadernetas de poupança'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'A taxa Selic Over reflete o custo do dinheiro nas operações compromissadas de 1 dia (overnight) realizadas entre instituições financeiras tendo como garantia exclusiva títulos públicos federais no sistema Selic.'
+  },
+  {
+    id: 'eco-07',
+    examId: 'cpa',
+    subjectId: 'economia_fin',
+    subjectName: 'Conceitos de Economia e Finanças',
+    topic: 'Câmbio e Balanço de Pagamentos',
+    difficulty: 'Médio',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'Em um regime de câmbio flutuante, a entrada maciça de dólares no país decorrente de um superávit recorde na balança comercial tende a provocar no curto prazo:',
+    options: [
+      'Apreciação (valorização) do Real frente ao Dólar',
+      'Desvalorização imediata do Real',
+      'Aumento da meta de inflação fixada pelo CMN',
+      'Redução do superávit primário da União'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Maior oferta de moeda estrangeira (dólares) no mercado de câmbio doméstico barateia o preço do dólar, levando à apreciação (valorização) do Real.'
+  },
+  {
+    id: 'eco-08',
+    examId: 'cpa',
+    subjectId: 'economia_fin',
+    subjectName: 'Conceitos de Economia e Finanças',
+    topic: 'Copom e Metas para Inflação',
+    difficulty: 'Fácil',
+    status: 'approved',
+    version: 1,
+    origin: 'Bredi Exam Engine - Base Autoral Demonstrativa',
+    reviewedBy: 'Comitê Pedagógico Bredi',
+    reviewedAt: '2026-10-14T10:00:00Z',
+    stem: 'A competência institucional para fixar a meta contínua para a inflação e seus respectivos intervalos de tolerância no Brasil cabe a qual entidade?',
+    options: [
+      'Comitê de Política Monetária (Copom)',
+      'Conselho Monetário Nacional (CMN)',
+      'Ministério do Desenvolvimento e Indústria',
+      'Congresso Nacional'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'O Conselho Monetário Nacional (CMN) é o órgão competente para estabelecer a meta de inflação, cabendo ao Banco Central/Copom implementar a política monetária para persegui-la.'
   }
 ];

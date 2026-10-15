@@ -16,7 +16,8 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
     enabledDisciplines: ['mat_fin', 'fundos_inv', 'renda_fixa_var', 'sfn_mercado', 'previdencia', 'risco_compliance', 'economia_fin'],
     maxFreeSimulations: 1,
     isActive: true,
-    category: 'Certificação Financeira'
+    category: 'Certificação Financeira',
+    allowRedistributionIfInsufficient: false
   },
   oab: {
     examId: 'oab',
@@ -32,12 +33,13 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
     enabledDisciplines: ['etica_prof', 'dir_const', 'dir_civil'],
     maxFreeSimulations: 1,
     isActive: false, // Desabilitado para demonstrar arquitetura expansível
-    category: 'Exame de Ordem'
+    category: 'Exame de Ordem',
+    allowRedistributionIfInsufficient: false
   }
 };
 
 // Seed 6 completed full exam simulations for Rafael Martins: 44%, 52%, 58%, 54%, 62%, 72%
-const SEED_ATTEMPTS: Attempt[] = [
+const RAW_SEED_ATTEMPTS: Omit<Attempt, 'questionSnapshots' | 'ruleVersion'>[] = [
   {
     id: 'att-sim-01',
     userId: 'user-rafael-01',
@@ -250,6 +252,14 @@ const SEED_ATTEMPTS: Attempt[] = [
     ]
   }
 ];
+
+const SEED_ATTEMPTS: Attempt[] = RAW_SEED_ATTEMPTS.map(a => ({
+  ...a,
+  sessionRefId: a.id,
+  ruleVersion: 'Regulamento 2026.1 - Edição Vigente',
+  totalDurationSeconds: a.mode === 'FULL_EXAM' ? 150 * 60 : 60 * 60,
+  questionSnapshots: INITIAL_QUESTIONS.filter(q => a.mode === 'FULL_EXAM' ? true : q.subjectId === 'mat_fin').slice(0, a.totalQuestions)
+}));
 
 export const INITIAL_ACHIEVEMENTS: Achievement[] = [
   {

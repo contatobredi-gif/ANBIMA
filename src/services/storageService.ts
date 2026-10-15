@@ -1,5 +1,6 @@
-import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem } from '../types';
+import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem, Question } from '../types';
 import { INITIAL_APP_STATE } from '../data/initialData';
+import { INITIAL_QUESTIONS } from '../data/questionsData';
 
 const STORAGE_KEY = 'simulados_anbima_engine_v1';
 
@@ -15,7 +16,54 @@ export class StorageService {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as AppStateData;
-        if (parsed.version === INITIAL_APP_STATE.version && parsed.user && parsed.questions?.length > 0) {
+        if (parsed.version === INITIAL_APP_STATE.version && parsed.user) {
+          // Perform controlled non-destructive migrations:
+          // 1. Ensure all questions have status: 'approved', version, origin
+          if (Array.isArray(parsed.questions)) {
+            const existingIdMap = new Map<string, Question>();
+            parsed.questions.forEach(q => {
+              if (!q.status) {
+                q.status = 'approved';
+              }
+              if (!q.version) q.version = 1;
+              if (!q.origin) q.origin = 'Bredi Exam Engine - Base Autoral Demonstrativa';
+              existingIdMap.set(q.id, q);
+            });
+
+            // 2. Add any newly added questions from INITIAL_QUESTIONS (e.g. new mat_fin questions)
+            INITIAL_QUESTIONS.forEach(newQ => {
+              if (!existingIdMap.has(newQ.id)) {
+                parsed.questions.push(newQ);
+              }
+            });
+          } else {
+            parsed.questions = JSON.parse(JSON.stringify(INITIAL_QUESTIONS));
+          }
+
+          // 3. Ensure examRules has allowRedistributionIfInsufficient
+          if (parsed.examRules) {
+            Object.values(parsed.examRules).forEach(r => {
+              if (r.allowRedistributionIfInsufficient === undefined) {
+                r.allowRedistributionIfInsufficient = false;
+              }
+            });
+          }
+
+          // 4. Ensure past attempts have snapshots & ruleVersion
+          if (Array.isArray(parsed.attempts)) {
+            parsed.attempts.forEach(att => {
+              if (!att.ruleVersion) {
+                att.ruleVersion = 'Regulamento 2026.1 - Edição Vigente';
+              }
+              if (!att.sessionRefId) {
+                att.sessionRefId = att.id;
+              }
+              if (!att.questionSnapshots || att.questionSnapshots.length === 0) {
+                att.questionSnapshots = parsed.questions.slice(0, att.totalQuestions);
+              }
+            });
+          }
+
           this.cachedState = parsed;
           return parsed;
         }
@@ -34,8 +82,9 @@ export class StorageService {
     this.cachedState = state;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      // Dispatch a custom event so other components or tabs can re-render if needed
-      window.dispatchEvent(new Event('storage-update'));
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('storage-update'));
+      }
     } catch (e) {
       console.error('Erro ao salvar no LocalStorage:', e);
     }
@@ -58,7 +107,7 @@ export class StorageService {
 
   // Reset to default seed
   public static restoreInitialData(): void {
-    const fresh = JSON.parse(JSON.stringify(INITIAL_APP_STATE));
+    const fresh: AppStateData = JSON.parse(JSON.stringify(INITIAL_APP_STATE));
     this.saveState(fresh);
   }
 
@@ -92,20 +141,30 @@ export class StorageService {
   }
 
   public static getAttemptById(id: string): Attempt | undefined {
-    return this.getState().attempts.find(a => a.id === id);
+    return this.getState().attempts.find(a => a.id === id || a.sessionRefId === id);
+  }
+
+  public static getAttemptBySessionId(sessionId: string): Attempt | undefined {
+    return this.getState().attempts.find(a => a.id === sessionId || a.sessionRefId === sessionId);
   }
 
   public static saveCompletedAttempt(attempt: Attempt): void {
     const state = this.getState();
-    // Prevent duplicate saving
-    if (state.attempts.some(a => a.id === attempt.id)) {
+
+    // IDEMPOTENCY CHECK:
+    // If an attempt with this ID or sessionRefId already exists, do not duplicate
+    const existingIndex = state.attempts.findIndex(
+      a => a.id === attempt.id || (attempt.sessionRefId && a.sessionRefId === attempt.sessionRefId)
+    );
+    if (existingIndex >= 0) {
+      // Already persisted, safely ignore repeat calls
       return;
     }
 
     state.attempts.push(attempt);
     state.activeSession = null; // Clear active session
 
-    // Add engagement points
+    // Add engagement points only once
     const pointsGained = attempt.mode === 'FULL_EXAM' ? 150 : 60;
     state.user.engagementPoints += pointsGained;
 
@@ -178,6 +237,15 @@ export class StorageService {
     const state = this.getState();
     state.activeSession = session;
     this.saveState(state);
+  }
+
+  // Update a single answer in active session immediately
+  public static updateSessionAnswer(questionId: string, selectedOptionIndex: number | null): void {
+    const state = this.getState();
+    if (state.activeSession) {
+      state.activeSession.answers[questionId] = selectedOptionIndex;
+      this.saveState(state);
+    }
   }
 
   // Daily Check-in with duplicate protection

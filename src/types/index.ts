@@ -17,6 +17,7 @@ export interface ExamRule {
   maxFreeSimulations: number;
   isActive: boolean;
   category: 'Certificação Financeira' | 'Exame de Ordem' | 'Concurso Público';
+  allowRedistributionIfInsufficient?: boolean; // Default false
 }
 
 export interface Subject {
@@ -30,6 +31,8 @@ export interface Subject {
 
 export type Difficulty = 'Fácil' | 'Médio' | 'Difícil';
 
+export type QuestionEditorialStatus = 'draft' | 'in_review' | 'approved' | 'disabled';
+
 export interface Question {
   id: string;
   examId: ExamId;
@@ -41,6 +44,11 @@ export interface Question {
   options: [string, string, string, string]; // 4 alternatives A, B, C, D
   correctOptionIndex: number; // 0, 1, 2, or 3
   explanation: string;
+  status: QuestionEditorialStatus;
+  version?: number;
+  origin?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
 }
 
 export type AttemptMode = 'FULL_EXAM' | 'TARGETED_TRAINING' | 'ERROR_REVIEW' | 'DAILY_CHALLENGE';
@@ -70,15 +78,20 @@ export interface TopicResult {
 }
 
 export interface Attempt {
-  id: string;
+  id: string; // Stable unique ID (matches session.id)
+  sessionRefId?: string;
   userId: string;
   examId: ExamId;
   mode: AttemptMode;
   targetSubjectId?: string;
+  ruleVersion: string;
+  totalQuestions: number;
+  durationMinutes?: number;
+  totalDurationSeconds?: number;
+  disciplineDistribution?: Record<string, number>;
   startedAt: string; // ISO date
   finishedAt: string; // ISO date
   durationSeconds: number;
-  totalQuestions: number;
   correctCount: number;
   wrongCount: number;
   unansweredCount: number;
@@ -87,20 +100,25 @@ export interface Attempt {
   answers: QuestionAnswer[];
   disciplineScores: DisciplineResult[];
   topicScores?: TopicResult[];
-  questionSnapshots?: Question[]; // snapshot of questions used
+  questionOrder?: string[];
+  questionSnapshots: Question[]; // Immutable snapshot of questions used
 }
 
 export interface ActiveExamSession {
-  id: string;
+  id: string; // Stable unique identifier from start
   examId: ExamId;
   mode: AttemptMode;
   targetSubjectId?: string;
+  ruleVersion: string;
   startedAtTimestamp: number; // epoch ms
   totalDurationSeconds: number;
+  disciplineDistribution?: Record<string, number>;
   questionIds: string[];
   currentIndex: number;
   answers: Record<string, number | null>; // questionId -> selectedOptionIndex
   flaggedQuestionIds: string[];
+  questionSnapshots: Question[]; // Snapshot taken at session creation
+  completed?: boolean;
 }
 
 export interface UserProfile {

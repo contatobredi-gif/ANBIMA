@@ -42,9 +42,16 @@ export const ExamRunner: React.FC<ExamRunnerProps> = ({
   const [showNavigatorModal, setShowNavigatorModal] = useState(false);
   const [showConfirmFinishModal, setShowConfirmFinishModal] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const finishInProgressRef = useRef(false);
 
+  // Prioritize immutable question snapshots from the active session
   const questionMap = useRef<Map<string, Question>>(
-    new Map(appState.questions.map(q => [q.id, q]))
+    new Map(
+      (session.questionSnapshots && session.questionSnapshots.length > 0 
+        ? session.questionSnapshots 
+        : appState.questions
+      ).map(q => [q.id, q])
+    )
   ).current;
 
   const currentQuestionId = session.questionIds[session.currentIndex];
@@ -56,8 +63,8 @@ export const ExamRunner: React.FC<ExamRunnerProps> = ({
       const remaining = ExamEngine.getRemainingSeconds(session);
       setSecondsRemaining(remaining);
 
-      // Auto finalize when time runs out
-      if (remaining <= 0 && !hasSubmitted) {
+      // Auto finalize when time runs out (uses exact same routine)
+      if (remaining <= 0 && !finishInProgressRef.current && !hasSubmitted) {
         clearInterval(interval);
         handleFinish();
       }
@@ -73,7 +80,7 @@ export const ExamRunner: React.FC<ExamRunnerProps> = ({
   };
 
   const handleSelectOption = (optionIndex: number) => {
-    if (!currentQuestionId || hasSubmitted) return;
+    if (!currentQuestionId || hasSubmitted || finishInProgressRef.current) return;
     const newAnswers = { ...session.answers, [currentQuestionId]: optionIndex };
     updateSession({
       ...session,
@@ -121,10 +128,17 @@ export const ExamRunner: React.FC<ExamRunnerProps> = ({
   };
 
   const handleFinish = () => {
-    if (hasSubmitted) return;
+    if (finishInProgressRef.current || hasSubmitted) return;
+    finishInProgressRef.current = true;
     setHasSubmitted(true);
-    const attempt = ExamEngine.finalizeSession(session);
-    onFinishExam(attempt);
+    try {
+      const attempt = ExamEngine.finalizeSession(session);
+      onFinishExam(attempt);
+    } catch (e) {
+      console.error('Erro ao finalizar sessão:', e);
+      finishInProgressRef.current = false;
+      setHasSubmitted(false);
+    }
   };
 
   // Format timer

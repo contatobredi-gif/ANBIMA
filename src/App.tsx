@@ -30,6 +30,7 @@ import { UpdatesCenter } from './components/updates/UpdatesCenter';
 import { NotificationsCenter } from './components/notifications/NotificationsCenter';
 import { UserProfileView } from './components/profile/UserProfile';
 import { AdminPanel } from './components/admin/AdminPanel';
+import { AlertCircle, X, PlayCircle, Trash2 } from 'lucide-react';
 
 export default function App() {
   const [appState, setAppState] = useState<AppStateData>(() => StorageService.getState());
@@ -41,12 +42,13 @@ export default function App() {
   const [activeSession, setActiveSession] = useState<ActiveExamSession | null>(() => appState.activeSession);
   const [viewingAttempt, setViewingAttempt] = useState<Attempt | null>(null);
 
-  // Modals state
+  // Modals and Alerts state
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState('Funcionalidade Pro');
   const [dailyChallengeOpen, setDailyChallengeOpen] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [engineAlert, setEngineAlert] = useState<string | null>(null);
 
   // Sync state with storage updates
   useEffect(() => {
@@ -83,12 +85,16 @@ export default function App() {
     refreshState();
   };
 
-  // Start exam / training
+  // Start exam / training with safe engine exception handling
   const handleStartExam = (mode: AttemptMode, targetSubjectId?: string) => {
-    const session = ExamEngine.startSession(mode, targetSubjectId);
-    setActiveSession(session);
-    setViewingAttempt(null);
-    refreshState();
+    try {
+      const session = ExamEngine.startSession(mode, targetSubjectId);
+      setActiveSession(session);
+      setViewingAttempt(null);
+      refreshState();
+    } catch (err: any) {
+      setEngineAlert(err?.message || 'Não foi possível iniciar a tentativa.');
+    }
   };
 
   // Finish exam
@@ -190,6 +196,70 @@ export default function App() {
         />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
+          {/* Engine Alert Banner (e.g. content validation errors) */}
+          {engineAlert && (
+            <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex items-start justify-between gap-3 shadow-xs animate-in fade-in duration-200">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-bold text-amber-900">Aviso do Motor de Provas</h4>
+                  <p className="text-xs text-amber-800 mt-0.5">{engineAlert}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setEngineAlert(null)}
+                className="p-1 text-amber-700 hover:text-amber-900 rounded-lg hover:bg-amber-100 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Active Paused Session Resumption Banner */}
+          {appState.activeSession && !activeSession && !viewingAttempt && (
+            <div className="mb-6 p-4 rounded-xl bg-emerald-50/90 border border-emerald-300 text-emerald-950 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
+                  <PlayCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-emerald-950">
+                    Você tem uma sessão em andamento!
+                  </h4>
+                  <p className="text-xs text-emerald-800">
+                    {appState.activeSession.mode === 'FULL_EXAM'
+                      ? 'Simulado Completo CPA'
+                      : appState.activeSession.mode === 'TARGETED_TRAINING'
+                      ? 'Treino Direcionado'
+                      : 'Revisão de Erros'} · {Object.keys(appState.activeSession.answers).length} de {appState.activeSession.questionIds.length} questões respondidas.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    StorageService.saveActiveSession(null);
+                    refreshState();
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-900 text-xs font-semibold transition-colors cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5 text-zinc-500" />
+                  <span>Descartar</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveSession(appState.activeSession);
+                    setViewingAttempt(null);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
+                >
+                  <PlayCircle className="w-4 h-4" />
+                  <span>Retomar Prova</span>
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* If viewing a completed attempt result */}
           {viewingAttempt ? (
             <ExamResultView
@@ -245,6 +315,7 @@ export default function App() {
                   attempts={appState.attempts}
                   plan={appState.user.plan}
                   questions={appState.questions}
+                  selectedExamId={appState.user.selectedExamId || 'cpa'}
                   onStartTraining={(subjectId) => handleStartExam('TARGETED_TRAINING', subjectId)}
                   onStartErrorReview={() => handleStartExam('ERROR_REVIEW')}
                   onOpenAttemptResult={(att) => setViewingAttempt(att)}
