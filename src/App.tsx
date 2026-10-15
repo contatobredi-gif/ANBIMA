@@ -316,6 +316,7 @@ export default function App() {
                   plan={appState.user.plan}
                   questions={appState.questions}
                   selectedExamId={appState.user.selectedExamId || 'cpa'}
+                  examRule={examRule}
                   onStartTraining={(subjectId) => handleStartExam('TARGETED_TRAINING', subjectId)}
                   onStartErrorReview={() => handleStartExam('ERROR_REVIEW')}
                   onOpenAttemptResult={(att) => setViewingAttempt(att)}

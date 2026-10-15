@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
 import { 
   Subject, 
   Attempt, 
   PlanType, 
-  Question 
+  Question,
+  ExamRule 
 } from '../../types';
 import { 
   Target, 
@@ -26,6 +26,7 @@ interface TrainingHomeProps {
   plan: PlanType;
   questions: Question[];
   selectedExamId: string;
+  examRule?: ExamRule;
   onStartTraining: (subjectId: string) => void;
   onStartErrorReview: () => void;
   onOpenAttemptResult: (attempt: Attempt) => void;
@@ -38,12 +39,19 @@ export const TrainingHome: React.FC<TrainingHomeProps> = ({
   plan,
   questions,
   selectedExamId,
+  examRule,
   onStartTraining,
   onStartErrorReview,
   onOpenAttemptResult,
   onOpenUpgradeModal
 }) => {
   const isFreePlan = plan === 'Free';
+  const targetedSettings = examRule?.trainingSettings?.targetedTraining;
+  const trainingQuestionCount = targetedSettings?.questionCount || 20;
+  const trainingDurationMinutes = targetedSettings?.durationMinutes || 60;
+  const errorSettings = examRule?.trainingSettings?.errorReview;
+  const errorMaxQuestions = errorSettings?.maxQuestions || 20;
+
   const trainingAttempts = attempts.filter(
     a => (a.mode === 'TARGETED_TRAINING' || a.mode === 'ERROR_REVIEW') && a.examId === selectedExamId
   );
@@ -87,7 +95,7 @@ export const TrainingHome: React.FC<TrainingHomeProps> = ({
               Módulos Específicos
             </span>
             <span className="text-xs text-zinc-400">·</span>
-            <span className="text-xs text-zinc-500 font-medium">20 questões por sessão · 60 minutos</span>
+            <span className="text-xs text-zinc-500 font-medium">{trainingQuestionCount} questões por sessão · {trainingDurationMinutes} minutos</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 mt-1">
             Treinos Direcionados & Revisão
@@ -139,7 +147,7 @@ export const TrainingHome: React.FC<TrainingHomeProps> = ({
             <h3 className="text-base font-bold text-zinc-900">Treinar por Disciplina</h3>
             <p className="text-xs text-zinc-500">Escolha o conteúdo específico para aprofundar</p>
           </div>
-          <span className="text-xs text-zinc-400">Padrão: 20 questões · 60 min</span>
+          <span className="text-xs text-zinc-400">Padrão: {trainingQuestionCount} questões · {trainingDurationMinutes} min</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

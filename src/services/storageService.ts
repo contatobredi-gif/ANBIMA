@@ -1,11 +1,15 @@
 import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem, Question } from '../types';
-import { INITIAL_APP_STATE } from '../data/initialData';
+import { INITIAL_APP_STATE, INITIAL_EXAM_RULES } from '../data/initialData';
 import { INITIAL_QUESTIONS } from '../data/questionsData';
 
 const STORAGE_KEY = 'simulados_anbima_engine_v1';
 
 export class StorageService {
   private static cachedState: AppStateData | null = null;
+
+  public static clearCache(): void {
+    this.cachedState = null;
+  }
 
   public static getState(): AppStateData {
     if (this.cachedState) {
@@ -16,7 +20,18 @@ export class StorageService {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as AppStateData;
-        if (parsed.version === INITIAL_APP_STATE.version && parsed.user) {
+        if (parsed && typeof parsed === 'object' && parsed.user) {
+          parsed.version = INITIAL_APP_STATE.version;
+
+          // Ensure basic collections exist if migrating from older schemas
+          if (!parsed.subjects) parsed.subjects = JSON.parse(JSON.stringify(INITIAL_APP_STATE.subjects));
+          if (!parsed.dailyActivities) parsed.dailyActivities = {};
+          if (!parsed.achievements) parsed.achievements = JSON.parse(JSON.stringify(INITIAL_APP_STATE.achievements));
+          if (!parsed.rankings) parsed.rankings = JSON.parse(JSON.stringify(INITIAL_APP_STATE.rankings));
+          if (!parsed.notifications) parsed.notifications = JSON.parse(JSON.stringify(INITIAL_APP_STATE.notifications));
+          if (!parsed.articles) parsed.articles = JSON.parse(JSON.stringify(INITIAL_APP_STATE.articles));
+          if (!parsed.feedbacks) parsed.feedbacks = JSON.parse(JSON.stringify(INITIAL_APP_STATE.feedbacks));
+          if (!parsed.attempts) parsed.attempts = [];
           // Perform controlled non-destructive migrations:
           // 1. Ensure all questions have status: 'approved', version, origin
           if (Array.isArray(parsed.questions)) {
@@ -40,18 +55,52 @@ export class StorageService {
             parsed.questions = JSON.parse(JSON.stringify(INITIAL_QUESTIONS));
           }
 
-          // 3. Ensure examRules has allowRedistributionIfInsufficient
-          if (parsed.examRules) {
-            Object.values(parsed.examRules).forEach(r => {
+          // 3. Ensure examRules has trainingSettings, active, isActive, and sync with INITIAL_EXAM_RULES
+          if (parsed.examRules && typeof parsed.examRules === 'object') {
+            // Ensure any new exams from INITIAL_EXAM_RULES exist
+            Object.keys(INITIAL_EXAM_RULES).forEach(examKey => {
+              if (!parsed.examRules[examKey]) {
+                parsed.examRules[examKey] = JSON.parse(JSON.stringify(INITIAL_EXAM_RULES[examKey]));
+              }
+            });
+
+            Object.values(parsed.examRules).forEach((r: any) => {
               if (r.allowRedistributionIfInsufficient === undefined) {
                 r.allowRedistributionIfInsufficient = false;
+              }
+              const defaultRule = INITIAL_EXAM_RULES[r.examId] || INITIAL_EXAM_RULES['cpa'];
+              if (r.isActive === undefined) {
+                r.isActive = defaultRule?.isActive ?? true;
+              }
+              if (r.active === undefined) {
+                r.active = r.isActive;
+              }
+
+              // Ensure trainingSettings is safely migrated
+              if (!r.trainingSettings) {
+                r.trainingSettings = JSON.parse(JSON.stringify(defaultRule.trainingSettings || {
+                  targetedTraining: { enabled: true, questionCount: 20, durationMinutes: 60 },
+                  errorReview: { enabled: true, maxQuestions: 20, minutesPerQuestion: 3 },
+                  dailyChallenge: { enabled: true, questionCount: 5, durationMinutes: 15 }
+                }));
+              } else {
+                const defSettings = defaultRule.trainingSettings;
+                if (!r.trainingSettings.targetedTraining) {
+                  r.trainingSettings.targetedTraining = { ...defSettings?.targetedTraining };
+                }
+                if (!r.trainingSettings.errorReview) {
+                  r.trainingSettings.errorReview = { ...defSettings?.errorReview };
+                }
+                if (!r.trainingSettings.dailyChallenge) {
+                  r.trainingSettings.dailyChallenge = { ...defSettings?.dailyChallenge };
+                }
               }
             });
           }
 
-          // 4. Ensure past attempts have snapshots & ruleVersion
+          // 4. Ensure past attempts have snapshots & ruleVersion & ruleSnapshot
           if (Array.isArray(parsed.attempts)) {
-            parsed.attempts.forEach(att => {
+            parsed.attempts.forEach((att: any) => {
               if (!att.ruleVersion) {
                 att.ruleVersion = 'Regulamento 2026.1 - Edição Vigente';
               }
@@ -61,7 +110,18 @@ export class StorageService {
               if (!att.questionSnapshots || att.questionSnapshots.length === 0) {
                 att.questionSnapshots = parsed.questions.slice(0, att.totalQuestions);
               }
+              if (!att.ruleSnapshot && parsed.examRules && parsed.examRules[att.examId]) {
+                att.ruleSnapshot = JSON.parse(JSON.stringify(parsed.examRules[att.examId]));
+              }
             });
+          }
+
+          // 5. Ensure activeSession has ruleSnapshot if present
+          if (parsed.activeSession && !parsed.activeSession.ruleSnapshot && parsed.examRules) {
+            const rule = parsed.examRules[parsed.activeSession.examId] || parsed.examRules['cpa'];
+            if (rule) {
+              parsed.activeSession.ruleSnapshot = JSON.parse(JSON.stringify(rule));
+            }
           }
 
           this.cachedState = parsed;
@@ -69,7 +129,7 @@ export class StorageService {
         }
       }
     } catch (e) {
-      console.warn('Erro ao ler LocalStorage, inicializando com estado padrão:', e);
+      console.warn('Inconsistência detectada nos dados locais. Inicializando com estado padrão seguro:', e);
     }
 
     // Initialize with seed data
@@ -362,10 +422,35 @@ export class StorageService {
   public static updateExamRule(examId: string, updatedRule: Partial<ExamRule>): void {
     const state = this.getState();
     if (state.examRules[examId as keyof typeof state.examRules]) {
-      state.examRules[examId as keyof typeof state.examRules] = {
-        ...state.examRules[examId as keyof typeof state.examRules],
-        ...updatedRule
+      const current = state.examRules[examId as keyof typeof state.examRules];
+      const merged: ExamRule = {
+        ...current,
+        ...updatedRule,
+        trainingSettings: updatedRule.trainingSettings
+          ? {
+              targetedTraining: {
+                ...current.trainingSettings?.targetedTraining,
+                ...updatedRule.trainingSettings.targetedTraining
+              },
+              errorReview: {
+                ...current.trainingSettings?.errorReview,
+                ...updatedRule.trainingSettings.errorReview
+              },
+              dailyChallenge: {
+                ...current.trainingSettings?.dailyChallenge,
+                ...updatedRule.trainingSettings.dailyChallenge
+              }
+            }
+          : current.trainingSettings
       };
+
+      if (updatedRule.active !== undefined && updatedRule.isActive === undefined) {
+        merged.isActive = updatedRule.active;
+      } else if (updatedRule.isActive !== undefined && updatedRule.active === undefined) {
+        merged.active = updatedRule.isActive;
+      }
+
+      state.examRules[examId as keyof typeof state.examRules] = merged;
       this.saveState(state);
     }
   }

@@ -290,6 +290,221 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   className="w-full p-2.5 rounded-lg border border-zinc-300"
                 />
               </div>
+
+              <div>
+                <label className="block font-semibold text-zinc-700 mb-1">Status de Disponibilidade</label>
+                <select
+                  value={examForm.isActive ? 'active' : 'inactive'}
+                  onChange={e => {
+                    const activeVal = e.target.value === 'active';
+                    setExamForm({ ...examForm, isActive: activeVal, active: activeVal });
+                  }}
+                  className="w-full p-2.5 rounded-lg border border-zinc-300 bg-white"
+                >
+                  <option value="active">Exame Ativo (Disponível para simulados)</option>
+                  <option value="inactive">Exame Desativado (Bloquear novas tentativas)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Modalidades de Treino Configuráveis */}
+            <div className="pt-4 border-t border-zinc-100">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-800 mb-3">
+                Parâmetros das Modalidades de Treino (Bredi Exam Engine)
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                {/* Treino Direcionado */}
+                <div className="p-3.5 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-zinc-900">Treino Direcionado</span>
+                    <input
+                      type="checkbox"
+                      checked={examForm.trainingSettings?.targetedTraining?.enabled ?? true}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: {
+                            questionCount: examForm.trainingSettings?.targetedTraining?.questionCount ?? 20,
+                            durationMinutes: examForm.trainingSettings?.targetedTraining?.durationMinutes ?? 60,
+                            enabled: e.target.checked
+                          },
+                          errorReview: examForm.trainingSettings?.errorReview ?? { enabled: true, maxQuestions: 20, minutesPerQuestion: 3 },
+                          dailyChallenge: examForm.trainingSettings?.dailyChallenge ?? { enabled: true, questionCount: 5, durationMinutes: 15 }
+                        }
+                      })}
+                      className="rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-zinc-600 mb-1">Qtd. Questões</label>
+                    <input
+                      type="number"
+                      value={examForm.trainingSettings?.targetedTraining?.questionCount ?? 20}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: {
+                            enabled: examForm.trainingSettings?.targetedTraining?.enabled ?? true,
+                            durationMinutes: examForm.trainingSettings?.targetedTraining?.durationMinutes ?? 60,
+                            questionCount: parseInt(e.target.value) || 20
+                          },
+                          errorReview: examForm.trainingSettings?.errorReview ?? { enabled: true, maxQuestions: 20, minutesPerQuestion: 3 },
+                          dailyChallenge: examForm.trainingSettings?.dailyChallenge ?? { enabled: true, questionCount: 5, durationMinutes: 15 }
+                        }
+                      })}
+                      className="w-full p-2 rounded border border-zinc-300 bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-zinc-600 mb-1">Duração (minutos)</label>
+                    <input
+                      type="number"
+                      value={examForm.trainingSettings?.targetedTraining?.durationMinutes ?? 60}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: {
+                            enabled: examForm.trainingSettings?.targetedTraining?.enabled ?? true,
+                            questionCount: examForm.trainingSettings?.targetedTraining?.questionCount ?? 20,
+                            durationMinutes: parseInt(e.target.value) || 60
+                          },
+                          errorReview: examForm.trainingSettings?.errorReview ?? { enabled: true, maxQuestions: 20, minutesPerQuestion: 3 },
+                          dailyChallenge: examForm.trainingSettings?.dailyChallenge ?? { enabled: true, questionCount: 5, durationMinutes: 15 }
+                        }
+                      })}
+                      className="w-full p-2 rounded border border-zinc-300 bg-white"
+                    />
+                  </div>
+                </div>
+
+                {/* Revisão de Erros */}
+                <div className="p-3.5 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-zinc-900">Revisão de Erros</span>
+                    <input
+                      type="checkbox"
+                      checked={examForm.trainingSettings?.errorReview?.enabled ?? true}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: examForm.trainingSettings?.targetedTraining ?? { enabled: true, questionCount: 20, durationMinutes: 60 },
+                          errorReview: {
+                            maxQuestions: examForm.trainingSettings?.errorReview?.maxQuestions ?? 20,
+                            minutesPerQuestion: examForm.trainingSettings?.errorReview?.minutesPerQuestion ?? 3,
+                            enabled: e.target.checked
+                          },
+                          dailyChallenge: examForm.trainingSettings?.dailyChallenge ?? { enabled: true, questionCount: 5, durationMinutes: 15 }
+                        }
+                      })}
+                      className="rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-zinc-600 mb-1">Máx. Questões</label>
+                    <input
+                      type="number"
+                      value={examForm.trainingSettings?.errorReview?.maxQuestions ?? 20}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: examForm.trainingSettings?.targetedTraining ?? { enabled: true, questionCount: 20, durationMinutes: 60 },
+                          errorReview: {
+                            enabled: examForm.trainingSettings?.errorReview?.enabled ?? true,
+                            minutesPerQuestion: examForm.trainingSettings?.errorReview?.minutesPerQuestion ?? 3,
+                            maxQuestions: parseInt(e.target.value) || 20
+                          },
+                          dailyChallenge: examForm.trainingSettings?.dailyChallenge ?? { enabled: true, questionCount: 5, durationMinutes: 15 }
+                        }
+                      })}
+                      className="w-full p-2 rounded border border-zinc-300 bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-zinc-600 mb-1">Minutos / Questão</label>
+                    <input
+                      type="number"
+                      value={examForm.trainingSettings?.errorReview?.minutesPerQuestion ?? 3}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: examForm.trainingSettings?.targetedTraining ?? { enabled: true, questionCount: 20, durationMinutes: 60 },
+                          errorReview: {
+                            enabled: examForm.trainingSettings?.errorReview?.enabled ?? true,
+                            maxQuestions: examForm.trainingSettings?.errorReview?.maxQuestions ?? 20,
+                            minutesPerQuestion: parseInt(e.target.value) || 3
+                          },
+                          dailyChallenge: examForm.trainingSettings?.dailyChallenge ?? { enabled: true, questionCount: 5, durationMinutes: 15 }
+                        }
+                      })}
+                      className="w-full p-2 rounded border border-zinc-300 bg-white"
+                    />
+                  </div>
+                </div>
+
+                {/* Desafio Diário */}
+                <div className="p-3.5 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-zinc-900">Desafio Diário</span>
+                    <input
+                      type="checkbox"
+                      checked={examForm.trainingSettings?.dailyChallenge?.enabled ?? true}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: examForm.trainingSettings?.targetedTraining ?? { enabled: true, questionCount: 20, durationMinutes: 60 },
+                          errorReview: examForm.trainingSettings?.errorReview ?? { enabled: true, maxQuestions: 20, minutesPerQuestion: 3 },
+                          dailyChallenge: {
+                            questionCount: examForm.trainingSettings?.dailyChallenge?.questionCount ?? 5,
+                            durationMinutes: examForm.trainingSettings?.dailyChallenge?.durationMinutes ?? 15,
+                            enabled: e.target.checked
+                          }
+                        }
+                      })}
+                      className="rounded"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-zinc-600 mb-1">Qtd. Questões</label>
+                    <input
+                      type="number"
+                      value={examForm.trainingSettings?.dailyChallenge?.questionCount ?? 5}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: examForm.trainingSettings?.targetedTraining ?? { enabled: true, questionCount: 20, durationMinutes: 60 },
+                          errorReview: examForm.trainingSettings?.errorReview ?? { enabled: true, maxQuestions: 20, minutesPerQuestion: 3 },
+                          dailyChallenge: {
+                            enabled: examForm.trainingSettings?.dailyChallenge?.enabled ?? true,
+                            durationMinutes: examForm.trainingSettings?.dailyChallenge?.durationMinutes ?? 15,
+                            questionCount: parseInt(e.target.value) || 5
+                          }
+                        }
+                      })}
+                      className="w-full p-2 rounded border border-zinc-300 bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-zinc-600 mb-1">Duração (minutos)</label>
+                    <input
+                      type="number"
+                      value={examForm.trainingSettings?.dailyChallenge?.durationMinutes ?? 15}
+                      onChange={e => setExamForm({
+                        ...examForm,
+                        trainingSettings: {
+                          targetedTraining: examForm.trainingSettings?.targetedTraining ?? { enabled: true, questionCount: 20, durationMinutes: 60 },
+                          errorReview: examForm.trainingSettings?.errorReview ?? { enabled: true, maxQuestions: 20, minutesPerQuestion: 3 },
+                          dailyChallenge: {
+                            enabled: examForm.trainingSettings?.dailyChallenge?.enabled ?? true,
+                            questionCount: examForm.trainingSettings?.dailyChallenge?.questionCount ?? 5,
+                            durationMinutes: parseInt(e.target.value) || 15
+                          }
+                        }
+                      })}
+                      className="w-full p-2 rounded border border-zinc-300 bg-white"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="pt-4 border-t border-zinc-100 flex items-center justify-between">

@@ -2,6 +2,30 @@ export type PlanType = 'Free' | 'Pro';
 
 export type ExamId = 'cpa' | 'oab';
 
+export interface TargetedTrainingSettings {
+  enabled: boolean;
+  questionCount: number;
+  durationMinutes: number;
+}
+
+export interface ErrorReviewSettings {
+  enabled: boolean;
+  maxQuestions: number;
+  minutesPerQuestion: number;
+}
+
+export interface DailyChallengeSettings {
+  enabled: boolean;
+  questionCount: number;
+  durationMinutes: number;
+}
+
+export interface TrainingSettings {
+  targetedTraining: TargetedTrainingSettings;
+  errorReview: ErrorReviewSettings;
+  dailyChallenge: DailyChallengeSettings;
+}
+
 export interface ExamRule {
   examId: ExamId;
   name: string;
@@ -16,8 +40,10 @@ export interface ExamRule {
   enabledDisciplines: string[];
   maxFreeSimulations: number;
   isActive: boolean;
+  active?: boolean;
   category: 'Certificação Financeira' | 'Exame de Ordem' | 'Concurso Público';
   allowRedistributionIfInsufficient?: boolean; // Default false
+  trainingSettings?: TrainingSettings;
 }
 
 export interface Subject {
@@ -102,6 +128,7 @@ export interface Attempt {
   topicScores?: TopicResult[];
   questionOrder?: string[];
   questionSnapshots: Question[]; // Immutable snapshot of questions used
+  ruleSnapshot?: ExamRule; // Preserves complete immutable exam rule for this attempt
 }
 
 export interface ActiveExamSession {
@@ -118,6 +145,7 @@ export interface ActiveExamSession {
   answers: Record<string, number | null>; // questionId -> selectedOptionIndex
   flaggedQuestionIds: string[];
   questionSnapshots: Question[]; // Snapshot taken at session creation
+  ruleSnapshot?: ExamRule; // Preserves complete immutable exam rule for this session
   completed?: boolean;
 }
 
@@ -216,7 +244,7 @@ export interface Article {
 export interface AppStateData {
   version: number;
   user: UserProfile;
-  examRules: Record<ExamId, ExamRule>;
+  examRules: Record<string, ExamRule>;
   subjects: Subject[];
   questions: Question[];
   attempts: Attempt[];

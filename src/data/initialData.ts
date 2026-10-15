@@ -16,8 +16,26 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
     enabledDisciplines: ['mat_fin', 'fundos_inv', 'renda_fixa_var', 'sfn_mercado', 'previdencia', 'risco_compliance', 'economia_fin'],
     maxFreeSimulations: 1,
     isActive: true,
+    active: true,
     category: 'Certificação Financeira',
-    allowRedistributionIfInsufficient: false
+    allowRedistributionIfInsufficient: false,
+    trainingSettings: {
+      targetedTraining: {
+        enabled: true,
+        questionCount: 20,
+        durationMinutes: 60
+      },
+      errorReview: {
+        enabled: true,
+        maxQuestions: 20,
+        minutesPerQuestion: 3
+      },
+      dailyChallenge: {
+        enabled: true,
+        questionCount: 5,
+        durationMinutes: 15
+      }
+    }
   },
   oab: {
     examId: 'oab',
@@ -33,8 +51,26 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
     enabledDisciplines: ['etica_prof', 'dir_const', 'dir_civil'],
     maxFreeSimulations: 1,
     isActive: false, // Desabilitado para demonstrar arquitetura expansível
+    active: false,
     category: 'Exame de Ordem',
-    allowRedistributionIfInsufficient: false
+    allowRedistributionIfInsufficient: false,
+    trainingSettings: {
+      targetedTraining: {
+        enabled: false,
+        questionCount: 15,
+        durationMinutes: 45
+      },
+      errorReview: {
+        enabled: false,
+        maxQuestions: 15,
+        minutesPerQuestion: 3
+      },
+      dailyChallenge: {
+        enabled: false,
+        questionCount: 5,
+        durationMinutes: 15
+      }
+    }
   }
 };
 

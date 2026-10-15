@@ -88,17 +88,36 @@ export class ExamEngine {
   public static startSession(
     mode: AttemptMode, 
     targetSubjectId?: string, 
-    overrideExamId?: ExamId
+    overrideExamId?: ExamId | string
   ): ActiveExamSession {
     const state = StorageService.getState();
-    const examId: ExamId = overrideExamId || state.user.selectedExamId || 'cpa';
-    const examRule = state.examRules[examId] || state.examRules['cpa'];
+    const examId = (overrideExamId || state.user?.selectedExamId) as ExamId;
+
+    // 1. Identify selected exam & consult specific configuration - NO FALLBACK TO CPA!
+    if (!examId || !state.examRules || !state.examRules[examId]) {
+      throw new Error('Não foi possível iniciar a prova. As configurações deste exame não estão disponíveis.');
+    }
+
+    const examRule = state.examRules[examId];
+
+    // 2. Check if exam is active (supports both active and isActive)
+    const isExamActive = (examRule.isActive ?? examRule.active ?? false);
+    if (!isExamActive) {
+      throw new Error('Este exame ainda não está disponível para realização de simulados.');
+    }
 
     let selectedQuestions: Question[] = [];
     let disciplineDistribution: Record<string, number> = {};
     let durationMinutes = examRule.durationMinutes;
 
     if (mode === 'FULL_EXAM') {
+      if (!Number.isInteger(examRule.totalQuestions) || examRule.totalQuestions <= 0) {
+        throw new Error('Configuração inválida: quantidade total de questões do exame deve ser um número inteiro positivo.');
+      }
+      if (!Number.isInteger(examRule.durationMinutes) || examRule.durationMinutes <= 0) {
+        throw new Error('Configuração inválida: duração do exame deve ser um número inteiro positivo.');
+      }
+
       const distribution = this.calculateDisciplineDistribution(examRule, state.subjects);
       const chosenPerSubject: Question[] = [];
 
@@ -138,10 +157,25 @@ export class ExamEngine {
       durationMinutes = examRule.durationMinutes;
 
     } else if (mode === 'TARGETED_TRAINING') {
+      const trainingSettings = examRule.trainingSettings?.targetedTraining;
+      if (!trainingSettings || !trainingSettings.enabled) {
+        throw new Error(`A modalidade de Treino Direcionado não está habilitada para o exame "${examRule.name}".`);
+      }
+
+      const targetCount = trainingSettings.questionCount;
+      const trainingDuration = trainingSettings.durationMinutes;
+
+      // Safe operational limits validation
+      if (!Number.isInteger(targetCount) || targetCount <= 0 || targetCount > 200) {
+        throw new Error('Configuração inválida: quantidade de questões do treino deve ser um inteiro positivo entre 1 e 200.');
+      }
+      if (!Number.isInteger(trainingDuration) || trainingDuration <= 0 || trainingDuration > 480) {
+        throw new Error('Configuração inválida: duração do treino deve ser um inteiro positivo entre 1 e 480 minutos.');
+      }
+
       const subjectId = targetSubjectId || 'mat_fin';
       const subject = state.subjects.find(s => s.id === subjectId);
       const subjectName = subject?.name || subjectId;
-      const targetCount = 20; // Exact required count for targeted training
 
       // Filter approved questions for this exam and subject
       const eligible = state.questions.filter(q => 
@@ -177,9 +211,24 @@ export class ExamEngine {
 
       selectedQuestions = this.shuffle(chosen);
       disciplineDistribution[subjectId] = selectedQuestions.length;
-      durationMinutes = 60; // 60 minutes for targeted training
+      durationMinutes = trainingDuration;
 
     } else if (mode === 'ERROR_REVIEW') {
+      const reviewSettings = examRule.trainingSettings?.errorReview;
+      if (!reviewSettings || !reviewSettings.enabled) {
+        throw new Error(`A modalidade de Revisão de Erros não está habilitada para o exame "${examRule.name}".`);
+      }
+
+      const maxQuestions = reviewSettings.maxQuestions;
+      const minutesPerQuestion = reviewSettings.minutesPerQuestion;
+
+      if (!Number.isInteger(maxQuestions) || maxQuestions <= 0 || maxQuestions > 200) {
+        throw new Error('Configuração inválida: quantidade máxima de questões para revisão de erros deve ser entre 1 e 200.');
+      }
+      if (!Number.isInteger(minutesPerQuestion) || minutesPerQuestion <= 0 || minutesPerQuestion > 60) {
+        throw new Error('Configuração inválida: minutos por questão para revisão de erros deve ser entre 1 e 60.');
+      }
+
       // Query ONLY previous attempts from the SAME user and SAME exam
       const failedQuestionIds = new Set<string>();
       state.attempts
@@ -193,7 +242,6 @@ export class ExamEngine {
         });
 
       if (failedQuestionIds.size === 0) {
-        // Do NOT silently replace with random difficult questions!
         throw new Error(
           'Nenhuma questão incorreta encontrada para revisão neste exame. Complete simulados ou treinos para identificar seus erros.'
         );
@@ -212,24 +260,43 @@ export class ExamEngine {
         );
       }
 
-      // Select up to 20 failed questions
-      selectedQuestions = this.shuffle(eligibleFailed).slice(0, 20);
-      durationMinutes = Math.min(60, selectedQuestions.length * 3);
+      // Select up to maxQuestions failed questions
+      selectedQuestions = this.shuffle(eligibleFailed).slice(0, maxQuestions);
+      durationMinutes = Math.min(60, selectedQuestions.length * minutesPerQuestion);
 
     } else if (mode === 'DAILY_CHALLENGE') {
+      const challengeSettings = examRule.trainingSettings?.dailyChallenge;
+      if (!challengeSettings || !challengeSettings.enabled) {
+        throw new Error(`O Desafio Diário não está habilitado para o exame "${examRule.name}".`);
+      }
+
+      const questionCount = challengeSettings.questionCount;
+      const challengeDuration = challengeSettings.durationMinutes;
+
+      if (!Number.isInteger(questionCount) || questionCount <= 0 || questionCount > 50) {
+        throw new Error('Configuração inválida: quantidade de questões do desafio diário deve ser entre 1 e 50.');
+      }
+      if (!Number.isInteger(challengeDuration) || challengeDuration <= 0 || challengeDuration > 120) {
+        throw new Error('Configuração inválida: duração do desafio diário deve ser entre 1 e 120 minutos.');
+      }
+
       const eligible = state.questions.filter(q => 
         q.examId === examId &&
         q.status === 'approved'
       );
-      selectedQuestions = this.shuffle(eligible).slice(0, 5);
-      durationMinutes = 15;
+      if (eligible.length < questionCount) {
+        throw new Error(`Questões insuficientes no banco para o desafio diário do exame "${examRule.name}".`);
+      }
+      selectedQuestions = this.shuffle(eligible).slice(0, questionCount);
+      durationMinutes = challengeDuration;
     }
 
     // Stable unique session ID established once at start
     const stableSessionId = `session_${examId}_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
 
-    // Take immutable snapshot of the questions at creation time
+    // Take immutable snapshot of the questions and rules at creation time
     const snapshots: Question[] = JSON.parse(JSON.stringify(selectedQuestions));
+    const ruleSnapshot: ExamRule = JSON.parse(JSON.stringify(examRule));
 
     const newSession: ActiveExamSession = {
       id: stableSessionId,
@@ -245,6 +312,7 @@ export class ExamEngine {
       answers: {},
       flaggedQuestionIds: [],
       questionSnapshots: snapshots,
+      ruleSnapshot,
       completed: false
     };
 
@@ -274,7 +342,11 @@ export class ExamEngine {
     }
 
     const state = StorageService.getState();
-    const examRule = state.examRules[session.examId] || state.examRules['cpa'];
+    // Prioritize preserved ruleSnapshot from session creation - NO FALLBACK TO CPA!
+    const examRule = session.ruleSnapshot || (state.examRules ? state.examRules[session.examId] : undefined);
+    if (!examRule) {
+      throw new Error(`Não foi possível finalizar a prova. As configurações do exame "${session.examId}" não estão disponíveis.`);
+    }
 
     // Mark session as completed in session object
     session.completed = true;
@@ -385,7 +457,8 @@ export class ExamEngine {
       disciplineScores,
       topicScores,
       questionOrder: session.questionIds,
-      questionSnapshots: sessionQuestions
+      questionSnapshots: sessionQuestions,
+      ruleSnapshot: session.ruleSnapshot || JSON.parse(JSON.stringify(examRule))
     };
 
     // Save and clear active session
