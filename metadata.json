@@ -1,0 +1,6 @@
+{
+  "name": "Simulados ANBIMA - Bredi Exam Engine",
+  "description": "Plataforma de alta performance para preparação, simulados interativos e treinos direcionados de exames e certificações financeiras.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
