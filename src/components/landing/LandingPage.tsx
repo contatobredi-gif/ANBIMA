@@ -16,6 +16,7 @@ import {
   LayoutDashboard
 } from 'lucide-react';
 import { TestimonialFeedback, PlanType } from '../../types';
+import { AccessControlService } from '../../services/accessControlService';
 
 interface LandingPageProps {
   feedbacks: TestimonialFeedback[];
@@ -28,6 +29,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   onEnterStudentArea,
   onSelectPlanAndEnter
 }) => {
+  const cpaPlans = AccessControlService.getPlansForExam('cpa');
+  const cpaProPlan = cpaPlans.find(p => p.type === 'Pro');
+  const cpaPriceFormatted = cpaProPlan?.priceCents !== null && cpaProPlan?.priceCents !== undefined
+    ? (cpaProPlan.priceCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    : 'R$ 29,90';
   const approvedFeedbacks = feedbacks.filter(f => f.approvedForDisplay);
 
   return (

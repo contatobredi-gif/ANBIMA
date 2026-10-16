@@ -26,8 +26,9 @@ import {
   CartesianGrid,
   ReferenceLine
 } from 'recharts';
-import { AppStateData, Attempt, Subject } from '../../types';
+import { AppStateData, Attempt, Subject, ExamId } from '../../types';
 import { StorageService } from '../../services/storageService';
+import { AccessControlService } from '../../services/accessControlService';
 import { ScoreCriteriaBadge } from '../common/ScoreCriteriaBadge';
 import confetti from 'canvas-confetti';
 
@@ -35,7 +36,7 @@ interface StudentDashboardProps {
   appState: AppStateData;
   onStartExam: (mode: 'FULL_EXAM' | 'TARGETED_TRAINING' | 'ERROR_REVIEW', targetSubjectId?: string) => void;
   onOpenDailyChallenge: () => void;
-  onOpenUpgradeModal: (feature: string) => void;
+  onOpenUpgradeModal: (feature: string, targetExamId?: ExamId) => void;
   onNavigate: (view: string) => void;
   onShareProgress: () => void;
 }
@@ -49,16 +50,18 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   onShareProgress
 }) => {
   const { user, attempts, examRules, subjects, achievements, rankings, dailyActivities } = appState;
-  const examRule = examRules[user.selectedExamId] || examRules['cpa'];
+  const selectedExamId: ExamId = user.selectedExamId || 'cpa';
+  const examRule = examRules[selectedExamId] || Object.values(examRules)[0];
 
   // State for chart filter
   const [chartMode, setChartMode] = useState<'FULL_EXAM' | 'ALL'>('FULL_EXAM');
   const [selectedSubjectDetail, setSelectedSubjectDetail] = useState<Subject | null>(null);
   const [checkInStatus, setCheckInStatus] = useState<string | null>(null);
 
-  // Filter attempts
-  const fullExamAttempts = attempts.filter(a => a.mode === 'FULL_EXAM');
-  const trainingAttempts = attempts.filter(a => a.mode === 'TARGETED_TRAINING');
+  // Filter attempts strictly for the selected exam
+  const examAttempts = attempts.filter(a => a.examId === selectedExamId);
+  const fullExamAttempts = examAttempts.filter(a => a.mode === 'FULL_EXAM');
+  const trainingAttempts = examAttempts.filter(a => a.mode === 'TARGETED_TRAINING');
 
   // Stats calculation
   const lastAttempt = fullExamAttempts.length > 0 ? fullExamAttempts[fullExamAttempts.length - 1] : null;
@@ -78,7 +81,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const hasCompletedChallengeToday = todayActivity?.challengeCompleted || false;
 
   // Chart data preparation
-  const chartAttempts = chartMode === 'FULL_EXAM' ? fullExamAttempts : attempts;
+  const chartAttempts = chartMode === 'FULL_EXAM' ? fullExamAttempts : examAttempts;
   const evolutionChartData = chartAttempts.map((att, idx) => ({
     name: att.mode === 'FULL_EXAM' ? `Simulado ${idx + 1}` : `Treino`,
     date: new Date(att.startedAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
@@ -87,13 +90,13 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     mode: att.mode
   }));
 
-  // Discipline aggregated performance from latest attempts
+  // Discipline aggregated performance from latest attempts for this exam
   const disciplineStats = subjects.map(subject => {
-    // Find all questions answered for this subject across all attempts
+    // Find all questions answered for this subject across attempts of this exam
     let totalQuestions = 0;
     let correctCount = 0;
 
-    attempts.forEach(att => {
+    examAttempts.forEach(att => {
       const disc = att.disciplineScores.find(d => d.subjectId === subject.id);
       if (disc) {
         totalQuestions += disc.totalQuestions;
@@ -574,8 +577,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             </div>
             <button
               onClick={() => {
-                if (user.plan === 'Free') {
-                  onOpenUpgradeModal('Modo Revisar Meus Erros');
+                const access = AccessControlService.canAccessFeature(selectedExamId, 'ERROR_REVIEW');
+                if (!access.allowed) {
+                  onOpenUpgradeModal(`Modo Revisar Meus Erros (${examRule.shortName})`, selectedExamId);
                 } else {
                   onStartExam('ERROR_REVIEW');
                 }
@@ -591,15 +595,22 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
           <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between text-xs mb-2">
-                <span className="font-semibold text-zinc-700">Simulado CPA Completo</span>
+                <span className="font-semibold text-zinc-700">Simulado {examRule.shortName} Completo</span>
                 <BookOpen className="w-4 h-4 text-emerald-600" />
               </div>
               <p className="text-xs text-zinc-500 mb-3">
-                Prova de 50 questões com cronômetro real de 150 minutos e nota oficial calculada.
+                Prova de {examRule.totalQuestions} questões com cronômetro real de {examRule.durationMinutes} minutos e nota oficial calculada.
               </p>
             </div>
             <button
-              onClick={() => onStartExam('FULL_EXAM')}
+              onClick={() => {
+                const simAccess = AccessControlService.canStartSimulation(selectedExamId);
+                if (!simAccess.allowed) {
+                  onOpenUpgradeModal(`Simulado Completo (${examRule.shortName})`, selectedExamId);
+                } else {
+                  onStartExam('FULL_EXAM');
+                }
+              }}
               className="w-full py-2 px-3 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
             >
               <ArrowRight className="w-3.5 h-3.5" />

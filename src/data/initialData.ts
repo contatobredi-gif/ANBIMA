@@ -22,7 +22,7 @@ export const INITIAL_EXAM_PLANS: ExamPlan[] = [
     examId: 'cpa',
     name: 'CPA Pro',
     type: 'Pro',
-    priceCents: 4990, // R$ 49,90
+    priceCents: 2990, // R$ 29,90/mês
     currency: 'BRL',
     billingCycle: 'monthly',
     isActive: true,
@@ -53,10 +53,10 @@ export const INITIAL_EXAM_PLANS: ExamPlan[] = [
     examId: 'oab',
     name: 'OAB Pro',
     type: 'Pro',
-    priceCents: 5990, // R$ 59,90
+    priceCents: null, // Preço a definir / contratação desabilitada
     currency: 'BRL',
     billingCycle: 'monthly',
-    isActive: true,
+    isActive: false, // Desabilitada contratação pública
     features: [
       'Simulados ilimitados da 1ª Fase OAB (80 questões)',
       'Treinos por ramos do Direito (Ética, Constitucional, Civil)',
@@ -99,6 +99,10 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
     active: true,
     category: 'Certificação Financeira',
     allowRedistributionIfInsufficient: false,
+    trialPolicy: {
+      enabled: false,
+      durationDays: 0
+    },
     trainingSettings: {
       targetedTraining: {
         enabled: true,
@@ -108,7 +112,8 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
       errorReview: {
         enabled: true,
         maxQuestions: 20,
-        minutesPerQuestion: 3
+        minutesPerQuestion: 3,
+        maxDurationMinutes: 60
       },
       dailyChallenge: {
         enabled: true,
@@ -134,6 +139,10 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
     active: false,
     category: 'Exame de Ordem',
     allowRedistributionIfInsufficient: false,
+    trialPolicy: {
+      enabled: false,
+      durationDays: 0
+    },
     trainingSettings: {
       targetedTraining: {
         enabled: false,
@@ -143,7 +152,8 @@ export const INITIAL_EXAM_RULES: Record<string, ExamRule> = {
       errorReview: {
         enabled: false,
         maxQuestions: 15,
-        minutesPerQuestion: 3
+        minutesPerQuestion: 3,
+        maxDurationMinutes: 60
       },
       dailyChallenge: {
         enabled: false,

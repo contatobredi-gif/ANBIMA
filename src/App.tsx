@@ -4,7 +4,8 @@ import {
   Attempt, 
   ActiveExamSession, 
   PlanType,
-  AttemptMode 
+  AttemptMode,
+  ExamId 
 } from './types';
 import { StorageService } from './services/storageService';
 import { ExamEngine } from './services/examEngine';
@@ -45,6 +46,7 @@ export default function App() {
   // Modals and Alerts state
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState('Funcionalidade Pro');
+  const [upgradeTargetExamId, setUpgradeTargetExamId] = useState<ExamId | undefined>(undefined);
   const [dailyChallengeOpen, setDailyChallengeOpen] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -63,9 +65,9 @@ export default function App() {
     setAppState(StorageService.getState());
   };
 
-  // Switch Plan
-  const handlePlanToggle = () => {
-    StorageService.togglePlan();
+  // Switch Plan per exam
+  const handlePlanToggle = (examId?: ExamId) => {
+    StorageService.togglePlan(examId || appState.user.selectedExamId);
     refreshState();
   };
 
@@ -110,9 +112,10 @@ export default function App() {
     refreshState();
   };
 
-  // Open upgrade modal with custom feature trigger
-  const handleOpenUpgrade = (featureName: string) => {
+  // Open upgrade modal with custom feature trigger and exam context
+  const handleOpenUpgrade = (featureName: string, targetExamId?: ExamId) => {
     setUpgradeFeature(featureName);
+    setUpgradeTargetExamId(targetExamId || appState.user.selectedExamId);
     setUpgradeModalOpen(true);
   };
 
@@ -193,6 +196,10 @@ export default function App() {
           onRestoreData={handleRestoreData}
           isPublicMode={isPublicLanding}
           onTogglePublicMode={() => setIsPublicLanding(true)}
+          onSelectExam={(examId) => {
+            StorageService.setSelectedExam(examId);
+            refreshState();
+          }}
         />
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
@@ -394,6 +401,7 @@ export default function App() {
         isOpen={upgradeModalOpen}
         onClose={() => setUpgradeModalOpen(false)}
         featureTriggered={upgradeFeature}
+        targetExamId={upgradeTargetExamId}
         onUpgraded={() => refreshState()}
       />
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Check, Zap, Sparkles, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { X, Check, Zap, Sparkles, ShieldCheck, CheckCircle2, AlertTriangle, Lock } from 'lucide-react';
 import { ExamId } from '../../types';
 import { AccessControlService } from '../../services/accessControlService';
 import { StorageService } from '../../services/storageService';
@@ -23,29 +23,35 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
   const currentExamId: ExamId = targetExamId || state.user.selectedExamId || 'cpa';
   const [selectedExam, setSelectedExam] = useState<ExamId>(currentExamId);
   const [upgradedSuccess, setUpgradedSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
   const examRule = state.examRules[selectedExam] || state.examRules['cpa'];
   const plans = AccessControlService.getPlansForExam(selectedExam);
-  const proPlan = plans.find(p => p.type === 'Pro') || {
-    priceCents: selectedExam === 'oab' ? 5990 : 4990,
-    name: `${selectedExam.toUpperCase()} Pro`
-  };
+  const proPlan = plans.find(p => p.type === 'Pro');
 
-  const formattedPrice = (proPlan.priceCents / 100).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
+  const isExamActive = (examRule.isActive ?? examRule.active ?? false);
+  const hasDefinedPrice = proPlan?.priceCents !== null && proPlan?.priceCents !== undefined;
+  const isPurchasable = isExamActive && proPlan?.isActive && hasDefinedPrice;
+
+  const formattedPrice = hasDefinedPrice && proPlan
+    ? `${(proPlan.priceCents! / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}/mês`
+    : 'Preço a definir (Em breve)';
 
   const handleSimulateUpgrade = () => {
-    AccessControlService.subscribeToExam(selectedExam);
-    setUpgradedSuccess(true);
-    setTimeout(() => {
-      if (onUpgraded) onUpgraded();
-      onClose();
-      setUpgradedSuccess(false);
-    }, 1200);
+    try {
+      setErrorMessage(null);
+      AccessControlService.subscribeToExam(selectedExam, proPlan?.id);
+      setUpgradedSuccess(true);
+      setTimeout(() => {
+        if (onUpgraded) onUpgraded();
+        onClose();
+        setUpgradedSuccess(false);
+      }, 1200);
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Não foi possível concluir a assinatura.');
+    }
   };
 
   return (
@@ -67,7 +73,7 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
               Assinatura Pro Ativada com Sucesso!
             </h3>
             <p className="text-sm text-zinc-600 max-w-sm mx-auto">
-              Seu acesso ao <strong>Plano Pro ({examRule.shortName})</strong> foi liberado. A assinatura é independente e válida por 30 dias com renovação automática simulada.
+              Seu acesso ao <strong>Plano Pro ({examRule.shortName})</strong> foi liberado. A assinatura é independente e vinculada exclusivamente a este exame.
             </p>
           </div>
         ) : (
@@ -89,13 +95,23 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
               </p>
             </div>
 
-            {/* Exam Selector if multiple exams are available */}
+            {errorMessage && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 text-xs rounded-xl flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+
+            {/* Exam Selector */}
             <div className="mb-4 bg-zinc-50 p-2.5 rounded-xl border border-zinc-200 flex items-center justify-between text-xs">
               <span className="font-semibold text-zinc-700">Exame Selecionado:</span>
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
-                  onClick={() => setSelectedExam('cpa')}
+                  onClick={() => {
+                    setSelectedExam('cpa');
+                    setErrorMessage(null);
+                  }}
                   className={`px-3 py-1 rounded-lg font-bold transition-colors ${
                     selectedExam === 'cpa'
                       ? 'bg-emerald-600 text-white shadow-xs'
@@ -106,7 +122,10 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setSelectedExam('oab')}
+                  onClick={() => {
+                    setSelectedExam('oab');
+                    setErrorMessage(null);
+                  }}
                   className={`px-3 py-1 rounded-lg font-bold transition-colors ${
                     selectedExam === 'oab'
                       ? 'bg-emerald-600 text-white shadow-xs'
@@ -150,13 +169,22 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
               </ul>
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-900 mb-5">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-900 mb-4">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                <span>Simulação de Upgrade Comercial</span>
+                <span>Valor do Plano no Catálogo</span>
               </div>
-              <span className="font-bold text-sm text-emerald-800">{formattedPrice}/mês</span>
+              <span className="font-bold text-sm text-emerald-800">{formattedPrice}</span>
             </div>
+
+            {!isPurchasable && (
+              <div className="mb-4 p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-center gap-2">
+                <Lock className="w-4 h-4 text-amber-700 flex-shrink-0" />
+                <span>
+                  O exame <strong>{examRule.shortName}</strong> está em fase demonstrativa. Contratação pública desabilitada até aprovação do valor comercial.
+                </span>
+              </div>
+            )}
 
             <p className="text-[11px] text-zinc-400 text-center mb-4">
               * A contratação é individual para <strong>{examRule.shortName}</strong>. Outros exames da sua conta permanecem com seus respectivos planos.
@@ -169,13 +197,24 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({
               >
                 Permanecer no Free
               </button>
-              <button
-                onClick={handleSimulateUpgrade}
-                className="flex-1 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4" />
-                Ativar Pro ({examRule.shortName})
-              </button>
+
+              {isPurchasable ? (
+                <button
+                  onClick={handleSimulateUpgrade}
+                  className="flex-1 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Ativar Pro ({examRule.shortName})
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="flex-1 py-2.5 px-4 bg-zinc-200 text-zinc-500 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-not-allowed"
+                >
+                  <Lock className="w-4 h-4 text-zinc-400" />
+                  Contratação Indisponível
+                </button>
+              )}
             </div>
           </>
         )}

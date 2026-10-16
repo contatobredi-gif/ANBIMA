@@ -106,7 +106,7 @@ export const SimuladosHome: React.FC<SimuladosHomeProps> = ({
 
       {/* Exam Parameters Overview Card */}
       <div className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-xs">
-        <h3 className="text-sm font-bold text-zinc-900 mb-3">Parâmetros do Simulado CPA</h3>
+        <h3 className="text-sm font-bold text-zinc-900 mb-3">Parâmetros do Simulado {examRule.shortName}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
           <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-100">
             <span className="text-zinc-500 block">Total de Questões</span>
@@ -114,7 +114,9 @@ export const SimuladosHome: React.FC<SimuladosHomeProps> = ({
           </div>
           <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-100">
             <span className="text-zinc-500 block">Duração Máxima</span>
-            <span className="text-base font-bold text-zinc-900 mt-0.5 block">{examRule.durationMinutes} minutos (2h30)</span>
+            <span className="text-base font-bold text-zinc-900 mt-0.5 block">
+              {examRule.durationMinutes} minutos ({Math.floor(examRule.durationMinutes / 60)}h{examRule.durationMinutes % 60 > 0 ? `${examRule.durationMinutes % 60}min` : ''})
+            </span>
           </div>
           <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-100">
             <span className="text-zinc-500 block">Critério Mínimo</span>

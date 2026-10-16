@@ -1,6 +1,7 @@
 import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem, Question, ExamId, ExamPlan, ExamSubscription } from '../types';
 import { INITIAL_APP_STATE, INITIAL_EXAM_RULES, INITIAL_EXAM_PLANS, INITIAL_SUBSCRIPTIONS } from '../data/initialData';
 import { INITIAL_QUESTIONS } from '../data/questionsData';
+import { AccessControlService } from './accessControlService';
 
 const STORAGE_KEY = 'simulados_anbima_engine_v1';
 
@@ -110,32 +111,50 @@ export class StorageService {
               if (!att.questionSnapshots || att.questionSnapshots.length === 0) {
                 att.questionSnapshots = parsed.questions.slice(0, att.totalQuestions);
               }
-              if (!att.ruleSnapshot && parsed.examRules && parsed.examRules[att.examId]) {
+              // STRICTLY query rule corresponding to the original exam - NO FALLBACK TO CPA!
+              if (!att.ruleSnapshot && parsed.examRules && att.examId && parsed.examRules[att.examId]) {
                 att.ruleSnapshot = JSON.parse(JSON.stringify(parsed.examRules[att.examId]));
               }
             });
           }
 
-          // 5. Ensure activeSession has ruleSnapshot if present
-          if (parsed.activeSession && !parsed.activeSession.ruleSnapshot && parsed.examRules) {
-            const rule = parsed.examRules[parsed.activeSession.examId] || parsed.examRules['cpa'];
+          // 5. Ensure activeSession has ruleSnapshot if present - STRICTLY by its examId, NO CPA FALLBACK!
+          if (parsed.activeSession && !parsed.activeSession.ruleSnapshot && parsed.examRules && parsed.activeSession.examId) {
+            const rule = parsed.examRules[parsed.activeSession.examId];
             if (rule) {
               parsed.activeSession.ruleSnapshot = JSON.parse(JSON.stringify(rule));
+            } else {
+              console.warn(`[Motor de Provas] Configurações do exame "${parsed.activeSession.examId}" não disponíveis para a sessão ativa.`);
             }
           }
 
-          // 6. Ensure examPlans catalog exists
+          // 6. Ensure examPlans catalog exists and perform non-destructive price migration
           if (!parsed.examPlans || !Array.isArray(parsed.examPlans) || parsed.examPlans.length === 0) {
             parsed.examPlans = JSON.parse(JSON.stringify(INITIAL_EXAM_PLANS));
           } else {
             INITIAL_EXAM_PLANS.forEach(ip => {
-              if (!parsed.examPlans.find(p => p.id === ip.id)) {
+              const existingPlan = parsed.examPlans.find(p => p.id === ip.id);
+              if (!existingPlan) {
                 parsed.examPlans.push(JSON.parse(JSON.stringify(ip)));
               }
             });
+
+            // Correct default CPA Pro demonstrative price from 4990 to 2990 without altering admin-customized prices
+            const cpaPlan = parsed.examPlans.find(p => p.id === 'plan-cpa-pro');
+            if (cpaPlan && cpaPlan.priceCents === 4990) {
+              cpaPlan.priceCents = 2990;
+            }
+
+            // OAB Pro price: no approved commercial price yet, disable public subscribing
+            const oabPlan = parsed.examPlans.find(p => p.id === 'plan-oab-pro');
+            if (oabPlan && (oabPlan.priceCents === 5990 || oabPlan.priceCents === null)) {
+              oabPlan.priceCents = null;
+              oabPlan.isActive = false;
+            }
           }
 
           // 7. Ensure subscriptions map exists and is populated
+          // Do NOT duplicate subscriptions, do NOT re-activate canceled ones on repeated migration
           if (!parsed.subscriptions || typeof parsed.subscriptions !== 'object') {
             parsed.subscriptions = {};
             if (parsed.user.plan === 'Pro') {
@@ -148,9 +167,24 @@ export class StorageService {
             parsed.user.selectedExamId = 'cpa';
           }
 
-          // 9. Sync user.plan with the current status of selectedExamId
+          // 9. Ensure errorReview has maxDurationMinutes in all examRules
+          if (parsed.examRules) {
+            Object.values(parsed.examRules).forEach(r => {
+              if (r.trainingSettings?.errorReview) {
+                if (!r.trainingSettings.errorReview.maxDurationMinutes) {
+                  r.trainingSettings.errorReview.maxDurationMinutes = 60;
+                }
+              }
+            });
+          }
+
+          // 10. Sync user.plan with the current status of selectedExamId
           const activeSub = parsed.subscriptions[parsed.user.selectedExamId];
-          const isSelectedExamPro = activeSub && (activeSub.status === 'active' || activeSub.status === 'trialing') && (!activeSub.expiresAt || new Date(activeSub.expiresAt).getTime() > Date.now());
+          const isSelectedExamPro = activeSub && 
+            activeSub.userId === parsed.user.id &&
+            activeSub.examId === parsed.user.selectedExamId &&
+            activeSub.status === 'active' && 
+            (!activeSub.expiresAt || new Date(activeSub.expiresAt).getTime() > Date.now());
           parsed.user.plan = isSelectedExamPro ? 'Pro' : 'Free';
 
           this.cachedState = parsed;
@@ -179,87 +213,31 @@ export class StorageService {
     }
   }
 
-  // Plan toggling per exam
+  // Plan toggling per exam - delegates directly to AccessControlService to unify business rules
   public static togglePlan(targetExamId?: ExamId): PlanType {
     const state = this.getState();
     const examId = targetExamId || state.user.selectedExamId || 'cpa';
-    if (!state.subscriptions) state.subscriptions = {};
-
-    const existing = state.subscriptions[examId];
-    const isCurrentlyPro = existing && (existing.status === 'active' || existing.status === 'trialing');
-
-    if (isCurrentlyPro) {
-      existing.status = 'canceled';
-      existing.canceledAt = new Date().toISOString();
-      existing.autoRenew = false;
-    } else {
-      const now = new Date();
-      const expires = new Date();
-      expires.setMonth(expires.getMonth() + 1);
-      state.subscriptions[examId] = {
-        id: `sub-${state.user.id}-${examId}-${Date.now()}`,
-        userId: state.user.id,
-        examId,
-        planId: `plan-${examId}-pro`,
-        status: 'active',
-        startedAt: now.toISOString(),
-        expiresAt: expires.toISOString(),
-        canceledAt: null,
-        autoRenew: true,
-        isDemo: true
-      };
-    }
-
-    if (state.user.selectedExamId === examId) {
-      state.user.plan = isCurrentlyPro ? 'Free' : 'Pro';
-    }
-
-    this.saveState(state);
-    return isCurrentlyPro ? 'Free' : 'Pro';
+    return AccessControlService.toggleExamPlan(examId);
   }
 
   public static setPlan(plan: PlanType, targetExamId?: ExamId): void {
     const state = this.getState();
     const examId = targetExamId || state.user.selectedExamId || 'cpa';
-    if (!state.subscriptions) state.subscriptions = {};
-
     if (plan === 'Pro') {
-      const now = new Date();
-      const expires = new Date();
-      expires.setMonth(expires.getMonth() + 1);
-      state.subscriptions[examId] = {
-        id: `sub-${state.user.id}-${examId}-${Date.now()}`,
-        userId: state.user.id,
-        examId,
-        planId: `plan-${examId}-pro`,
-        status: 'active',
-        startedAt: now.toISOString(),
-        expiresAt: expires.toISOString(),
-        canceledAt: null,
-        autoRenew: true,
-        isDemo: true
-      };
+      if (!AccessControlService.isPro(examId)) {
+        AccessControlService.subscribeToExam(examId);
+      }
     } else {
-      if (state.subscriptions[examId]) {
-        state.subscriptions[examId].status = 'canceled';
-        state.subscriptions[examId].canceledAt = new Date().toISOString();
-        state.subscriptions[examId].autoRenew = false;
+      if (AccessControlService.isPro(examId)) {
+        AccessControlService.cancelSubscription(examId);
       }
     }
-
-    if (state.user.selectedExamId === examId) {
-      state.user.plan = plan;
-    }
-
-    this.saveState(state);
   }
 
   public static setSelectedExam(examId: ExamId): void {
     const state = this.getState();
     state.user.selectedExamId = examId;
-    const sub = state.subscriptions?.[examId];
-    const isPro = sub && (sub.status === 'active' || sub.status === 'trialing');
-    state.user.plan = isPro ? 'Pro' : 'Free';
+    state.user.plan = AccessControlService.isPro(examId) ? 'Pro' : 'Free';
     this.saveState(state);
   }
 

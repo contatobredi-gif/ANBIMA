@@ -14,7 +14,7 @@ export interface ExamPlan {
   examId: ExamId;
   name: string;
   type: PlanType;
-  priceCents: number;
+  priceCents: number | null; // null indicates price not commercially defined
   currency: 'BRL';
   billingCycle: 'monthly' | null;
   isActive: boolean;
@@ -44,6 +44,7 @@ export interface ErrorReviewSettings {
   enabled: boolean;
   maxQuestions: number;
   minutesPerQuestion: number;
+  maxDurationMinutes?: number;
 }
 
 export interface DailyChallengeSettings {
@@ -76,6 +77,10 @@ export interface ExamRule {
   category: 'Certificação Financeira' | 'Exame de Ordem' | 'Concurso Público';
   allowRedistributionIfInsufficient?: boolean; // Default false
   trainingSettings?: TrainingSettings;
+  trialPolicy?: {
+    enabled: boolean;
+    durationDays?: number;
+  };
 }
 
 export interface Subject {

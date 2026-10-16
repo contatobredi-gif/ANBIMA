@@ -3,7 +3,8 @@ import {
   Attempt, 
   PlanType, 
   Question,
-  ExamRule 
+  ExamRule,
+  ExamId
 } from '../../types';
 import { 
   Target, 
@@ -19,6 +20,7 @@ import {
   ChevronRight,
   Calculator
 } from 'lucide-react';
+import { AccessControlService } from '../../services/accessControlService';
 
 interface TrainingHomeProps {
   subjects: Subject[];
@@ -30,7 +32,7 @@ interface TrainingHomeProps {
   onStartTraining: (subjectId: string) => void;
   onStartErrorReview: () => void;
   onOpenAttemptResult: (attempt: Attempt) => void;
-  onOpenUpgradeModal: (feature: string) => void;
+  onOpenUpgradeModal: (feature: string, targetExamId?: ExamId) => void;
 }
 
 export const TrainingHome: React.FC<TrainingHomeProps> = ({
@@ -45,7 +47,8 @@ export const TrainingHome: React.FC<TrainingHomeProps> = ({
   onOpenAttemptResult,
   onOpenUpgradeModal
 }) => {
-  const isFreePlan = plan === 'Free';
+  const isPro = AccessControlService.isPro(selectedExamId);
+  const isFreePlan = !isPro;
   const targetedSettings = examRule?.trainingSettings?.targetedTraining;
   const trainingQuestionCount = targetedSettings?.questionCount || 20;
   const trainingDurationMinutes = targetedSettings?.durationMinutes || 60;
@@ -71,7 +74,7 @@ export const TrainingHome: React.FC<TrainingHomeProps> = ({
 
   const handleStartDisciplineTraining = (subjectId: string, subjectName: string) => {
     if (isFreePlan) {
-      onOpenUpgradeModal(`Treinos Direcionados (${subjectName})`);
+      onOpenUpgradeModal(`Treinos Direcionados (${subjectName})`, selectedExamId as ExamId);
     } else {
       onStartTraining(subjectId);
     }
@@ -79,7 +82,7 @@ export const TrainingHome: React.FC<TrainingHomeProps> = ({
 
   const handleStartErrors = () => {
     if (isFreePlan) {
-      onOpenUpgradeModal('Modo Revisar Meus Erros');
+      onOpenUpgradeModal('Modo Revisar Meus Erros', selectedExamId as ExamId);
     } else {
       onStartErrorReview();
     }

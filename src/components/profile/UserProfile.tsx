@@ -49,22 +49,46 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
   const isCpaPro = AccessControlService.isPro('cpa');
   const isOabPro = AccessControlService.isPro('oab');
 
+  const cpaPlans = AccessControlService.getPlansForExam('cpa');
+  const cpaProPlan = cpaPlans.find(p => p.type === 'Pro');
+  const cpaFormattedPrice = cpaProPlan?.priceCents !== null && cpaProPlan?.priceCents !== undefined
+    ? `${(cpaProPlan.priceCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} / mês`
+    : 'Preço a definir';
+
+  const oabPlans = AccessControlService.getPlansForExam('oab');
+  const oabProPlan = oabPlans.find(p => p.type === 'Pro');
+  const oabFormattedPrice = oabProPlan?.priceCents !== null && oabProPlan?.priceCents !== undefined
+    ? `${(oabProPlan.priceCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} / mês`
+    : 'Preço a definir (Em breve)';
+
   const handleToggleExam = (examId: ExamId) => {
-    const newPlan = AccessControlService.toggleExamPlan(examId);
-    triggerSuccess(`Assinatura de ${examId.toUpperCase()} alterada para ${newPlan}.`);
-    onPlanToggle(examId);
+    try {
+      const newPlan = AccessControlService.toggleExamPlan(examId);
+      triggerSuccess(`Assinatura de ${examId.toUpperCase()} alterada para ${newPlan}.`);
+      onPlanToggle(examId);
+    } catch (err: any) {
+      triggerSuccess(err.message || 'Operação comercial não permitida.');
+    }
   };
 
   const handleCancelSub = (examId: ExamId) => {
-    AccessControlService.cancelSubscription(examId);
-    triggerSuccess(`Assinatura de ${examId.toUpperCase()} cancelada. O acesso Pro permanece desabilitado para este exame.`);
-    onPlanToggle(examId);
+    try {
+      AccessControlService.cancelSubscription(examId);
+      triggerSuccess(`Assinatura de ${examId.toUpperCase()} cancelada.`);
+      onPlanToggle(examId);
+    } catch (err: any) {
+      triggerSuccess(err.message || 'Erro ao cancelar.');
+    }
   };
 
   const handleReactivateSub = (examId: ExamId) => {
-    AccessControlService.reactivateSubscription(examId);
-    triggerSuccess(`Assinatura de ${examId.toUpperCase()} reativada com sucesso por mais 30 dias.`);
-    onPlanToggle(examId);
+    try {
+      AccessControlService.reactivateSubscription(examId);
+      triggerSuccess(`Assinatura de ${examId.toUpperCase()} reativada com sucesso.`);
+      onPlanToggle(examId);
+    } catch (err: any) {
+      triggerSuccess(err.message || 'Erro ao reativar.');
+    }
   };
 
   return (
@@ -176,7 +200,7 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
             <div className="space-y-2 text-xs text-zinc-600 mb-4 pb-4 border-b border-zinc-200/60">
               <div className="flex items-center justify-between">
                 <span>Valor:</span>
-                <span className="font-semibold text-zinc-900">R$ 49,90 / mês</span>
+                <span className="font-semibold text-zinc-900">{cpaFormattedPrice}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Status da Assinatura:</span>
@@ -231,7 +255,7 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
                   className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Assinar Pro CPA (R$ 49,90/mês)</span>
+                  <span>Assinar Pro CPA ({cpaFormattedPrice})</span>
                 </button>
               )}
             </div>
@@ -259,8 +283,8 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
 
             <div className="space-y-2 text-xs text-zinc-600 mb-4 pb-4 border-b border-zinc-200/60">
               <div className="flex items-center justify-between">
-                <span>Valor Pro:</span>
-                <span className="font-semibold text-zinc-900">R$ 59,90 / mês</span>
+                <span>Valor Pro no Catálogo:</span>
+                <span className="font-semibold text-zinc-900">{oabFormattedPrice}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Status da Assinatura:</span>
@@ -288,11 +312,11 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
                 </button>
               ) : (
                 <button
-                  onClick={() => handleToggleExam('oab')}
-                  className="w-full py-2 px-3 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                  disabled
+                  className="w-full py-2 px-3 bg-zinc-200 text-zinc-500 rounded-lg text-xs font-semibold cursor-not-allowed flex items-center justify-center gap-1.5"
+                  title="A OAB não possui preço aprovado nem contratação pública ativa"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Assinar Pro OAB (R$ 59,90/mês)</span>
+                  <span>Contratação Indisponível (Em Breve)</span>
                 </button>
               )}
             </div>

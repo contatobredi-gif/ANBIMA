@@ -107,6 +107,17 @@ export class ExamEngine {
       throw new Error('Este exame ainda não está disponível para realização de simulados.');
     }
 
+    // 2.1 Check if an active session already exists for the user
+    if (state.activeSession && !state.activeSession.completed) {
+      if (state.activeSession.examId === examId && state.activeSession.mode === mode) {
+        if (mode !== 'TARGETED_TRAINING' || state.activeSession.targetSubjectId === targetSubjectId) {
+          // Permit resumption of in-progress session, do not duplicate or consume extra free attempts
+          return state.activeSession;
+        }
+      }
+      throw new Error('Já existe um simulado ou treino em andamento. Conclua ou descarte a tentativa atual antes de iniciar uma nova.');
+    }
+
     let selectedQuestions: Question[] = [];
     let disciplineDistribution: Record<string, number> = {};
     let durationMinutes = examRule.durationMinutes;
@@ -170,6 +181,24 @@ export class ExamEngine {
         throw new Error(accessCheck.reason || `Treinos direcionados são exclusivos para assinantes do Plano Pro do exame ${examRule.shortName}.`);
       }
 
+      // 5.1 Disciplina obrigatória: cannot be empty or fallback to 'mat_fin'
+      if (!targetSubjectId || typeof targetSubjectId !== 'string' || targetSubjectId.trim() === '') {
+        throw new Error('É obrigatório informar a disciplina para iniciar o Treino Direcionado.');
+      }
+      const subjectId = targetSubjectId.trim();
+
+      // Validate discipline exists in system
+      const subject = state.subjects.find(s => s.id === subjectId);
+      if (!subject) {
+        throw new Error(`Disciplina "${subjectId}" não encontrada no sistema.`);
+      }
+
+      // Validate discipline belongs to and is enabled for this specific exam
+      if (!examRule.enabledDisciplines || !examRule.enabledDisciplines.includes(subjectId)) {
+        throw new Error(`A disciplina "${subject.name}" não pertence ou não está habilitada para o exame "${examRule.name}".`);
+      }
+      const subjectName = subject.name;
+
       const trainingSettings = examRule.trainingSettings?.targetedTraining;
       if (!trainingSettings || !trainingSettings.enabled) {
         throw new Error(`A modalidade de Treino Direcionado não está habilitada para o exame "${examRule.name}".`);
@@ -185,10 +214,6 @@ export class ExamEngine {
       if (!Number.isInteger(trainingDuration) || trainingDuration <= 0 || trainingDuration > 480) {
         throw new Error('Configuração inválida: duração do treino deve ser um inteiro positivo entre 1 e 480 minutos.');
       }
-
-      const subjectId = targetSubjectId || 'mat_fin';
-      const subject = state.subjects.find(s => s.id === subjectId);
-      const subjectName = subject?.name || subjectId;
 
       // Filter approved questions for this exam and subject
       const eligible = state.questions.filter(q => 
@@ -240,6 +265,7 @@ export class ExamEngine {
 
       const maxQuestions = reviewSettings.maxQuestions;
       const minutesPerQuestion = reviewSettings.minutesPerQuestion;
+      const maxDuration = reviewSettings.maxDurationMinutes || 60;
 
       if (!Number.isInteger(maxQuestions) || maxQuestions <= 0 || maxQuestions > 200) {
         throw new Error('Configuração inválida: quantidade máxima de questões para revisão de erros deve ser entre 1 e 200.');
@@ -281,7 +307,8 @@ export class ExamEngine {
 
       // Select up to maxQuestions failed questions
       selectedQuestions = this.shuffle(eligibleFailed).slice(0, maxQuestions);
-      durationMinutes = Math.min(60, selectedQuestions.length * minutesPerQuestion);
+      // Configurable max duration
+      durationMinutes = Math.min(maxDuration, selectedQuestions.length * minutesPerQuestion);
 
     } else if (mode === 'DAILY_CHALLENGE') {
       const challengeSettings = examRule.trainingSettings?.dailyChallenge;
