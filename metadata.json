@@ -1,6 +1,6 @@
 {
-  "name": "Simulados ANBIMA - Bredi Exam Engine",
-  "description": "Plataforma de alta performance para preparação, simulados interativos e treinos direcionados de exames e certificações financeiras.",
+  "name": "Simulados ANBIMA – Preparação Inteligente para Certificação CPA",
+  "description": "Pratique simulados com cronômetro, diagnóstico por disciplina, treinos focados nos seus erros e acompanhamento de evolução para a prova CPA.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

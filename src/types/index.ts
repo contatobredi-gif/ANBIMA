@@ -193,19 +193,59 @@ export interface UserProfile {
   plan: PlanType;
   selectedExamId: ExamId;
   consecutiveDays: number;
+  bestStreakDays?: number;
   lastActiveDate: string;
   engagementPoints: number;
   targetExamDate?: string;
   avatarUrl?: string;
+  publicRankingOptIn?: boolean;
+  publicDisplayName?: string;
 }
 
 export interface DailyActivity {
-  date: string; // YYYY-MM-DD
+  date: string; // YYYY-MM-DD local date
   checkedIn: boolean;
+  checkedInAt?: string; // ISO timestamp
   challengeCompleted: boolean;
+  challengeCompletedAt?: string;
   challengeScore?: number;
   simulationsCompleted: number;
   questionsAnswered: number;
+  examId?: ExamId;
+}
+
+export type PointEventType =
+  | 'CHECK_IN'
+  | 'DAILY_CHALLENGE'
+  | 'FULL_EXAM'
+  | 'TARGETED_TRAINING'
+  | 'ERROR_REVIEW'
+  | 'ACHIEVEMENT_UNLOCKED';
+
+export interface PointEvent {
+  id: string; // Deterministic unique ID to prevent duplicates
+  userId: string;
+  examId?: ExamId;
+  type: PointEventType;
+  points: number;
+  description: string;
+  createdAt: string;
+  referenceId?: string;
+}
+
+export interface ActiveDailyChallenge {
+  id: string; // e.g. "challenge-cpa-2026-10-16"
+  examId: ExamId;
+  date: string; // YYYY-MM-DD local
+  questionIds: string[];
+  questionSnapshots: Question[];
+  startedAtTimestamp: number;
+  durationSeconds: number;
+  currentIndex: number;
+  answers: Record<number, number>; // index -> selectedOptionIndex
+  completed: boolean;
+  score?: number;
+  completedAt?: string;
 }
 
 export interface Achievement {
@@ -288,7 +328,9 @@ export interface AppStateData {
   questions: Question[];
   attempts: Attempt[];
   activeSession: ActiveExamSession | null;
+  activeDailyChallenge?: ActiveDailyChallenge | null;
   dailyActivities: Record<string, DailyActivity>;
+  pointEvents?: PointEvent[];
   achievements: Achievement[];
   rankings: RankingParticipant[];
   notifications: NotificationItem[];

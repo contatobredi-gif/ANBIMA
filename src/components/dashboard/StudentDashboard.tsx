@@ -29,6 +29,9 @@ import {
 import { AppStateData, Attempt, Subject, ExamId } from '../../types';
 import { StorageService } from '../../services/storageService';
 import { AccessControlService } from '../../services/accessControlService';
+import { DailyActivityService } from '../../services/dailyActivityService';
+import { DailyChallengeService } from '../../services/dailyChallengeService';
+import { RankingService } from '../../services/rankingService';
 import { ScoreCriteriaBadge } from '../common/ScoreCriteriaBadge';
 import confetti from 'canvas-confetti';
 
@@ -74,11 +77,38 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     ? Math.max(...fullExamAttempts.map(a => a.scorePercentage)) 
     : 0;
 
-  // Today's activity check
-  const todayKey = new Date().toISOString().split('T')[0];
+  // Today's activity check in local timezone
+  const todayKey = DailyActivityService.getTodayLocalDateString();
   const todayActivity = dailyActivities[todayKey];
-  const hasCheckedInToday = todayActivity?.checkedIn || false;
-  const hasCompletedChallengeToday = todayActivity?.challengeCompleted || false;
+  const hasCheckedInToday = Boolean(todayActivity?.checkedIn);
+  const hasCompletedChallengeToday = DailyChallengeService.isCompletedToday(selectedExamId);
+
+  // Streak & study metrics
+  const streakInfo = DailyActivityService.calculateStreak(dailyActivities, todayKey);
+  const currentStreak = streakInfo.currentStreak;
+  const bestStreak = user.bestStreakDays || streakInfo.bestStreak;
+
+  // Next achievement & ranking for selected exam
+  const rankingData = RankingService.getRankings('overall', selectedExamId);
+  const nextAchievement = achievements.find(a => !a.unlockedAt) || achievements[achievements.length - 1];
+  const nextAchProgress = nextAchievement 
+    ? Math.min(100, Math.round((nextAchievement.progress / nextAchievement.maxProgress) * 100))
+    : 100;
+
+  // 7-day compact activity calendar
+  const last7Days = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${day}`;
+    const dayInitial = d.toLocaleDateString('pt-BR', { weekday: 'narrow' }).toUpperCase();
+    const act = dailyActivities[dateStr];
+    const isStudied = DailyActivityService.isQualifyingActivity(act);
+    const isToday = i === 6;
+    return { dateStr, dayInitial, isStudied, isToday };
+  });
 
   // Chart data preparation
   const chartAttempts = chartMode === 'FULL_EXAM' ? fullExamAttempts : examAttempts;
@@ -119,14 +149,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const sortedDisciplines = [...disciplineStats].sort((a, b) => a.accuracy - b.accuracy);
   const weakestDiscipline = sortedDisciplines[0];
 
-  // Daily check-in handler
+  // Daily check-in handler with discreet feedback toast
   const handleCheckIn = () => {
-    const res = StorageService.performDailyCheckIn();
+    const res = StorageService.performDailyCheckIn(selectedExamId);
     setCheckInStatus(res.message);
-    if (res.success) {
-      confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 } });
-    }
-    setTimeout(() => setCheckInStatus(null), 4000);
+    setTimeout(() => setCheckInStatus(null), 3500);
   };
 
   return (
@@ -372,63 +399,106 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         {/* Gamification & Quick Stats (1 col) */}
         <div className="bg-white p-5 rounded-2xl border border-zinc-200/90 shadow-xs flex flex-col justify-between space-y-4">
           <div>
-            <h2 className="text-base font-bold text-zinc-900">Engajamento & Hábitos</h2>
-            <p className="text-xs text-zinc-500">Constância diária na preparação</p>
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-bold text-zinc-900">Engajamento & Hábitos</h2>
+              <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                Constância Diária
+              </span>
+            </div>
+            <p className="text-xs text-zinc-500 mt-0.5">Estudo consistente rumo à aprovação</p>
           </div>
 
           <div className="space-y-3">
-            {/* Streak card */}
-            <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/70 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center">
-                  <Flame className="w-5 h-5 fill-amber-500 text-amber-500" />
+            {/* Streak card with 7-day mini calendar */}
+            <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/70">
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center">
+                    <Flame className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-zinc-900">{currentStreak} Dias Consecutivos</h4>
+                    <p className="text-[10px] text-zinc-500">Recorde histórico: {bestStreak} dias</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-xs font-bold text-zinc-900">{user.consecutiveDays} Dias Consecutivos</h4>
-                  <p className="text-[11px] text-zinc-600">Ritmo excelente de consistência</p>
+                <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded">
+                  {streakInfo.hasActivityToday ? 'Meta de Hoje Ativa' : 'Pendente Hoje'}
+                </span>
+              </div>
+
+              {/* 7-day visual calendar dots */}
+              <div className="pt-2 border-t border-amber-200/50 flex items-center justify-between">
+                <span className="text-[10px] font-semibold text-zinc-600">Últimos 7 dias:</span>
+                <div className="flex items-center gap-1.5">
+                  {last7Days.map((d, idx) => (
+                    <div
+                      key={idx}
+                      title={`${d.dateStr}: ${d.isStudied ? 'Estudo registrado' : 'Sem atividade'}`}
+                      className={`w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold transition-all ${
+                        d.isStudied
+                          ? 'bg-emerald-600 text-white'
+                          : d.isToday
+                          ? 'border border-amber-400 bg-white text-zinc-700'
+                          : 'bg-zinc-200 text-zinc-500'
+                      }`}
+                    >
+                      {d.dayInitial}
+                    </div>
+                  ))}
                 </div>
               </div>
-              <span className="text-xs font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded">
-                Ativo
+            </div>
+
+            {/* Sua meta de hoje card */}
+            <div className="p-3 rounded-xl bg-emerald-50/50 border border-emerald-200 text-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block mb-1">
+                Sua Meta de Hoje
               </span>
+              <p className="text-zinc-700 leading-snug">
+                {hasCompletedChallengeToday
+                  ? 'Você já concluiu o desafio do dia! Mantenha a média fazendo um treino focado na sua disciplina de atenção.'
+                  : 'Responda o desafio diário de 5 questões para garantir +20 pts e manter sua sequência ativa.'}
+              </p>
             </div>
 
             {/* Ranking Position */}
-            <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-zinc-200 text-zinc-700 flex items-center justify-center">
-                  <Trophy className="w-5 h-5 text-amber-600" />
+            <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/70 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-zinc-200 text-zinc-700 flex items-center justify-center">
+                  <Trophy className="w-4 h-4 text-amber-600" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-900">4º Lugar no Ranking Geral</h4>
-                  <p className="text-[11px] text-zinc-600">Top 5 entre os participantes da CPA</p>
+                  <h4 className="text-xs font-bold text-zinc-900">{rankingData.currentUserRank}º Lugar no Ranking Geral</h4>
+                  <p className="text-[10px] text-zinc-500">Comunidade {examRule.shortName} · {rankingData.participants.length} participantes</p>
                 </div>
               </div>
               <button
                 onClick={() => onNavigate('ranking')}
-                className="text-xs font-semibold text-emerald-700 hover:underline"
+                className="text-xs font-semibold text-emerald-700 hover:underline cursor-pointer"
               >
                 Ver Ranking
               </button>
             </div>
 
             {/* Next Achievement progress */}
-            <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70">
-              <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className="font-semibold text-zinc-800">Próxima Conquista</span>
-                <span className="text-[11px] text-zinc-500">72% / 80%</span>
+            {nextAchievement && (
+              <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/70">
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className="font-semibold text-zinc-800">Próxima Conquista: {nextAchievement.title}</span>
+                  <span className="text-[10px] text-zinc-500 font-medium">+{nextAchievement.rewardPoints} pts</span>
+                </div>
+                <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
+                  <div className="bg-emerald-600 h-full rounded-full transition-all" style={{ width: `${nextAchProgress}%` }} />
+                </div>
+                <p className="text-[10px] text-zinc-500 mt-1">
+                  {nextAchievement.description}
+                </p>
               </div>
-              <div className="w-full bg-zinc-200 h-2 rounded-full overflow-hidden">
-                <div className="bg-emerald-600 h-full rounded-full transition-all" style={{ width: '90%' }} />
-              </div>
-              <p className="text-[11px] text-zinc-500 mt-1.5">
-                <strong className="text-zinc-700">Aprovação com Folga (80%+)</strong> · Faltam apenas 8 pontos percentuais.
-              </p>
-            </div>
+            )}
           </div>
 
           <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-xs">
-            <span className="text-zinc-500">Pontos acumulados:</span>
+            <span className="text-zinc-500">Pontos de engajamento:</span>
             <span className="font-bold text-emerald-700 flex items-center gap-1">
               <Zap className="w-3.5 h-3.5 fill-emerald-600 text-emerald-600" />
               {user.engagementPoints} pts
@@ -525,7 +595,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               <p className="text-xs text-zinc-500 mb-3">
                 {hasCheckedInToday 
                   ? 'Check-in de hoje já foi registrado com sucesso!' 
-                  : 'Confirme sua presença hoje para garantir sua sequência e +50 pontos.'}
+                  : 'Confirme sua presença hoje para garantir sua sequência e +10 pontos.'}
               </p>
             </div>
             <button
@@ -538,7 +608,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               }`}
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>{hasCheckedInToday ? 'Presença Confirmada' : 'Fazer Check-in'}</span>
+              <span>{hasCheckedInToday ? 'Presença Confirmada (+10 pts)' : 'Fazer Check-in (+10 pts)'}</span>
             </button>
           </div>
 
@@ -551,8 +621,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </div>
               <p className="text-xs text-zinc-500 mb-3">
                 {hasCompletedChallengeToday
-                  ? 'Desafio diário já respondido hoje! Excelente dedicação.'
-                  : '5 questões selecionadas para revisão expressa em menos de 5 minutos.'}
+                  ? 'Desafio diário já respondido hoje com gabarito liberado (+20 pts garantidos).'
+                  : '5 questões selecionadas para revisão expressa em até 15 minutos (+20 pts).'}
               </p>
             </div>
             <button
@@ -560,7 +630,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               className="w-full py-2 px-3 rounded-lg text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>{hasCompletedChallengeToday ? 'Refazer Desafio' : 'Responder Desafio'}</span>
+              <span>{hasCompletedChallengeToday ? 'Ver Gabarito de Hoje' : 'Responder Desafio (+20 pts)'}</span>
             </button>
           </div>
 

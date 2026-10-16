@@ -1,7 +1,11 @@
-import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem, Question, ExamId, ExamPlan, ExamSubscription } from '../types';
+import { AppStateData, Attempt, ActiveExamSession, PlanType, ExamRule, TestimonialFeedback, DailyActivity, NotificationItem, Question, ExamId, ExamPlan, ExamSubscription, PointEvent, ActiveDailyChallenge } from '../types';
 import { INITIAL_APP_STATE, INITIAL_EXAM_RULES, INITIAL_EXAM_PLANS, INITIAL_SUBSCRIPTIONS } from '../data/initialData';
 import { INITIAL_QUESTIONS } from '../data/questionsData';
 import { AccessControlService } from './accessControlService';
+import { EngagementService } from './engagementService';
+import { DailyActivityService } from './dailyActivityService';
+import { AchievementService } from './achievementService';
+import { DailyChallengeService } from './dailyChallengeService';
 
 const STORAGE_KEY = 'simulados_anbima_engine_v1';
 
@@ -187,6 +191,19 @@ export class StorageService {
             (!activeSub.expiresAt || new Date(activeSub.expiresAt).getTime() > Date.now());
           parsed.user.plan = isSelectedExamPro ? 'Pro' : 'Free';
 
+          // 11. Gamification collections migration
+          if (!parsed.pointEvents) parsed.pointEvents = [];
+          if (parsed.activeDailyChallenge === undefined) parsed.activeDailyChallenge = null;
+          if (parsed.user.bestStreakDays === undefined) {
+            parsed.user.bestStreakDays = Math.max(parsed.user.consecutiveDays || 0, 7);
+          }
+          if (parsed.user.publicRankingOptIn === undefined) {
+            parsed.user.publicRankingOptIn = false;
+          }
+          if (!parsed.user.publicDisplayName) {
+            parsed.user.publicDisplayName = parsed.user.name;
+          }
+
           this.cachedState = parsed;
           return parsed;
         }
@@ -300,29 +317,6 @@ export class StorageService {
     state.attempts.push(attempt);
     state.activeSession = null; // Clear active session
 
-    // Add engagement points only once
-    const pointsGained = attempt.mode === 'FULL_EXAM' ? 150 : 60;
-    state.user.engagementPoints += pointsGained;
-
-    // Update daily activity
-    const today = new Date().toISOString().split('T')[0];
-    const currentDay = state.dailyActivities[today] || {
-      date: today,
-      checkedIn: true,
-      challengeCompleted: false,
-      simulationsCompleted: 0,
-      questionsAnswered: 0
-    };
-    if (attempt.mode === 'FULL_EXAM') {
-      currentDay.simulationsCompleted += 1;
-    }
-    currentDay.questionsAnswered += attempt.totalQuestions;
-    currentDay.checkedIn = true;
-    state.dailyActivities[today] = currentDay;
-
-    // Check achievement progress
-    this.evaluateAchievements(state, attempt);
-
     // Add notification
     const newNotif: NotificationItem = {
       id: `notif-${Date.now()}`,
@@ -336,32 +330,24 @@ export class StorageService {
     state.notifications.unshift(newNotif);
 
     this.saveState(state);
-  }
 
-  private static evaluateAchievements(state: AppStateData, lastAttempt: Attempt): void {
-    const fullExams = state.attempts.filter(a => a.mode === 'FULL_EXAM');
-    const totalQuestions = state.attempts.reduce((acc, a) => acc + a.totalQuestions, 0);
+    // Award engagement points deterministically based on mode
+    const pointsGained = attempt.mode === 'FULL_EXAM' ? 50 : (attempt.mode === 'ERROR_REVIEW' ? 15 : 20);
+    EngagementService.awardPoints(
+      attempt.mode,
+      attempt.id,
+      attempt.examId,
+      pointsGained,
+      attempt.mode === 'FULL_EXAM'
+        ? 'Simulado Completo finalizado (+50 pts)'
+        : (attempt.mode === 'ERROR_REVIEW' ? 'Revisão de Erros finalizada (+15 pts)' : 'Treino Direcionado finalizado (+20 pts)')
+    );
 
-    state.achievements.forEach(ach => {
-      if (ach.id === 'ach-01' && fullExams.length >= 1 && !ach.unlockedAt) {
-        ach.unlockedAt = new Date().toISOString();
-        ach.progress = 1;
-      }
-      if (ach.id === 'ach-02') {
-        ach.progress = totalQuestions;
-        if (totalQuestions >= ach.maxProgress && !ach.unlockedAt) {
-          ach.unlockedAt = new Date().toISOString();
-        }
-      }
-      if (ach.id === 'ach-08' && lastAttempt.scorePercentage >= 80 && !ach.unlockedAt) {
-        ach.unlockedAt = new Date().toISOString();
-        ach.progress = lastAttempt.scorePercentage;
-      }
-      if (ach.id === 'ach-07' && lastAttempt.mode === 'TARGETED_TRAINING' && lastAttempt.targetSubjectId === 'mat_fin' && lastAttempt.scorePercentage >= 70 && !ach.unlockedAt) {
-        ach.unlockedAt = new Date().toISOString();
-        ach.progress = lastAttempt.scorePercentage;
-      }
-    });
+    // Record study activity in daily tracker and recalculate streak
+    DailyActivityService.recordStudyActivity(attempt.totalQuestions, attempt.mode === 'FULL_EXAM', attempt.examId);
+
+    // Evaluate and unlock achievements
+    AchievementService.checkAndUnlockAchievements();
   }
 
   // Active Session Persistence (ensures refresh does not lose time or progress)
@@ -384,63 +370,24 @@ export class StorageService {
     }
   }
 
-  // Daily Check-in with duplicate protection
-  public static performDailyCheckIn(): { success: boolean; message: string; pointsGained: number } {
-    const state = this.getState();
-    const today = new Date().toISOString().split('T')[0];
-
-    const currentActivity = state.dailyActivities[today];
-    if (currentActivity && currentActivity.checkedIn) {
-      return { success: false, message: 'Você já realizou o check-in de hoje!', pointsGained: 0 };
-    }
-
-    const points = 50;
-    state.user.engagementPoints += points;
-    state.user.lastActiveDate = today;
-
-    state.dailyActivities[today] = {
-      date: today,
-      checkedIn: true,
-      challengeCompleted: currentActivity ? currentActivity.challengeCompleted : false,
-      challengeScore: currentActivity ? currentActivity.challengeScore : undefined,
-      simulationsCompleted: currentActivity ? currentActivity.simulationsCompleted : 0,
-      questionsAnswered: currentActivity ? currentActivity.questionsAnswered : 0
-    };
-
-    // Calculate streak
-    state.user.consecutiveDays = (state.user.consecutiveDays || 0) + 1;
-
-    // Check 7 days badge
-    const streakBadge = state.achievements.find(a => a.id === 'ach-04');
-    if (streakBadge && state.user.consecutiveDays >= 7 && !streakBadge.unlockedAt) {
-      streakBadge.unlockedAt = new Date().toISOString();
-      streakBadge.progress = 7;
-    }
-
-    this.saveState(state);
-    return { success: true, message: `Check-in diário confirmado! +${points} pontos de engajamento.`, pointsGained: points };
+  // Daily Check-in with duplicate protection and local date calculation
+  public static performDailyCheckIn(examIdOverride?: ExamId): {
+    success: boolean;
+    message: string;
+    pointsGained: number;
+    currentStreak: number;
+  } {
+    return DailyActivityService.performDailyCheckIn(examIdOverride);
   }
 
-  // Daily Challenge completion
-  public static recordDailyChallenge(score: number): void {
-    const state = this.getState();
-    const today = new Date().toISOString().split('T')[0];
-    const act = state.dailyActivities[today] || {
-      date: today,
-      checkedIn: true,
-      challengeCompleted: false,
-      simulationsCompleted: 0,
-      questionsAnswered: 0
-    };
-
-    act.challengeCompleted = true;
-    act.challengeScore = score;
-    act.questionsAnswered += 5;
-    act.checkedIn = true;
-    state.dailyActivities[today] = act;
-    state.user.engagementPoints += (score * 20) + 50; // Points per correct answer + bonus
-
-    this.saveState(state);
+  // Daily Challenge completion via DailyChallengeService
+  public static recordDailyChallenge(): {
+    score: number;
+    total: number;
+    pointsAwarded: number;
+    alreadyCompleted: boolean;
+  } {
+    return DailyChallengeService.submitChallenge();
   }
 
   // Notifications

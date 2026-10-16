@@ -390,8 +390,8 @@ const SEED_ATTEMPTS: Attempt[] = RAW_SEED_ATTEMPTS.map(a => ({
 export const INITIAL_ACHIEVEMENTS: Achievement[] = [
   {
     id: 'ach-01',
-    title: 'Primeiro Simulado Concluído',
-    description: 'Completou a primeira prova completa de 50 questões.',
+    title: 'Primeiro Passo',
+    description: 'Primeiro simulado completo concluído com sucesso.',
     icon: 'Flag',
     category: 'simulados',
     unlockedAt: '2026-09-20T16:15:00Z',
@@ -401,8 +401,8 @@ export const INITIAL_ACHIEVEMENTS: Achievement[] = [
   },
   {
     id: 'ach-02',
-    title: 'Maratona: 100 Questões',
-    description: 'Respondeu a mais de 100 questões em simulados e treinos.',
+    title: 'Dedicação',
+    description: 'Conclusão de determinado volume de questões (100 questões respondidas).',
     icon: 'CheckCircle2',
     category: 'desempenho',
     unlockedAt: '2026-09-27T12:05:00Z',
@@ -412,19 +412,19 @@ export const INITIAL_ACHIEVEMENTS: Achievement[] = [
   },
   {
     id: 'ach-03',
-    title: 'Hábito de Estudo: 5 Dias',
-    description: 'Manteve atividade e estudos registrados por 5 dias.',
-    icon: 'Calendar',
-    category: 'constancia',
-    unlockedAt: '2026-10-10T19:38:00Z',
+    title: 'Foco Total',
+    description: 'Conclusão de cinco treinos direcionados por disciplina.',
+    icon: 'Target',
+    category: 'disciplina',
+    unlockedAt: '2026-10-05T19:38:00Z',
     progress: 5,
     maxProgress: 5,
-    rewardPoints: 150
+    rewardPoints: 250
   },
   {
     id: 'ach-04',
-    title: 'Ritmo Imparável: 7 Dias Seguidos',
-    description: 'Completou uma sequência de 7 dias consecutivos de dedicação.',
+    title: 'Constância',
+    description: 'Sete dias consecutivos de estudo qualificável.',
     icon: 'Flame',
     category: 'constancia',
     unlockedAt: '2026-10-14T10:00:00Z',
@@ -434,17 +434,28 @@ export const INITIAL_ACHIEVEMENTS: Achievement[] = [
   },
   {
     id: 'ach-05',
-    title: 'Grande Salto: +20 p.p.',
-    description: 'Evoluiu seu rendimento em mais de 20 pontos percentuais desde a primeira tentativa.',
+    title: 'Superação',
+    description: 'Melhora de pelo menos dez pontos percentuais entre simulados comparáveis.',
     icon: 'TrendingUp',
     category: 'desempenho',
     unlockedAt: '2026-10-13T12:12:00Z',
     progress: 28,
-    maxProgress: 20,
+    maxProgress: 10,
     rewardPoints: 400
   },
   {
     id: 'ach-06',
+    title: 'Meta Alcançada',
+    description: 'Resultado igual ou superior ao critério de referência configurado para o exame em simulado.',
+    icon: 'Award',
+    category: 'desempenho',
+    unlockedAt: '2026-10-13T12:12:00Z',
+    progress: 72,
+    maxProgress: 70,
+    rewardPoints: 350
+  },
+  {
+    id: 'ach-07',
     title: 'Mestre da Regulação',
     description: 'Alcance aproveitamento superior a 85% em Sistema Financeiro Nacional.',
     icon: 'ShieldCheck',
@@ -453,17 +464,6 @@ export const INITIAL_ACHIEVEMENTS: Achievement[] = [
     progress: 87,
     maxProgress: 85,
     rewardPoints: 250
-  },
-  {
-    id: 'ach-07',
-    title: 'Superação em Matemática',
-    description: 'Atinja 70% ou mais em um treino direcionado de Matemática Financeira.',
-    icon: 'Calculator',
-    category: 'disciplina',
-    unlockedAt: null,
-    progress: 50,
-    maxProgress: 70,
-    rewardPoints: 350
   },
   {
     id: 'ach-08',
